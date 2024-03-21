@@ -5,8 +5,12 @@
     <groupId>com.heyu</groupId>
     <artifactId>train12306</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>train12306</name>
     <description>train12306</description>
+    <modules>
+        <module>member</module>
+    </modules>
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
