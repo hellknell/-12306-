@@ -7,4 +7,4 @@ spring:
         predicates:
         - Path=/member/**
 server:
-  port: 8000
+  port: 10010
