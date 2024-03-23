@@ -1,6 +1,5 @@
 package com.heyu.train.common.resp;
 
-import com.heyu.train.common.constant.ResultType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,17 +18,17 @@ public class Result<T> {
     private String msg;
     private String code;
 
-    public static <T> Result<T> success(ResultType type, T data) {
+    public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
-        result.setCode(type.getCode());
-        result.setMsg(type.getMessage());
+        result.setCode("200");
+        result.setMsg("操作成功");
         result.setData(data);
         return result;
     }
-    public static <T> Result<T> error(ResultType type, String msg) {
-        Result<T> result = new Result<>();
-        result.setCode(type.getCode());
-        result.setMsg(msg);
-        return result;
-    }
+//    public static <T> Result<T> error(String msg) {
+//        Result<T> result = new Result<>();
+//        result.setCode();
+//        result.setMsg(msg);
+//        return result;
+//    }
 }

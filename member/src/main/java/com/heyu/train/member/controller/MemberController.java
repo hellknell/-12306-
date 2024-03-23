@@ -18,6 +18,6 @@ public class MemberController {
     final MemberSevice memberSevice;
     @PostMapping("/register")
     public Result<Long> register(MemberRegisterReq req) {
-        return memberSevice.register(req);
+        return Result.success(memberSevice.register(req));
     }
 }

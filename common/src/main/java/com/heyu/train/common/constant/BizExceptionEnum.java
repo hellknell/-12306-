@@ -1,6 +1,6 @@
 package com.heyu.train.common.constant;
 
-public enum ResultType {
+public enum BizExceptionEnum {
     // 成功
     SUCCESS("200", "成功"),
 
@@ -10,6 +10,7 @@ public enum ResultType {
     PARAM_LOST_ERROR("4001", "参数缺失"),
 
     SYSTEM_ERROR("500", "系统异常"),
+    MEMBER_MOBILE_ALREADY_EXISTS("501", "手机号已存在"),
     USER_EXIST_ERROR("5001", "用户名已存在"),
     USER_NOT_LOGIN("5002", "用户未登录"),
     USER_ACCOUNT_ERROR("5003", "账号或密码错误"),
@@ -29,7 +30,7 @@ public enum ResultType {
         return message;
 
     }
-    ResultType(String code, String message) {
+    BizExceptionEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }
