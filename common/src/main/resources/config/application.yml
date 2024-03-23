@@ -16,4 +16,3 @@ spring:
       # 多久检查一次连接的活性
       # 检查时会先把连接从池中拿出来（空闲的话），然后调用isValid()或执行connectionTestQuery来校验活性，如果通过校验，则放回池里。
       # 默认 0 （不启用），最小值为 30000 ms，必须小于 maxLifetime。支持 JMX 动态修改
-      keepalive-time: 30000
