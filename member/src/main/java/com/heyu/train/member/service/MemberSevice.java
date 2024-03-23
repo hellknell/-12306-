@@ -1,10 +1,12 @@
 package com.heyu.train.member.service;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
 import com.heyu.train.common.generator.help.MyBatisWrapper;
+import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.member.domain.Member;
 import com.heyu.train.member.domain.MemberField;
 import com.heyu.train.member.mapper.MemberMapper;
@@ -33,10 +35,12 @@ public class MemberSevice {
         }
         Member member = new Member();
         member.setMobile(mobile);
-        if (memberMapper.insert(member) != -1) {
+        member.setId(SnowFlask.getSnowFlaskId());
+        if( memberMapper.insertSelective(member)!=-1){
             return member.getId();
         }
-        return null;
+
+        return  null;
 
 
     }
