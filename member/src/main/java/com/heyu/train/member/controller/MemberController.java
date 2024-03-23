@@ -1,5 +1,6 @@
 package com.heyu.train.member.controller;
 
+import com.heyu.train.common.resp.Result;
 import com.heyu.train.member.req.MemberRegisterReq;
 import com.heyu.train.member.service.MemberSevice;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     final MemberSevice memberSevice;
     @PostMapping("/register")
-    public long register(MemberRegisterReq req) {
+    public Result<Long> register(MemberRegisterReq req) {
         return memberSevice.register(req);
     }
 }

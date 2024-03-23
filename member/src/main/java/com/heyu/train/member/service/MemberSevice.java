@@ -2,7 +2,9 @@ package com.heyu.train.member.service;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.ListUtil;
+import com.heyu.train.common.constant.ResultType;
 import com.heyu.train.common.generator.help.MyBatisWrapper;
+import com.heyu.train.common.resp.Result;
 import com.heyu.train.member.domain.Member;
 import com.heyu.train.member.domain.MemberField;
 import com.heyu.train.member.mapper.MemberMapper;
@@ -22,8 +24,8 @@ import java.util.List;
 public class MemberSevice {
     final MemberMapper memberMapper;
 
+    public Result<Long> register(MemberRegisterReq req) {
 
-    public long register(MemberRegisterReq req) {
         String mobile = req.getMobile();
         MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
         wrapper.select(MemberField.Id).whereBuilder().andEq(MemberField.setMobile(mobile));
@@ -35,7 +37,8 @@ public class MemberSevice {
         Member member = new Member();
         member.setMobile(mobile);
        if(memberMapper.insert(member)!=-1){
-           return member.getId();
+          return Result.success(ResultType.SUCCESS,member.getId());
+
        }
 
        throw  new RuntimeException("注册失败");
