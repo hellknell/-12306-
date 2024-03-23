@@ -3,10 +3,12 @@ package com.heyu.train.common.controller;
 import com.heyu.train.common.exception.BizException;
 import com.heyu.train.common.resp.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -14,27 +16,34 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * 作者:何宇
  * 日期：2024/3/23 19:14
  */
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
-public  class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
+public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public Result<Object>  handleException(Exception e){
-        log.error("系统异常，请联系管理员",e);
+
+    public Result<Object> handleException(Exception e) {
+        log.error("系统异常，请联系管理员", e);
         Result<Object> result = new Result<>();
         result.setMsg("系统出现异常,请联系管理员");
         return result;
     }
     @ExceptionHandler(BizException.class)
-    @ResponseBody
-    public Result<Object>  handleException(BizException e){
-        log.error("系统异常，请联系管理员",e);
+
+    public Result<Object> handleException(BizException e) {
+        log.error("系统异常，请联系管理员", e);
         Result<Object> result = new Result<>();
         result.setMsg(e.getE().getMessage());
         result.setSuccess(false);
         result.setCode(e.getE().getCode());
-        return  result;
+        return result;
     }
-
-
+    @ExceptionHandler(BindException.class)
+    public Result<Object> handleException(BindException e) {
+        log.error("参数校验异常，请联系管理员", e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
+        Result<Object> result = new Result<>();
+        result.setMsg(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        result.setSuccess(false);
+        result.setCode("500");
+        return result;
+    }
 }
