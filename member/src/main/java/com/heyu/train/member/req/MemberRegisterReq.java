@@ -2,7 +2,6 @@ package com.heyu.train.member.req;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
 /**
  * 功能:
  * 作者:何宇

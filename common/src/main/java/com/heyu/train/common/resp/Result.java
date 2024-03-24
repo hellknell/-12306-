@@ -25,6 +25,13 @@ public class Result<T> {
         result.setData(data);
         return result;
     }
+    public static <T> Result<T> success() {
+        Result<T> result = new Result<>();
+        result.setCode("200");
+        result.setMsg("操作成功");
+        result.setData(null);
+        return result;
+    }
 //    public static <T> Result<T> error(String msg) {
 //        Result<T> result = new Result<>();
 //        result.setCode();
