@@ -6,13 +6,16 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
 import com.heyu.train.common.generator.help.MyBatisWrapper;
 import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.member.domain.Member;
 import com.heyu.train.member.domain.MemberField;
+import com.heyu.train.member.dto.MemberDTO;
 import com.heyu.train.member.mapper.MemberMapper;
+import com.heyu.train.member.req.MemberLoginReq;
 import com.heyu.train.member.req.MemberRegisterReq;
 import com.heyu.train.member.req.MemberSendCodeReq;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,7 @@ import java.util.List;
 @Slf4j
 public class MemberSevice {
     final MemberMapper memberMapper;
+    final ObjectMapper objectMapper;
 
     public Long register(MemberRegisterReq req) {
 
@@ -52,10 +56,8 @@ return  null;
     }
     public void sendCode(MemberSendCodeReq req) {
         String mobile = req.getMobile();
-        MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
-        wrapper.select(MemberField.Id).whereBuilder().andEq(MemberField.setMobile(mobile));
-        List<Member> list = memberMapper.list(wrapper);
-        if(CollUtil.isEmpty(list)){
+        Member m = selectMembers(mobile);
+        if(ObjectUtil.isEmpty(m)){
             log.info("用户手机号不存在,插入一条记录");
             Member member = new Member();
             member.setId(SnowFlask.getSnowFlaskId());
@@ -64,11 +66,36 @@ return  null;
         }
         log.info("用户存在,发送验证码");
         // 发送验证码
-        String code = RandomUtil.randomString(4);
+        String code ="8888";
         log.info("发送验证码成功,验证码为:{}", code);
         // 保存验证码到redis
         log.info("保存验证码到redis");
         log.info("对接短信平台");
+
+    }
+
+    private Member selectMembers(String mobile) {
+        MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
+        wrapper.select(MemberField.Id).whereBuilder().andEq(MemberField.setMobile(mobile));
+        return memberMapper.topOne(wrapper);
+
+    }
+
+    public MemberDTO login(MemberLoginReq req) {
+        String code=req.getCode();
+        Member m = selectMembers(req.getMobile());
+        if(ObjectUtil.isEmpty(m)){
+            throw  new BizException(BizExceptionEnum.MEMBER_NO_EXISTS);
+        }
+
+        if(!"8888".equals(code)){
+
+            throw new BizException(BizExceptionEnum.CODE_ERROR);
+        }
+        MemberDTO memberDTO = objectMapper.convertValue(m, MemberDTO.class);
+        return memberDTO;
+
+
 
     }
 

@@ -1,6 +1,8 @@
 package com.heyu.train.member.controller;
 
 import com.heyu.train.common.resp.Result;
+import com.heyu.train.member.dto.MemberDTO;
+import com.heyu.train.member.req.MemberLoginReq;
 import com.heyu.train.member.req.MemberRegisterReq;
 import com.heyu.train.member.req.MemberSendCodeReq;
 import com.heyu.train.member.service.MemberSevice;
@@ -30,5 +32,10 @@ public class MemberController {
     public Result<Long> sendCode(@Valid MemberSendCodeReq req) {
         memberSevice.sendCode(req);
         return Result.success();
+    }
+    @PostMapping("/login")
+    public Result<MemberDTO> login(@Valid MemberLoginReq req) {
+        MemberDTO login = memberSevice.login(req);
+        return Result.success(login);
     }
 }

@@ -11,6 +11,8 @@ public enum BizExceptionEnum {
 
     SYSTEM_ERROR("500", "系统异常"),
     MEMBER_MOBILE_ALREADY_EXISTS("501", "手机号已存在"),
+    MEMBER_NO_EXISTS("502", "用户不存在"),
+    CODE_ERROR("503", "短信验证码错误"),
     USER_EXIST_ERROR("5001", "用户名已存在"),
     USER_NOT_LOGIN("5002", "用户未登录"),
     USER_ACCOUNT_ERROR("5003", "账号或密码错误"),
