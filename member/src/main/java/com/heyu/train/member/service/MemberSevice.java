@@ -1,15 +1,18 @@
 package com.heyu.train.member.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
 import com.heyu.train.common.generator.help.MyBatisWrapper;
+import com.heyu.train.common.util.JwtUtil;
 import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.member.domain.Member;
 import com.heyu.train.member.domain.MemberField;
@@ -23,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能:
@@ -93,8 +97,9 @@ return  null;
             throw new BizException(BizExceptionEnum.CODE_ERROR);
         }
         MemberDTO memberDTO = objectMapper.convertValue(m, MemberDTO.class);
+        String token = JwtUtil.creatToken(m.getMobile(), m.getId());
+        memberDTO.setToken(token);
         return memberDTO;
-
 
 
     }

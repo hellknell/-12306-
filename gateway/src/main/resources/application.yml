@@ -9,12 +9,13 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "*"
-            allowedHeaders: "*"
-            allowedMethods: "*"
-#            跨域请求的有效，会发送option请求
-            maxAge: 3600
-            allowCredentials: true
+              allowedOriginPatterns: "*"
+              allowedHeaders: "*"
+              allowedMethods: "*"
+              #            跨域请求的有效，会发送option请求
+              maxAge: 3600
+              allowCredentials: true
+
 
 
 server:

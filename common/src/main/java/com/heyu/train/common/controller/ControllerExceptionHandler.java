@@ -41,7 +41,7 @@ public class ControllerExceptionHandler {
     public Result<Object> handleException(BindException e) {
         log.error("参数校验异常，请联系管理员", e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
         Result<Object> result = new Result<>();
-        result.setMsg(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        result.setMsg(e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
         result.setSuccess(false);
         result.setCode("500");
         return result;
