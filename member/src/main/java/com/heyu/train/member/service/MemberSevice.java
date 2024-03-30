@@ -80,7 +80,7 @@ return  null;
 
     private Member selectMembers(String mobile) {
         MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
-        wrapper.select(MemberField.Id).whereBuilder().andEq(MemberField.setMobile(mobile));
+        wrapper.select(MemberField.Id,MemberField.Mobile).whereBuilder().andEq(MemberField.setMobile(mobile));
         return memberMapper.topOne(wrapper);
 
     }
@@ -96,7 +96,7 @@ return  null;
 
             throw new BizException(BizExceptionEnum.CODE_ERROR);
         }
-        MemberDTO memberDTO = objectMapper.convertValue(m, MemberDTO.class);
+        MemberDTO memberDTO =BeanUtil.copyProperties(m, MemberDTO.class);
         String token = JwtUtil.creatToken(m.getMobile(), m.getId());
         memberDTO.setToken(token);
         return memberDTO;
