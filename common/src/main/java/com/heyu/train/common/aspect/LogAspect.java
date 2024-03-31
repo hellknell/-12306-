@@ -39,7 +39,7 @@ public class LogAspect {
     }
     @Before("controllerPointcut()")
     public void doBefore(JoinPoint jointPoint) {
-        MDC.put("LOG_ID", System.currentTimeMillis() + RandomUtil.randomString(3));
+//        MDC.put("LOG_ID", System.currentTimeMillis() + RandomUtil.randomString(3));
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         Signature signature = jointPoint.getSignature();
