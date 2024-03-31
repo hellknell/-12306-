@@ -35,7 +35,12 @@ public class MemberController {
         memberSevice.sendCode(req);
         return Result.success();
     }
+    @GetMapping("/count")
+    public  Result<Integer> count() {
+        Integer count = memberSevice.count();
+        return Result.success(count);
 
+    }
     @PostMapping("/login")
     public Result<MemberDTO> login(@Valid @RequestBody MemberLoginReq req) {
         MemberDTO login = memberSevice.login(req);

@@ -1,13 +1,7 @@
 package com.heyu.train.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
@@ -24,9 +18,6 @@ import com.heyu.train.member.req.MemberSendCodeReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 功能:
@@ -56,12 +47,13 @@ public class MemberSevice {
         if (memberMapper.insertSelective(member) != -1) {
             return member.getId();
         }
-return  null;
+        return null;
     }
+
     public void sendCode(MemberSendCodeReq req) {
         String mobile = req.getMobile();
         Member m = selectMembers(mobile);
-        if(ObjectUtil.isEmpty(m)){
+        if (ObjectUtil.isEmpty(m)) {
             log.info("用户手机号不存在,插入一条记录");
             Member member = new Member();
             member.setId(SnowFlask.getSnowFlaskId());
@@ -70,7 +62,7 @@ return  null;
         }
         log.info("用户存在,发送验证码");
         // 发送验证码
-        String code ="8888";
+        String code = "8888";
         log.info("发送验证码成功,验证码为:{}", code);
         // 保存验证码到redis
         log.info("保存验证码到redis");
@@ -80,23 +72,23 @@ return  null;
 
     private Member selectMembers(String mobile) {
         MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
-        wrapper.select(MemberField.Id,MemberField.Mobile).whereBuilder().andEq(MemberField.setMobile(mobile));
+        wrapper.select(MemberField.Id, MemberField.Mobile).whereBuilder().andEq(MemberField.setMobile(mobile));
         return memberMapper.topOne(wrapper);
 
     }
 
     public MemberDTO login(MemberLoginReq req) {
-        String code=req.getCode();
+        String code = req.getCode();
         Member m = selectMembers(req.getMobile());
-        if(ObjectUtil.isEmpty(m)){
-            throw  new BizException(BizExceptionEnum.MEMBER_NO_EXISTS);
+        if (ObjectUtil.isEmpty(m)) {
+            throw new BizException(BizExceptionEnum.MEMBER_NO_EXISTS);
         }
 
-        if(!"8888".equals(code)){
+        if (!"8888".equals(code)) {
 
             throw new BizException(BizExceptionEnum.CODE_ERROR);
         }
-        MemberDTO memberDTO =BeanUtil.copyProperties(m, MemberDTO.class);
+        MemberDTO memberDTO = BeanUtil.copyProperties(m, MemberDTO.class);
         String token = JwtUtil.creatToken(m.getMobile(), m.getId());
         memberDTO.setToken(token);
         return memberDTO;
@@ -105,4 +97,8 @@ return  null;
     }
 
 
+    public Integer count() {
+        MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
+        return memberMapper.count(wrapper);
+    }
 }

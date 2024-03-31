@@ -40,10 +40,15 @@ public class JwtUtil {
 
 
     public static boolean validateToken(String token) {
-        JWT jwt = JWTUtil.parseToken(token).setKey(JwtUtil.key.getBytes());
-        boolean validate = jwt.validate(0);
-        log.info("校验结果:{}", validate);
-        return validate;
+        try {
+            JWT jwt = JWTUtil.parseToken(token).setKey(JwtUtil.key.getBytes());
+            boolean validate = jwt.validate(0);
+            log.info("校验结果:{}", validate);
+            return validate;
+        } catch (Exception e) {
+            log.error("Jwt校验失败:", e);
+            return false;
+        }
     }
     public static JSONObject getMember(String token) {
         JWT jwt = JWTUtil.parseToken(token).setKey(key.getBytes());
