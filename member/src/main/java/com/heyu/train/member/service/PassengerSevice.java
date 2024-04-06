@@ -2,6 +2,8 @@ package com.heyu.train.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.heyu.train.common.generator.help.MyBatisWrapper;
 import com.heyu.train.common.resp.PassengerQueryResp;
 import com.heyu.train.common.util.SnowFlask;
@@ -30,12 +32,15 @@ public class PassengerSevice {
     final PassengerMapper passengerMapper;
 
     public void save(PassengerReq req) { }
-    public List<PassengerQueryResp> queryList(PassengerQueryReq req) {
+    public PageInfo<PassengerQueryResp> queryList(PassengerQueryReq req) {
         MyBatisWrapper<PassengerQueryResp> wrapper = new MyBatisWrapper<>();
         wrapper.select(PassengerField.MemberId,PassengerField.Name,PassengerField.Type,PassengerField.IdCard).whereBuilder().andEq(PassengerField.setMemberId(LoginMemberContext.getId()));
         List<Passenger> list = passengerMapper.list(wrapper);
+
+        PageHelper.startPage(1,2);
         List<PassengerQueryResp> resp = BeanUtil.copyToList(list, PassengerQueryResp.class);
-        return resp;
+       return PageInfo.of(resp);
+
 
 
     }
