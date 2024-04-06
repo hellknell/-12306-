@@ -20,12 +20,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Slf4j
 @Component
 public class MemberHandleIntercetor implements HandlerInterceptor {
-
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
-
         if (StrUtil.isNotBlank(token)) {
             log.info("当前会员登录token:{}", token);
             JSONObject member = JwtUtil.getMember(token);

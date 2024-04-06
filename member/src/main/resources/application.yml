@@ -9,4 +9,17 @@ mybatis:
 logging:
   level:
     com.heyu.train.member.mapper: trace
-
+#
+#swagger:
+#  enable: true
+#  name: MAIYUN-FINANCE-ADMIN-API
+#  description: MAIYUN-FINANCE-ADMIN-API 接口文档
+#  version: 0.0.1
+#
+## Swagger UI
+#knife4j:
+#  enable: true
+#  production: false
+#  setting:
+#    language: zh-CN
+#    enableDynamicParameter: true

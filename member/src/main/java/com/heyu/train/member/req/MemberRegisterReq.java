@@ -1,5 +1,6 @@
 package com.heyu.train.member.req;
 
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  */
 @Data
 public class MemberRegisterReq {
+    @ApiModelProperty(value = "手机号",required = true)
     @NotBlank(message = "手机号不能为空")
     private  String mobile;
 }
