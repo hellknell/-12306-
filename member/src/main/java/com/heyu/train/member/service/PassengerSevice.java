@@ -1,12 +1,10 @@
 package com.heyu.train.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.date.DateTime;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.heyu.train.common.generator.help.MyBatisWrapper;
 import com.heyu.train.common.resp.PassengerQueryResp;
-import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.member.domain.Passenger;
 import com.heyu.train.member.domain.PassengerField;
 import com.heyu.train.member.mapper.PassengerMapper;
@@ -15,7 +13,6 @@ import com.heyu.train.member.req.PassengerReq;
 import context.LoginMemberContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,16 +28,16 @@ import java.util.List;
 public class PassengerSevice {
     final PassengerMapper passengerMapper;
 
-    public void save(PassengerReq req) { }
+    public void save(PassengerReq req) {
+    }
+
     public PageInfo<PassengerQueryResp> queryList(PassengerQueryReq req) {
         MyBatisWrapper<PassengerQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(PassengerField.MemberId,PassengerField.Name,PassengerField.Type,PassengerField.IdCard).whereBuilder().andEq(PassengerField.setMemberId(LoginMemberContext.getId()));
+        wrapper.select(PassengerField.MemberId, PassengerField.Name, PassengerField.Type, PassengerField.IdCard).whereBuilder().andEq(PassengerField.setMemberId(LoginMemberContext.getId()));
+        PageHelper.startPage(req.getPageNum(), req.getPageSize());
         List<Passenger> list = passengerMapper.list(wrapper);
-
-        PageHelper.startPage(1,2);
         List<PassengerQueryResp> resp = BeanUtil.copyToList(list, PassengerQueryResp.class);
-       return PageInfo.of(resp);
-
+        return PageInfo.of(resp);
 
 
     }
