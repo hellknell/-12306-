@@ -30,12 +30,12 @@ public class PassengerSevice {
 
     public void save(PassengerReq req) {
     }
-
     public PageInfo<PassengerQueryResp> queryList(PassengerQueryReq req) {
         MyBatisWrapper<PassengerQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(PassengerField.MemberId, PassengerField.Name, PassengerField.Type, PassengerField.IdCard).whereBuilder().andEq(PassengerField.setMemberId(LoginMemberContext.getId()));
+        wrapper.select(PassengerField.MemberId, PassengerField.Name, PassengerField.Type, PassengerField.IdCard,PassengerField.CreateTime,PassengerField.UpdateTime,PassengerField.Id).whereBuilder().andEq(PassengerField.setMemberId(LoginMemberContext.getId()));
         PageHelper.startPage(req.getPageNum(), req.getPageSize());
         List<Passenger> list = passengerMapper.list(wrapper);
+
         List<PassengerQueryResp> resp = BeanUtil.copyToList(list, PassengerQueryResp.class);
         return PageInfo.of(resp);
 
