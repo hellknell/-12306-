@@ -3,7 +3,6 @@ package com.heyu.train.common.constant;
 public enum BizExceptionEnum {
     // 成功
     SUCCESS("200", "成功"),
-
     PARAM_ERROR("400", "参数异常"),
     TOKEN_INVALID_ERROR("401", "无效的token"),
     TOKEN_CHECK_ERROR("401", "token验证失败，请重新登录"),
@@ -13,7 +12,7 @@ public enum BizExceptionEnum {
     MEMBER_MOBILE_ALREADY_EXISTS("501", "手机号已存在"),
     MEMBER_NO_EXISTS("502", "用户不存在"),
     CODE_ERROR("503", "短信验证码错误"),
-    USER_EXIST_ERROR("5001", "用户名已存在"),
+    USER_EXIST_ERROR("5001", "用户已存在"),
     USER_NOT_LOGIN("5002", "用户未登录"),
     USER_ACCOUNT_ERROR("5003", "账号或密码错误"),
     USER_NOT_EXIST_ERROR("5004", "用户不存在"),

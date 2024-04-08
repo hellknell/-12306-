@@ -1,6 +1,6 @@
 package com.heyu.train.member.controller;
 
-import com.github.pagehelper.PageInfo;
+import com.heyu.train.common.generator.help.PageInfo;
 import com.heyu.train.common.resp.PassengerQueryResp;
 import com.heyu.train.common.resp.Result;
 import com.heyu.train.member.req.PassengerQueryReq;
@@ -32,12 +32,13 @@ public class PassengerController {
     @ApiOperation(value = "新增乘客")
     @PostMapping("/save")
     public Result<Void> login(@Valid @RequestBody PassengerReq req) {
+        req.setMemberId(LoginMemberContext.getId());
         passengerSevice.save(req);
         return Result.success();
     }
     @ApiOperation("查询乘客")
     @GetMapping("/queryList")
-    public Result<PageInfo<PassengerQueryResp>> queryList(@Valid  PassengerQueryReq req) {
+    public   Result<PageInfo<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req) {
         req.setMemberId(LoginMemberContext.getId());
         return Result.success(passengerSevice.queryList(req));
 

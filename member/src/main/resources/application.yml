@@ -6,6 +6,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+    type-aliases-package:  com.heyu.train.member.domain
 logging:
   level:
     com.heyu.train.member.mapper: trace

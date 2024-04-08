@@ -17,11 +17,11 @@ public class Result<T> {
     private T data;
     private String msg;
     private String code;
-
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
         result.setCode("200");
         result.setMsg("操作成功");
+
         result.setData(data);
         return result;
     }
