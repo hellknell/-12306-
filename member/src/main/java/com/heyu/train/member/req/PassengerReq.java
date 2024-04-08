@@ -1,7 +1,8 @@
 package com.heyu.train.member.req;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
@@ -18,11 +19,13 @@ public class PassengerReq {
     /**
      * id
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**
      * 会员id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
     /**
