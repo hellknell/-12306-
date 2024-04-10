@@ -1,8 +1,7 @@
 package com.heyu.train.member.req;
 
-import com.heyu.train.common.req.PageReq;
+import com.heyu.train.common.resp.req.PageReq;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.validation.constraints.Max;
 import lombok.Data;
 
 /**

@@ -1,4 +1,4 @@
-package com.heyu.train.member.enums;
+package com.heyu.train.member.domain.enums;
 
 /**
  * 功能:

@@ -10,10 +10,12 @@
         <module>member</module>
         <module>common</module>
         <module>gateway</module>
+        <module>generator</module>
     </modules>
     <properties>
         <mysql-connector-java-version>8.0.17</mysql-connector-java-version>
         <mybatis-generator-core-version>1.4.1</mybatis-generator-core-version>
+        <freemarker.version>2.3.31</freemarker.version>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -26,7 +28,6 @@
             <artifactId>springfox-boot-starter</artifactId>
             <version>3.0.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-core</artifactId>
@@ -99,7 +100,11 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>2.3.1</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
             <!--            <dependency>-->
             <!--                <groupId>ch.qos.logback</groupId>-->
             <!--                <artifactId>logback-classic</artifactId>-->

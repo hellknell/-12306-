@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ import java.util.List;
 public class PassengerController {
     final PassengerSevice passengerSevice;
 
-    @ApiOperation(value = "新增乘客")
+    @ApiOperation(value = "新增/保存乘客")
     @PostMapping("/save")
     public Result<Void> login(@Valid @RequestBody PassengerReq req) {
         req.setMemberId(LoginMemberContext.getId());
@@ -41,6 +42,13 @@ public class PassengerController {
     public   Result<PageInfo<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req) {
         req.setMemberId(LoginMemberContext.getId());
         return Result.success(passengerSevice.queryList(req));
+
+    }
+    @ApiOperation("删除乘客")
+    @DeleteMapping("/del/{id}")
+    public   Result<Void> queryList(@PathVariable  Long id) {
+        passengerSevice.del(id);
+        return  Result.success();
 
     }
 }

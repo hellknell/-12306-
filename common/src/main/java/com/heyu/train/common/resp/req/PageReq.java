@@ -1,4 +1,4 @@
-package com.heyu.train.common.req;
+package com.heyu.train.common.resp.req;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
