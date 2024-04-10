@@ -46,7 +46,7 @@
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.4.1</version>
                 <configuration>
-                    <configurationFile>./src/main/resources/generatorConfig.xml</configurationFile>
+                    <configurationFile>/src/main/resources/generatorConfig.xml</configurationFile>
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
                 </configuration>
