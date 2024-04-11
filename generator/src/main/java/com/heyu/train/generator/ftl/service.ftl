@@ -1,70 +1,74 @@
-package com.heyu.train.${module}.service;
+package com.heyu.train.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.heyu.train.common.resp.PageResp;
-import com.heyu.train.common.util.SnowUtil;
-import com.heyu.train.${module}.domain.${Domain};
-import com.heyu.train.${module}.domain.${Domain}Example;
-import com.heyu.train.${module}.mapper.${Domain}Mapper;
-import com.heyu.train.${module}.req.${Domain}QueryReq;
-import com.heyu.train.${module}.req.${Domain}SaveReq;
-import com.heyu.train.${module}.resp.${Domain}QueryResp;
-import jakarta.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.heyu.train.common.constant.BizExceptionEnum;
+import com.heyu.train.common.exception.BizException;
+import com.heyu.train.common.generator.help.MyBatisWrapper;
+import com.heyu.train.common.generator.help.PageInfo;
+import com.heyu.train.common.resp.${Domain}QueryResp;
+import com.heyu.train.common.util.SnowFlask;
+import com.heyu.train.member.domain.${Domain};
+import com.heyu.train.member.domain.${Domain}Field;
+import com.heyu.train.member.mapper.${Domain}Mapper;
+import com.heyu.train.member.req.${Domain}QueryReq;
+import com.heyu.train.member.req.${Domain}Req;
+import context.LoginMemberContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 功能:
+ * 作者:何宇
+ * 日期：2024/3/23 12:53
+ */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ${Domain}Service {
+    final ${Domain}Mapper ${domain}Mapper;
 
-    private static final Logger LOG = LoggerFactory.getLogger(${Domain}Service.class);
-
-    @Resource
-    private ${Domain}Mapper ${domain}Mapper;
-
-    public void save(${Domain}SaveReq req) {
+    public void save(${Domain}Req req) {
+        ${Domain} p1 = BeanUtil.copyProperties(req, ${Domain}.class);
         DateTime now = DateTime.now();
-        ${Domain} ${domain} = BeanUtil.copyProperties(req, ${Domain}.class);
-        if (ObjectUtil.isNull(${domain}.getId())) {
-            ${domain}.setId(SnowUtil.getSnowflakeNextId());
-            ${domain}.setCreateTime(now);
-            ${domain}.setUpdateTime(now);
-            ${domain}Mapper.insert(${domain});
-        } else {
-            ${domain}.setUpdateTime(now);
-            ${domain}Mapper.updateByPrimaryKey(${domain});
+        if (ObjectUtil.isNull(p1.getId()) ) {
+            MyBatisWrapper<${Domain}> wrapper = new MyBatisWrapper<>();
+            wrapper.select(${Domain}Field.Id).whereBuilder().andEq(${Domain}Field.setIdCard(req.getIdCard()));
+            ${Domain} ${domain} = ${domain}Mapper.topOne(wrapper);
+            if (ObjectUtil.isNotNull(${domain})) {
+                throw new BizException(BizExceptionEnum.USER_EXIST_ERROR);
+            }
+
+            req.setCreateTime(now);
+            req.setUpdateTime(now);
+            req.setId(SnowFlask.getSnowFlaskId());
+            ${Domain} pass = BeanUtil.copyProperties(req, ${Domain}.class);
+            ${domain}Mapper.insert(pass);
+        }else{
+            p1.setUpdateTime(now);
+            ${domain}Mapper.updateByPrimaryKey(p1);
         }
+
+
     }
 
-    public PageResp<${Domain}QueryResp> queryList(${Domain}QueryReq req) {
-        ${Domain}Example ${domain}Example = new ${Domain}Example();
-        ${domain}Example.setOrderByClause("id desc");
-        ${Domain}Example.Criteria criteria = ${domain}Example.createCriteria();
+    public PageInfo<${Domain}QueryResp> queryList(${Domain}QueryReq req) {
+        MyBatisWrapper<${Domain}QueryResp> wrapper = new MyBatisWrapper<>();
+        wrapper.select(${Domain}Field.MemberId, ${Domain}Field.Name, ${Domain}Field.Type, ${Domain}Field.IdCard, ${Domain}Field.CreateTime, ${Domain}Field.UpdateTime, ${Domain}Field.Id).whereBuilder().andEq(${Domain}Field.setMemberId(LoginMemberContext.getId()));
+        log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
 
-        LOG.info("查询页码：{}", req.getPage());
-        LOG.info("每页条数：{}", req.getSize());
-        PageHelper.startPage(req.getPage(), req.getSize());
-        List<${Domain}> ${domain}List = ${domain}Mapper.selectByExample(${domain}Example);
+        int total = ${domain}Mapper.list(wrapper).size();
+        List<${Domain}> list = ${domain}Mapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));
+        List<${Domain}QueryResp> resp = BeanUtil.copyToList(list, ${Domain}QueryResp.class);
+        return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
 
-        PageInfo<${Domain}> pageInfo = new PageInfo<>(${domain}List);
-        LOG.info("总行数：{}", pageInfo.getTotal());
-        LOG.info("总页数：{}", pageInfo.getPages());
-
-        List<${Domain}QueryResp> list = BeanUtil.copyToList(${domain}List, ${Domain}QueryResp.class);
-
-        PageResp<${Domain}QueryResp> pageResp = new PageResp<>();
-        pageResp.setTotal(pageInfo.getTotal());
-        pageResp.setList(list);
-        return pageResp;
     }
 
-    public void delete(Long id) {
+    public void del(Long id) {
         ${domain}Mapper.deleteByPrimaryKey(id);
     }
 }

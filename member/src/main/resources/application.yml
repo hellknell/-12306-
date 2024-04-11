@@ -16,7 +16,7 @@ logging:
 #  name: MAIYUN-FINANCE-ADMIN-API
 #  description: MAIYUN-FINANCE-ADMIN-API 接口文档
 #  version: 0.0.1
-#
+
 ## Swagger UI
 #knife4j:
 #  enable: true

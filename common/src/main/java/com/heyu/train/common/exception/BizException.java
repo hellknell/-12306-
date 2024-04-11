@@ -6,7 +6,7 @@ public class BizException extends RuntimeException {
 
     private BizExceptionEnum e;
 
-    public  BizException(BizExceptionEnum bizExceptionEnum) {
+    public BizException(BizExceptionEnum bizExceptionEnum) {
         this.e = bizExceptionEnum;
     }
 
@@ -18,7 +18,9 @@ public class BizException extends RuntimeException {
         this.e = e;
     }
 
-    /**不写入堆栈信息,提高性能
+    /**
+     * 不写入堆栈信息,提高性能
+     *
      * @return
      */
     @Override

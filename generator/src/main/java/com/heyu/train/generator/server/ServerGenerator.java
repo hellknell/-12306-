@@ -1,11 +1,13 @@
 package com.heyu.train.generator.server;
 
+import com.heyu.train.generator.util.FreemarkerUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class ServerGenerator {
@@ -13,6 +15,7 @@ public class ServerGenerator {
 //    static String vuePath = "admin/src/views/main/";
 //    static String serverPath = "[module]/src/main/java/com/heyu/train/[module]/";
     static String pomPath = "generator\\pom.xml";
+    static String servicePath = "[module]/src/main/java/com/heyu/train/[module]/service/";
 
     //    static String module = "";
 //
@@ -33,13 +36,30 @@ public class ServerGenerator {
     public static void main(String[] args) throws Exception {
         // 获取mybatis-generator
         String generatorPath = getGeneratorPath();
+
+        String module = generatorPath.replace("/src/main/resources/generatorConfig-", "").replace(".xml", "");
+        String servicePathFinal = servicePath.replace("[module]", module);
+        System.out.println(servicePathFinal);
+        System.out.println("module:" + module);
         Document document = new SAXReader().read("generator/" + generatorPath);
         Node table = document.selectSingleNode("//table");
         Node tableName = table.selectSingleNode("@tableName");
         Node domainObjectName = table.selectSingleNode("@domainObjectName");
-        System.out.println(tableName.getText()+"\n"+domainObjectName.getText());
+        System.out.println(tableName.getText() + "\n" + domainObjectName.getText());
 
-//        // 比如generator-config-member.xml，得到module = member
+        String Domain = domainObjectName.getText();
+        String domain = Domain.substring(0, 1).toLowerCase() + Domain.substring(1);
+        String do_main = tableName.getText().replace("_", "-");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("domain", domain);
+        map.put("Domain", Domain);
+        map.put("do_main", do_main);
+        FreemarkerUtil.initConfig("service.ftl");
+        System.out.println(servicePathFinal);
+        FreemarkerUtil.generator(servicePathFinal+Domain+"Service.java", map);
+        System.out.println("生成成功！！");
+
+        //        // 比如generator-config-member.xml，得到module = member
 //        module = generatorPath.replace("src/main/resources/generator-config-", "").replace(".xml", "");
 //        System.out.println("module: " + module);
 //        serverPath = serverPath.replace("[module]", module);
