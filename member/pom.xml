@@ -54,11 +54,7 @@
 <!--                    <verbose>true</verbose>-->
 <!--                </configuration>-->
 <!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>mysql</groupId>-->
-<!--                        <artifactId>mysql-connector-java</artifactId>-->
-<!--                        <version>8.0.17</version>-->
-<!--                    </dependency>-->
+
 <!--                    <dependency>-->
 <!--                        <groupId>com.heyu</groupId>-->
 <!--                        <artifactId>common</artifactId>-->
