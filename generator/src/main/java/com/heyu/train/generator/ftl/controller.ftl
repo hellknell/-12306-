@@ -1,13 +1,11 @@
-package com.heyu.train.member.controller;
-
-import com.heyu.train.common.generator.help.PageInfo;
-import com.heyu.train.common.resp.${Domain}QueryResp;
+package com.heyu.train.${module}.controller;
+import com.heyu.train.generator.generator.help.PageInfo;
+import com.heyu.train.${module}.resp.${Domain}QueryResp;
 import com.heyu.train.common.resp.Result;
-import com.heyu.train.member.req.${Domain}QueryReq;
-import com.heyu.train.member.req.${Domain}Req;
-import com.heyu.train.member.service.${Domain}Service;
-import com.heyu.train.member.service.${Domain}Service;
-import context.LoginMemberContext;
+import com.heyu.train.${module}.req.${Domain}QueryReq;
+import com.heyu.train.${module}.req.${Domain}SaveReq;
+import com.heyu.train.${module}.service.${Domain}Service;
+import com.heyu.train.${module}.service.${Domain}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -30,15 +28,13 @@ public class ${Domain}Controller {
 
     @ApiOperation(value = "新增/保存乘客")
     @PostMapping("/save")
-    public Result<Void> login(@Valid @RequestBody ${Domain}Req req) {
-        req.setMemberId(LoginMemberContext.getId());
+    public Result<Void> login(@Valid @RequestBody ${Domain}SaveReq req) {
         ${domain}Service.save(req);
         return Result.success();
     }
     @ApiOperation("查询乘客")
-    @GetMapping("/queryList")
+    @GetMapping("/query-list")
     public   Result<PageInfo<${Domain}QueryResp>> queryList(@Valid ${Domain}QueryReq req) {
-        req.setMemberId(LoginMemberContext.getId());
         return Result.success(${domain}Service.queryList(req));
 
     }

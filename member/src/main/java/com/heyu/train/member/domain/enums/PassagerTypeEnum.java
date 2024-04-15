@@ -9,8 +9,24 @@ public enum PassagerTypeEnum {
     CHILD("1", "儿童"),
     ADULT("2", "成人"),
     STUDENTs("3", "学生");
-    String code;
-    String desc;
+    private String code;
+    private String desc;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     PassagerTypeEnum(String code, String desc) {
         this.code = code;

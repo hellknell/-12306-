@@ -2,19 +2,23 @@ spring:
   cloud:
     gateway:
       routes:
-      - id: member
-        uri: http://127.0.0.1:8001
-        predicates:
-        - Path=/member/**
+        - id: member
+          uri: http://127.0.0.1:8001
+          predicates:
+            - Path=/member/**
+        - id: business
+          uri: http://127.0.0.1:8002
+          predicates:
+            - Path=/business/**
       globalcors:
         cors-configurations:
           '[/**]':
-              allowedOriginPatterns: "*"
-              allowedHeaders: "*"
-              allowedMethods: "*"
-              #            跨域请求的有效，会发送option请求
-              maxAge: 3600
-              allowCredentials: true
+            allowedOriginPatterns: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            #            跨域请求的有效，会发送option请求
+            maxAge: 3600
+            allowCredentials: true
 
 
 

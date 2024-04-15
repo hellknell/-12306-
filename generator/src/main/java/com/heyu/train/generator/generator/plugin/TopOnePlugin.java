@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -6,10 +6,9 @@ import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
-import javax.sql.rowset.serial.SerialStruct;
 import java.util.List;
 
-public class GetPlugin extends PluginAdapter {
+public class TopOnePlugin extends PluginAdapter {
 
     @Override
     public boolean validate(List<String> list) {
@@ -24,7 +23,7 @@ public class GetPlugin extends PluginAdapter {
 //        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
 //        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
 //
-//        Method method = new Method("get");
+//        Method method = new Method("topOne");
 //        // 1.设置方法可见性
 //        method.setVisibility(JavaVisibility.PUBLIC);
 //        method.setAbstract(true);
@@ -46,14 +45,14 @@ public class GetPlugin extends PluginAdapter {
 //    }
 
     @Override
-        public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
-            XmlElement rootElement = document.getRootElement();
-            rootElement.addElement(replaceCondition(introspectedTable.getFullyQualifiedTable().getIntrospectedTableName()));
-            return super.sqlMapDocumentGenerated(document, introspectedTable);
-        }
+    public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
+        XmlElement rootElement = document.getRootElement();
+        rootElement.addElement(replaceCondition(introspectedTable.getFullyQualifiedTable().getIntrospectedTableName()));
+        return super.sqlMapDocumentGenerated(document, introspectedTable);
+    }
 
-        private TextElement replaceCondition(String tableName){
-        String selectNode = "  <select id=\"get\" parameterType=\"com.heyu.train.common.generator.help.MyBatisWrapper\" resultMap=\"BaseResultMap\">\n" +
+    private TextElement replaceCondition(String tableName) {
+        String selectNode = "  <select id=\"topOne\" parameterType=\"com.heyu.train.generator.generator.help.MyBatisWrapper\" resultMap=\"BaseResultMap\">\n" +
                 "    select\n" +
                 "    <if test=\"selectBuilder != null\">\n" +
                 "      <trim prefixOverrides=\",\" suffixOverrides=\",\">\n" +
@@ -67,8 +66,9 @@ public class GetPlugin extends PluginAdapter {
                 "    <if test=\"orderByClause != null\">\n" +
                 "      order by ${orderByClause}\n" +
                 "    </if>\n" +
+                "    limit 1\n" +
                 "  </select>\n";
-
+        // 将条件替换为自己的逻辑
         return new TextElement(selectNode);
     }
 }

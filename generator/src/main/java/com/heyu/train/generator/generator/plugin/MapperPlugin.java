@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -23,7 +23,7 @@ public class MapperPlugin extends PluginAdapter {
         FullyQualifiedJavaType serializable = new FullyQualifiedJavaType("org.apache.ibatis.annotations.Mapper");
         interfaze.addImportedType(serializable);
 
-        FullyQualifiedJavaType commonMapperType = new FullyQualifiedJavaType("com.heyu.train.common.generator.help.CommonMapper");
+        FullyQualifiedJavaType commonMapperType = new FullyQualifiedJavaType("com.heyu.train.generator.generator.help.CommonMapper");
         interfaze.addImportedType(commonMapperType);
 
         commonMapperType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));

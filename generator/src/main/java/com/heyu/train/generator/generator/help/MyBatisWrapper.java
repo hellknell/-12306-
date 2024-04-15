@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.help;
+package com.heyu.train.generator.generator.help;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.util.CollectionUtils;

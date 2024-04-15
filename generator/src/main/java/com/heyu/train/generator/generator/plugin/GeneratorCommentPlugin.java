@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 
 import org.mybatis.generator.api.IntrospectedColumn;

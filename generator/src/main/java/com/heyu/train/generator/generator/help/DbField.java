@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.help;
+package com.heyu.train.generator.generator.help;
 
 public class DbField {
     private String dbName;

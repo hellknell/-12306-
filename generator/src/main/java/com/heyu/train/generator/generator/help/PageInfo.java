@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.heyu.train.common.generator.help;
+package com.heyu.train.generator.generator.help;
 
 import lombok.Data;
 

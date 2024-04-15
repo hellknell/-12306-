@@ -4,13 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.heyu</groupId>
     <artifactId>train12306</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>member</module>
         <module>common</module>
         <module>gateway</module>
         <module>generator</module>
+        <module>business</module>
     </modules>
     <properties>
         <mysql-connector-java-version>8.0.17</mysql-connector-java-version>

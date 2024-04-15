@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -8,7 +8,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 
 import java.util.List;
 
-public class UpdateFieldPlugin extends PluginAdapter {
+public class CountPlugin extends PluginAdapter {
 
     @Override
     public boolean validate(List<String> list) {
@@ -22,21 +22,20 @@ public class UpdateFieldPlugin extends PluginAdapter {
 //    public boolean clientGenerated(Interface interfaze, IntrospectedTable introspectedTable) {
 //        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
 //        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
-//        importedTypes.add(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Param"));
 //
-//        Method method = new Method("updateField");
+//        Method method = new Method("count");
 //        // 1.设置方法可见性
 //        method.setVisibility(JavaVisibility.PUBLIC);
 //        method.setAbstract(true);
 //        // 2.设置返回值类型
-//        FullyQualifiedJavaType returnType = FullyQualifiedJavaType.getIntInstance();
+//        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("java.lang.Long");
 //
 //        method.setReturnType(returnType);
 //
 //        // 4.设置参数列表
-//        FullyQualifiedJavaType paramType = new FullyQualifiedJavaType("com.bage.mybatis.help.MyBatisWrapper");
-//        method.addParameter(new Parameter(paramType, "example", "@Param(\"example\")"));
-////        method.addParameter(new Parameter(paramType, "example"));
+//        FullyQualifiedJavaType paramType = new FullyQualifiedJavaType("com.bage.generator.mybatishelp.MyBatisWrapper");
+////        method.addParameter(new Parameter(paramType, "example", "@Param(\"example\")"));
+//        method.addParameter(new Parameter(paramType, "example"));
 //        importedTypes.add(paramType);
 //
 //        // 设置需要导入的类
@@ -53,16 +52,15 @@ public class UpdateFieldPlugin extends PluginAdapter {
     }
 
     private TextElement replaceCondition(String tableName) {
-        String node = "<update id=\"updateField\" parameterType=\"com.heyu.train.common.generator.help.MyBatisWrapper\">\n" +
-                "    update " + tableName + " \n" +
-                "    set \n" +
-                "    <trim prefixOverrides=\",\" suffixOverrides=\",\">\n" +
-                "         ${example.updateSql} \n" +
-                "      </trim>\n" +
-                "     <if test=\"example.updateSql != null\">\n" +
-                "      <include refid=\"Update_By_Example_Where_Clause\" />\n" +
-                "    </if>\n" +
-                "  </update>";
+        String node = "<select id=\"count\" parameterType=\"com.heyu.train.generator.generator.help.MyBatisWrapper\" resultType=\"java.lang.Integer\">\n" +
+                "        <include refid=\"countSql\"/>\n" +
+                "    </select>\n" +
+                "    <sql id=\"countSql\">\n" +
+                "        select count(*) total_count from " + tableName + "\n" +
+                "        <if test=\"_parameter != null\">\n" +
+                "            <include refid=\"Example_Where_Clause\"/>\n" +
+                "        </if>\n" +
+                "    </sql>";
         // 将条件替换为自己的逻辑
         return new TextElement(node);
     }

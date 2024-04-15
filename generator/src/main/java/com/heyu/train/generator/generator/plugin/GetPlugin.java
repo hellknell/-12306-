@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -8,7 +8,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 
 import java.util.List;
 
-public class CountPlugin extends PluginAdapter {
+public class GetPlugin extends PluginAdapter {
 
     @Override
     public boolean validate(List<String> list) {
@@ -23,17 +23,17 @@ public class CountPlugin extends PluginAdapter {
 //        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
 //        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
 //
-//        Method method = new Method("count");
+//        Method method = new Method("get");
 //        // 1.设置方法可见性
 //        method.setVisibility(JavaVisibility.PUBLIC);
 //        method.setAbstract(true);
 //        // 2.设置返回值类型
-//        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("java.lang.Long");
+//        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
 //
 //        method.setReturnType(returnType);
 //
 //        // 4.设置参数列表
-//        FullyQualifiedJavaType paramType = new FullyQualifiedJavaType("com.bage.common.mybatishelp.MyBatisWrapper");
+//        FullyQualifiedJavaType paramType = new FullyQualifiedJavaType("com.bage.mybatis.help.MyBatisWrapper");
 ////        method.addParameter(new Parameter(paramType, "example", "@Param(\"example\")"));
 //        method.addParameter(new Parameter(paramType, "example"));
 //        importedTypes.add(paramType);
@@ -43,7 +43,6 @@ public class CountPlugin extends PluginAdapter {
 //        interfaze.addMethod(method);
 //        return super.clientGenerated(interfaze, introspectedTable);
 //    }
-
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
         XmlElement rootElement = document.getRootElement();
@@ -52,16 +51,23 @@ public class CountPlugin extends PluginAdapter {
     }
 
     private TextElement replaceCondition(String tableName) {
-        String node = "<select id=\"count\" parameterType=\"com.heyu.train.common.generator.help.MyBatisWrapper\" resultType=\"java.lang.Integer\">\n" +
-                "        <include refid=\"countSql\"/>\n" +
-                "    </select>\n" +
-                "    <sql id=\"countSql\">\n" +
-                "        select count(*) total_count from " + tableName + "\n" +
-                "        <if test=\"_parameter != null\">\n" +
-                "            <include refid=\"Example_Where_Clause\"/>\n" +
-                "        </if>\n" +
-                "    </sql>";
-        // 将条件替换为自己的逻辑
-        return new TextElement(node);
+        String selectNode = "  <select id=\"get\" parameterType=\"com.heyu.train.generator.generator.help.MyBatisWrapper\" resultMap=\"BaseResultMap\">\n" +
+
+                "    " + "    select\n" +
+                "    <if test=\"selectBuilder != null\">\n" +
+                "      <trim prefixOverrides=\",\" suffixOverrides=\",\">\n" +
+                "         ${selectBuilder} \n" +
+                "      </trim>\n" +
+                " </if>\n" +
+                "    from " + tableName + "\n" +
+                "    <if test=\"_parameter != null\">\n" +
+                "      <include refid=\"Example_Where_Clause\" />\n" +
+                "    </if>\n" +
+                "    <if test=\"orderByClause != null\">\n" +
+                "      order by ${orderByClause}\n" +
+                "    </if>\n" +
+                "  </select>\n";
+
+        return new TextElement(selectNode);
     }
 }

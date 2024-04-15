@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class DbUtil {
 
-    public static String url = "jdbc:mysql:///train_member?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
+    public static String url = "jdbc:mysql:///train_business?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
     public static String user = "train";
     public static String password = "qweASDzx11";
 
@@ -42,12 +42,12 @@ public class DbUtil {
     public static String getTableComment(String tableName) throws Exception {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("select table_comment from information_schema.tables Where table_name = '" + tableName + "'");
-                String tableNameCH = "";
-                if (rs != null) {
-                    while (rs.next()) {
-                        tableNameCH = rs.getString("table_comment");
-                        break;
+        ResultSet rs = stmt.executeQuery("select table_comment from information_schema.tables Where table_name = '" + tableName + "'");
+        String tableNameCH = "";
+        if (rs != null) {
+            while (rs.next()) {
+                tableNameCH = rs.getString("table_comment");
+                break;
             }
         }
         rs.close();

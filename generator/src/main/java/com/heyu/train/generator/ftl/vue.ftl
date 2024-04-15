@@ -69,14 +69,10 @@
   </#if>
 </template>
 
-<script>
-import { defineComponent, ref, onMounted } from 'vue';
+<script setup>
+import { ref, onMounted } from 'vue';
+import request from "@/util/request";
 import {notification} from "ant-design-vue";
-import axios from "axios";
-
-export default defineComponent({
-  name: "${do_main}-view",
-  setup() {
     <#list fieldList as field>
     <#if field.enums>
     const ${field.enumsConst}_ARRAY = window.${field.enumsConst}_ARRAY;
@@ -124,9 +120,9 @@ export default defineComponent({
       ${domain}.value = window.Tool.copy(record);
       visible.value = true;
     };
-
+    
     const onDelete = (record) => {
-      axios.delete("/${module}/admin/${do_main}/delete/" + record.id).then((response) => {
+      request.delete("/admin/${do_main}/delete/" + record.id).then((response) => {
         const data = response.data;
         if (data.success) {
           notification.success({description: "删除成功！"});
@@ -141,7 +137,7 @@ export default defineComponent({
     };
 
     const handleOk = () => {
-      axios.post("/${module}/admin/${do_main}/save", ${domain}.value).then((response) => {
+      request.post("/admin/${do_main}/save", ${domain}.value).then((response) => {
         let data = response.data;
         if (data.success) {
           notification.success({description: "保存成功！"});
@@ -165,7 +161,7 @@ export default defineComponent({
         };
       }
       loading.value = true;
-      axios.get("/${module}/admin/${do_main}/query-list", {
+      request.get("/admin/${do_main}/query-list", {
         params: {
           page: param.page,
           size: param.size
@@ -175,7 +171,6 @@ export default defineComponent({
         let data = response.data;
         if (data.success) {
           ${domain}s.value = data.content.list;
-          // 设置分页控件的值
           pagination.value.current = param.page;
           pagination.value.total = data.content.total;
         } else {
@@ -185,7 +180,6 @@ export default defineComponent({
     };
 
     const handleTableChange = (page) => {
-      // console.log("看看自带的分页参数都有啥：" + JSON.stringify(page));
       pagination.value.pageSize = page.pageSize;
       handleQuery({
         page: page.current,
@@ -199,28 +193,4 @@ export default defineComponent({
         size: pagination.value.pageSize
       });
     });
-
-    return {
-      <#list fieldList as field>
-      <#if field.enums>
-      ${field.enumsConst}_ARRAY,
-      </#if>
-      </#list>
-      ${domain},
-      visible,
-      ${domain}s,
-      pagination,
-      columns,
-      handleTableChange,
-      handleQuery,
-      loading,
-      <#if !readOnly>
-      onAdd,
-      handleOk,
-      onEdit,
-      onDelete
-      </#if>
-    };
-  },
-});
 </script>

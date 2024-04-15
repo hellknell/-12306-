@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedColumn;
@@ -29,8 +29,8 @@ public class FieldAttributePlugin extends PluginAdapter {
         TopLevelClass root = new TopLevelClass(join(model, queryVoName + querVoSuffix));
         root.addImportedType(model + "." + queryVoName);
         root.setVisibility(JavaVisibility.PUBLIC);
-        root.addImportedType("com.heyu.train.common.generator.help.DbField");
-        root.addImportedType("com.heyu.train.common.generator.help.FieldResult");
+        root.addImportedType("com.heyu.train.generator.generator.help.DbField");
+        root.addImportedType("com.heyu.train.generator.generator.help.FieldResult");
         root.addImportedType("java.util.Collections");
 
         List<IntrospectedColumn> allColumns = introspectedTable.getAllColumns();
@@ -39,7 +39,7 @@ public class FieldAttributePlugin extends PluginAdapter {
             String attrName = JavaBeansUtil.getCamelCaseString(column.getActualColumnName(), false);
             //生成字段
             Field field = new Field(varName,
-                    new FullyQualifiedJavaType("com.heyu.train.common.generator.help.DbField"));
+                    new FullyQualifiedJavaType("com.heyu.train.generator.generator.help.DbField"));
             field.setVisibility(JavaVisibility.PUBLIC);
             field.setStatic(true);
             field.setInitializationString(String.format("new DbField(\"%s\",\"%s\",\"%s\",\"%s\")", column.getActualColumnName(), attrName, column.getJdbcTypeName(), column.getFullyQualifiedJavaType()));
@@ -49,7 +49,7 @@ public class FieldAttributePlugin extends PluginAdapter {
             setMethod.setVisibility(JavaVisibility.PUBLIC);
             setMethod.setStatic(true);
             setMethod.addParameter(new Parameter(column.getFullyQualifiedJavaType(), attrName));
-            setMethod.setReturnType(new FullyQualifiedJavaType("com.heyu.train.common.generator.help.FieldResult"));
+            setMethod.setReturnType(new FullyQualifiedJavaType("com.heyu.train.generator.generator.help.FieldResult"));
             setMethod.addBodyLine("return new FieldResult(" + field.getName() + ", Collections.singletonList(" + attrName + "));");
             root.addMethod(setMethod);
         }

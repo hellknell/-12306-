@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 功能:
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(tags = "会员管理")
 @Validated
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
     final MemberSevice memberSevice;

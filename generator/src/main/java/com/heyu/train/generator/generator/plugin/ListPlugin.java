@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -53,7 +53,7 @@ public class ListPlugin extends PluginAdapter {
     }
 
     private TextElement replaceCondition(String tableName) {
-        String t = "<select id=\"list\" parameterType=\"com.heyu.train.common.generator.help.MyBatisWrapper\" resultMap=\"BaseResultMap\">\n" +
+        String t = "<select id=\"list\" parameterType=\"com.heyu.train.generator.generator.help.MyBatisWrapper\" resultMap=\"BaseResultMap\">\n" +
                 "        <include refid=\"listSql\"/>\n" +
                 "    </select>\n" +
                 "    <sql id=\"listSql\">\n" +

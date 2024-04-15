@@ -1,4 +1,4 @@
-package com.heyu.train.common.generator.plugin;
+package com.heyu.train.generator.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -8,7 +8,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 
 import java.util.List;
 
-public class TopOnePlugin extends PluginAdapter {
+public class UpdateFieldBatchPlugin extends PluginAdapter {
 
     @Override
     public boolean validate(List<String> list) {
@@ -22,20 +22,21 @@ public class TopOnePlugin extends PluginAdapter {
 //    public boolean clientGenerated(Interface interfaze, IntrospectedTable introspectedTable) {
 //        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
 //        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
+//        importedTypes.add(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Param"));
 //
-//        Method method = new Method("topOne");
+//        Method method = new Method("updateFieldBatch");
 //        // 1.设置方法可见性
 //        method.setVisibility(JavaVisibility.PUBLIC);
 //        method.setAbstract(true);
 //        // 2.设置返回值类型
-//        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
+//        FullyQualifiedJavaType returnType = FullyQualifiedJavaType.getIntInstance();
 //
 //        method.setReturnType(returnType);
 //
 //        // 4.设置参数列表
-//        FullyQualifiedJavaType paramType = new FullyQualifiedJavaType("com.bage.mybatis.help.MyBatisWrapper");
-////        method.addParameter(new Parameter(paramType, "example", "@Param(\"example\")"));
-//        method.addParameter(new Parameter(paramType, "example"));
+//        FullyQualifiedJavaType paramType = new FullyQualifiedJavaType("java.util.List<com.bage.common.mybatishelp.MyBatisWrapper>");
+//        method.addParameter(new Parameter(paramType, "list", "@Param(\"list\")"));
+////        method.addParameter(new Parameter(paramType, "example"));
 //        importedTypes.add(paramType);
 //
 //        // 设置需要导入的类
@@ -52,23 +53,19 @@ public class TopOnePlugin extends PluginAdapter {
     }
 
     private TextElement replaceCondition(String tableName) {
-        String selectNode = "  <select id=\"topOne\" parameterType=\"com.heyu.train.common.generator.help.MyBatisWrapper\" resultMap=\"BaseResultMap\">\n" +
-                "    select\n" +
-                "    <if test=\"selectBuilder != null\">\n" +
-                "      <trim prefixOverrides=\",\" suffixOverrides=\",\">\n" +
-                "         ${selectBuilder} \n" +
-                "      </trim>\n" +
-                "    </if>\n" +
-                "    from " + tableName + "\n" +
-                "    <if test=\"_parameter != null\">\n" +
-                "      <include refid=\"Example_Where_Clause\" />\n" +
-                "    </if>\n" +
-                "    <if test=\"orderByClause != null\">\n" +
-                "      order by ${orderByClause}\n" +
-                "    </if>\n" +
-                "    limit 1\n" +
-                "  </select>\n";
+        String node = " <update id=\"updateFieldBatch\" parameterType=\"java.util.List\">\n" +
+                "           <foreach collection=\"list\" index=\"index\" item=\"example\" separator=\";\">\n" +
+                "               update " + tableName + " \n" +
+                "                   set \n" +
+                "               <trim prefixOverrides=\",\" suffixOverrides=\",\">\n" +
+                "                   ${example.updateSql} \n" +
+                "               </trim>\n" +
+                "               <if test=\"example != null\">\n" +
+                "                   <include refid=\"Update_By_Example_Where_Clause\" />\n" +
+                "               </if>" +
+                "           </foreach>\n" +
+                "  </update>";
         // 将条件替换为自己的逻辑
-        return new TextElement(selectNode);
+        return new TextElement(node);
     }
 }

@@ -15,9 +15,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class ServerGenerator {
-    //    static boolean readOnly = true;
-//    static String vuePath = "admin/src/views/main/";
-//    static String serverPath = "[module]/src/main/java/com/heyu/train/[module]/";
+    static boolean readOnly = true;
+    static String vuePath = "E://IdeaProhect/train12306/web/src/views/main/";
     static String pomPath = "generator\\pom.xml";
     static String servicePath = "[module]/src/main/java/com/heyu/train/[module]/";
 
@@ -58,26 +57,36 @@ public class ServerGenerator {
         map.put("domain", domain);
         map.put("Domain", Domain);
         map.put("do_main", do_main);
-        gen(servicePathFinal,domain, map, "service","service");
-        gen(servicePathFinal, domain, map,"controller", "controller");
-
         List<Field> list = DbUtil.getColumnByTableName(tableName.getText());
         Set<String> typeSet = getJavaType(list);
         map.put("fieldList", list);
         map.put("module", module);
         map.put("typeSet", typeSet);
+        map.put("readOnly", readOnly);
+        gen(servicePathFinal,domain, map, "service","service");
+        gen(servicePathFinal, domain, map,"controller", "controller");
         gen(servicePathFinal, domain, map ,"req","saveReq");
+        gen(servicePathFinal, domain, map ,"req","queryReq");
+        gen(servicePathFinal, domain, map ,"resp","queryResp");
+        genVue(Domain, map);
     }
 
-    private static void gen(String serverPath, String domain, HashMap<String, Object> map, String packageName,String target) throws IOException, TemplateException {
+    private static void gen(String serverPath, String domain, HashMap<String, Object> map, String packageName, String target) throws IOException, TemplateException {
         FreemarkerUtil.initConfig(target + ".ftl");
         String dir = serverPath + StrUtil.lowerFirst(packageName) + "/";
         if (!FileUtil.isDirectory(dir)) {
             FileUtil.mkdir(dir);
         }
         System.out.println(serverPath + domain.substring(0, 1).toLowerCase() + domain.substring(1) + target + ".java");
-        FreemarkerUtil.generator(dir + StrUtil.upperFirst(domain)+StrUtil.upperFirst(target) + ".java", map);
+        FreemarkerUtil.generator(dir + StrUtil.upperFirst(domain) + StrUtil.upperFirst(target) + ".java", map);
         System.out.println("生成成功！！");
+    }
+
+    public static void genVue(String Domain, Map<String, Object> map) throws IOException, TemplateException {
+        FreemarkerUtil.initConfig("vue.ftl");
+        String fileName = vuePath + Domain + "View.vue";
+        FreemarkerUtil.generator(fileName, map);
+
     }
 
     public static Set<String> getJavaType(List<Field> list) {
@@ -88,4 +97,6 @@ public class ServerGenerator {
         }
         return typeSet;
     }
+
+
 }

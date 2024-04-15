@@ -17,7 +17,9 @@ public enum BizExceptionEnum {
     USER_ACCOUNT_ERROR("5003", "账号或密码错误"),
     USER_NOT_EXIST_ERROR("5004", "用户不存在"),
     PARAM_PASSWORD_ERROR("5005", "原密码输入错误"),
-    MONEY_LIMIT_ERROR("5006", "账户余额不足");
+    MONEY_LIMIT_ERROR("5006", "账户余额不足"),
+    TRAIN_EXIST_ERROR("5007", "火车已存在"),
+    TRAIN_STATION_EXIST_ERROR("5008", "车站已存在");
 
 
     private String code;
@@ -31,6 +33,7 @@ public enum BizExceptionEnum {
         return message;
 
     }
+
     BizExceptionEnum(String code, String message) {
         this.code = code;
         this.message = message;

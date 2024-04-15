@@ -2,7 +2,7 @@
 //
 //
 //import cn.hutool.core.util.StrUtil;
-//
+//import com.heyu.train.member.domain.enums.PassagerTypeEnum;
 //import java.io.FileOutputStream;
 //import java.io.OutputStreamWriter;
 //import java.lang.reflect.Field;
@@ -11,21 +11,14 @@
 //import java.lang.reflect.Modifier;
 //import java.util.ArrayList;
 //import java.util.List;
-//
 //public class EnumGenerator {
-//    // static String path = "web/src/assets/js/enums.js";
-//    static String path = "admin/src/assets/js/enums.js";
-//
+//     static String path = "D://Front-12306/web/src/assets/js/enum.js";
 //    public static void main(String[] args) {
 //        StringBuffer bufferObject = new StringBuffer();
 //        StringBuffer bufferArray = new StringBuffer();
 //        long begin = System.currentTimeMillis();
 //        try {
-//            toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
-//            toJson(TrainTypeEnum.class, bufferObject, bufferArray);
-//            toJson(SeatTypeEnum.class, bufferObject, bufferArray);
-//            toJson(SeatColEnum.class, bufferObject, bufferArray);
-//            toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);
+//            toJson(PassagerTypeEnum.class, bufferObject, bufferArray);
 //
 //            StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
 //            writeJs(buffer);
@@ -33,7 +26,7 @@
 //            e.printStackTrace();
 //        }
 //        long end = System.currentTimeMillis();
-//        System.out.println("执行耗时:" + (end - begin) + " 毫秒");
+//        System.out.println("执行耗时:" + (end- begin) + " 毫秒");
 //    }
 //
 //    private static void toJson(Class clazz, StringBuffer bufferObject, StringBuffer bufferArray) throws Exception {
