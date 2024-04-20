@@ -37,8 +37,6 @@ public class JwtUtil {
         log.info("token:{}", token);
         return token;
     }
-
-
     public static boolean validateToken(String token) {
         try {
             JWT jwt = JWTUtil.parseToken(token).setKey(JwtUtil.key.getBytes());

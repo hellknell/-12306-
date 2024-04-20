@@ -71,13 +71,13 @@
 <!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
 <!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
 <!--        </table>   -->
-        <table tableName="train" domainObjectName="Train" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>
-<!--        <table tableName="train_station" domainObjectName="TrainStation" enableCountByExample="false"-->
+<!--        <table tableName="train" domainObjectName="Train" enableCountByExample="false"-->
 <!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
 <!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
 <!--        </table>-->
+        <table tableName="train_station" domainObjectName="TrainStation" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
     </context>
 </generatorConfiguration>

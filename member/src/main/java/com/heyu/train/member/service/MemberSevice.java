@@ -83,7 +83,6 @@ public class MemberSevice {
         if (ObjectUtil.isEmpty(m)) {
             throw new BizException(BizExceptionEnum.MEMBER_NO_EXISTS);
         }
-
         if (!"8888".equals(code)) {
 
             throw new BizException(BizExceptionEnum.CODE_ERROR);
@@ -92,8 +91,6 @@ public class MemberSevice {
         String token = JwtUtil.creatToken(m.getMobile(), m.getId());
         memberDTO.setToken(token);
         return memberDTO;
-
-
     }
 
 

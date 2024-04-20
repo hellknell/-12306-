@@ -51,7 +51,11 @@ public class MyBatisWrapper<T> {
             if (selectBuilder.length() > 0) {
                 selectBuilder.append(",");
             }
-            selectBuilder.append(field.getDbName());
+            if (field.getDbName() == "index") {
+                selectBuilder.append("`index`");
+            } else {
+                selectBuilder.append(field.getDbName());
+            }
         }
         return this;
     }
@@ -108,8 +112,8 @@ public class MyBatisWrapper<T> {
     /**
      * 设置要查询的分页信息
      *
-     * @param pageIndex 页号
-     * @param pageSize  页大小
+     * @param pageIndex   页号
+     * @param pageSize    页大小
      * @param selectCount 是否查询记录条数
      * @return
      */
@@ -234,6 +238,7 @@ public class MyBatisWrapper<T> {
 
     /**
      * 联接字符串
+     *
      * @param fieldResult
      * @return
      */

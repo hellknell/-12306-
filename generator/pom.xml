@@ -63,7 +63,7 @@
                 <version>1.4.1</version>
                 <configuration>
                     <!--                    <configurationFile>/src/main/resources/generatorConfig-member.xml</configurationFile>-->
-                    <configurationFile>/src/main/resources/generatorConfig-business.xml</configurationFile>
+                    <configurationFile>./src/main/resources/generatorConfig-business.xml</configurationFile>
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
                 </configuration>
