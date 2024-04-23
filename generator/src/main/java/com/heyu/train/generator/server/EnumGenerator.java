@@ -1,8 +1,6 @@
 //package com.heyu.train.generator.server;
 //
-//
 //import cn.hutool.core.util.StrUtil;
-//import com.heyu.train.member.domain.enums.PassagerTypeEnum;
 //import java.io.FileOutputStream;
 //import java.io.OutputStreamWriter;
 //import java.lang.reflect.Field;
@@ -18,7 +16,7 @@
 //        StringBuffer bufferArray = new StringBuffer();
 //        long begin = System.currentTimeMillis();
 //        try {
-//            toJson(PassagerTypeEnum.class, bufferObject, bufferArray);
+//            toJson(.class, bufferObject, bufferArray);
 //
 //            StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
 //            writeJs(buffer);

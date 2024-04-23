@@ -59,7 +59,8 @@ public abstract class GeneratedCriteria {
     }
 
     public Criteria andEq(FieldResult fieldResult) {
-        addCriterion(" and " + fieldResult.getField().getDbName() + " =",
+        String dbname = "index".equals(fieldResult.getField().getDbName()) ? "`index`" : fieldResult.getField().getDbName();
+        addCriterion(" and " + dbname + "= ",
                 fieldResult.getValue(),
                 fieldResult.getField().getPropertyName(),
                 fieldResult.getField().getJdbcType());

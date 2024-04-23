@@ -32,11 +32,9 @@ public class MemberSevice {
     final ObjectMapper objectMapper;
 
     public Long register(MemberRegisterReq req) {
-
         String mobile = req.getMobile();
         MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
         wrapper.select(MemberField.Id).whereBuilder().andEq(MemberField.setMobile(mobile));
-
         Member dbMember = memberMapper.topOne(wrapper);
         if (ObjectUtil.isNotEmpty(dbMember)) {
             throw new BizException(BizExceptionEnum.MEMBER_MOBILE_ALREADY_EXISTS);

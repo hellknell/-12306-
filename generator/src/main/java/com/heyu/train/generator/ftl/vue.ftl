@@ -163,8 +163,8 @@ import {notification} from "ant-design-vue";
       loading.value = true;
       request.get("/admin/${do_main}/query-list", {
         params: {
-          page: param.page,
-          size: param.size
+          pageNum: param.page,
+          pageSize: param.size
         }
       }).then((response) => {
         loading.value = false;

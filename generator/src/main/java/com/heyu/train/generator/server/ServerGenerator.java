@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class ServerGenerator {
-    static boolean readOnly = true;
+    static boolean readOnly = false;
     static String vuePath = "E://IdeaProhect/train12306/web/src/views/main/";
     static String pomPath = "generator\\pom.xml";
     static String servicePath = "[module]/src/main/java/com/heyu/train/[module]/";
@@ -40,7 +40,7 @@ public class ServerGenerator {
         // 获取mybatis-generator
         String generatorPath = getGeneratorPath();
 
-        String module = generatorPath.replace("/src/main/resources/generatorConfig-", "").replace(".xml", "");
+        String module = generatorPath.replace("src/main/resources/generatorConfig-", "").replace(".xml", "");
         String servicePathFinal = servicePath.replace("[module]", module);
         System.out.println(servicePathFinal);
         System.out.println("module:" + module);
@@ -58,16 +58,19 @@ public class ServerGenerator {
         map.put("Domain", Domain);
         map.put("do_main", do_main);
         List<Field> list = DbUtil.getColumnByTableName(tableName.getText());
+        String tableNameCh = DbUtil.getTableComment(tableName.getText());
+        map.put("tableNameCn", tableNameCh);
         Set<String> typeSet = getJavaType(list);
         map.put("fieldList", list);
         map.put("module", module);
         map.put("typeSet", typeSet);
         map.put("readOnly", readOnly);
-        gen(servicePathFinal,domain, map, "service","service");
-        gen(servicePathFinal, domain, map,"controller", "controller");
-        gen(servicePathFinal, domain, map ,"req","saveReq");
-        gen(servicePathFinal, domain, map ,"req","queryReq");
-        gen(servicePathFinal, domain, map ,"resp","queryResp");
+        
+//        gen(servicePathFinal, domain, map, "service", "service");
+//        gen(servicePathFinal, domain, map, "controller", "controller");
+//        gen(servicePathFinal, domain, map, "req", "saveReq");
+//        gen(servicePathFinal, domain, map, "req", "queryReq");
+//        gen(servicePathFinal, domain, map, "resp", "queryResp");
         genVue(Domain, map);
     }
 
