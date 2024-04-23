@@ -53,6 +53,8 @@ public class MyBatisWrapper<T> {
             }
             if (field.getDbName() == "index") {
                 selectBuilder.append("`index`");
+            } else if (field.getDbName() == "row") {
+                selectBuilder.append("`row`");
             } else {
                 selectBuilder.append(field.getDbName());
             }
