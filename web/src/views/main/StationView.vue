@@ -8,7 +8,6 @@
     </div>
     <a-table :data-source="dataSource" :columns="columns" :loading="loading" :pagination=pagination @change="onChange"
              @resizeColumn="handleResizeColumn">
-
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'operation'">
           <a-space :size="15">
@@ -59,12 +58,7 @@ import {message, notification} from "ant-design-vue"
 import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons-vue';
 import '@/assets/js/enum'
 import {pinyin} from "pinyin-pro";
-watch(() => station.value.name, () => {
-  if (station.value.name) {
-    station.value.namePinyin = pinyin(station.value.name, {toneType: 'none'})
-    station.value.namePy = pinyin(station.value.name, {pattern: 'first', toneType: 'none'})
-  }
-})
+
 const loading = ref(false)
 const pagination = ref({
   total: 0,
@@ -97,7 +91,6 @@ const columns = ref([
     dataIndex: 'operation'
   },
 ])
-
 const rules = reactive({
   name: [{required: true, message: '请输入车站名', trigger: 'blur'}],
   namePinyin: [{required: true, message: '请输入车站拼音', trigger: 'blur'}],
@@ -116,20 +109,25 @@ const onChange = (page) => {
   })
 }
 const visible = ref(false);
-const station = ref(
+const station = reactive(
     {
       name: '',
       namePinyin: '',
       namePy: ''
     }
-);
+)
+watch(() => station.name, () => {
+  if (station.name) {
+    station.namePinyin = pinyin(station.name, {toneType: 'none'}).replaceAll(" ", "")
+    station.namePy = pinyin(station.name, {pattern: 'first', toneType: 'none'}).replaceAll(" ", "")
+  }
+})
 onMounted(() => {
   handlePage({
     pageNum: pagination.value.current,
     pageSize: pagination.value.pageSize
   })
 })
-
 const handlePage = (param) => {
   if (!param) {
     param = {
@@ -157,7 +155,6 @@ const handlePage = (param) => {
 // };
 const handleResizeColumn = (w, col) => {
   col.width = w
-
 }
 const del = (record) => {
   request.delete("/admin/station/del" + record).then(res => {
@@ -170,10 +167,8 @@ const del = (record) => {
   })
 }
 const handleOk = () => {
-
-  request.post("/admin/station/save", station.value
+  request.post("/admin/station/save", station
   ).then(res => {
-
     if (res.code === '200') {
       message.success({content: "操作成功"})
       visible.value = false;
@@ -185,10 +180,7 @@ const handleOk = () => {
       notification.error({message: res.msg})
     }
   })
-
 }
 </script>
-
 <style scoped>
-
 </style>
