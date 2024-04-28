@@ -68,4 +68,8 @@ public class TrainService {
     public void del(Long id) {
         trainMapper.deleteByPrimaryKey(id);
     }
+
+    public List<String> queryTrainCodes(String code) {
+        return  trainMapper.queryTrainCodes(code);
+    }
 }

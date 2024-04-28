@@ -11,7 +11,7 @@
       <template #title>
         <span>
           <user-outlined/>
-                subnav 1
+                数据管理
         </span>
       </template>
       <a-menu-item key="/welcome">
@@ -51,31 +51,20 @@
         </router-link>
       </a-menu-item>
     </a-sub-menu>
-    <a-sub-menu key="sub3">
-      <template #title>
-              <span>
-                <notification-outlined/>
-                subnav 3
-              </span>
-      </template>
-      <a-menu-item key="9">option9</a-menu-item>
-      <a-menu-item key="10">option10</a-menu-item>
-      <a-menu-item key="11">option11</a-menu-item>
-      <a-menu-item key="12">option12</a-menu-item>
-    </a-sub-menu>
+
   </a-menu>
 
 </template>
 <script setup>
-import {CoffeeOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons-vue';
+import {CoffeeOutlined, UserOutlined} from '@ant-design/icons-vue';
 import {reactive, watch} from 'vue';
 import router from "@/router";
 
 const state = reactive({
   collapsed: false,
   selectedKeys: [],
-  openKeys: ['sub3'],
-  preOpenKeys: ['sub3'],
+  openKeys: ['/'],
+  preOpenKeys: ['/'],
 });
 // const toggleCollapsed = () => {
 //   state.collapsed = !state.collapsed;

@@ -1,14 +1,14 @@
 package com.heyu.train.member.req;
 
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-@Data
-public class PassengerSaveReq {
+     import com.fasterxml.jackson.annotation.JsonFormat;
+     import lombok.Data;
+     import jakarta.validation.constraints.NotBlank;
+     import jakarta.validation.constraints.NotNull;
+     @Data
+     public class PassengerSaveReq {
 
-    /**
+     /**
     * id
     */
     private Long id;

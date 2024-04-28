@@ -116,7 +116,7 @@ const station = reactive(
       namePy: ''
     }
 )
-watch(() => station.name, () => {
+watch(() =>station.name, () => {
   if (station.name) {
     station.namePinyin = pinyin(station.name, {toneType: 'none'}).replaceAll(" ", "")
     station.namePy = pinyin(station.name, {pattern: 'first', toneType: 'none'}).replaceAll(" ", "")

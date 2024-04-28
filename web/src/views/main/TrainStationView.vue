@@ -1,6 +1,6 @@
 <template>
   <a-space direction="horizontal" :size="10" style="display: flex;justify-content: flex-start">
-    <a-button type="primary" danger @click="save">新增</a-button>
+    <a-button type="primary" danger @click="visible=true">新增</a-button>
     <a-button type="primary" @click="handleQuery()">刷新</a-button>
   </a-space>
   <a-table :dataSource="trainStations"
@@ -38,7 +38,11 @@
     <a-form :model="trainStation" label-align="right" :label-col="{span:6}"
             :wrapper-col="{span:18,offset:0}">
       <a-form-item has-feedback label="车次编号" name="trainCode">
-        <a-input v-model:value="trainStation.trainCode"/>
+        <a-auto-complete
+            v-model:value="trainStation.trainCode"
+            :options="trainCodes"
+            @search="onSearch"
+        />
       </a-form-item>
       <a-form-item has-feedback label="站序" name="index">
         <a-input v-model:value="trainStation.index"/>
@@ -94,6 +98,7 @@ const trainStation = ref({
   createTime: undefined,
   updateTime: undefined,
 });
+const trainCodes= ref([]);
 const trainStations = ref([]);
 // 分页的三个属性名是固定的
 const pagination = ref({
@@ -148,6 +153,20 @@ const columns = [
     dataIndex: 'operation'
   },
 ];
+
+const onSearch=()=>{
+  request.get("/admin/train/query-train-code",{
+    params:{
+      code:trainStation.value.trainCode
+    }
+  }).then(res=>{
+    if(res.success){
+      trainCodes.value=res.data
+    }
+
+  })
+}
+
 const handleQuery = (param) => {
   if (!param) {
     param = {
@@ -181,6 +200,7 @@ const handleTableChange = (page) => {
   })
 };
 onMounted(() => {
+  // getTrainCodes()
   handleQuery({
     page: 1,
     size: pagination.value.pageSize

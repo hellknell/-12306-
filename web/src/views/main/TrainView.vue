@@ -14,9 +14,9 @@
       <template v-if="column.dataIndex === 'operation'">
       </template>
       <template v-else-if="column.dataIndex === 'type'">
-        <span v-for="item in TRAIN_TYPE_ARRAY" :key="item.code">
-          <span v-if="item.code === record.type">
-            {{ item.desc }}
+        <span v-for="item in TRAIN_TYPE_ARRAY" :key="item.value">
+          <span v-if="item.value === record.type">
+            {{ item.label }}
           </span>
         </span>
       </template>
@@ -53,38 +53,49 @@
         <a-input v-model:value="train.code"/>
       </a-form-item>
       <a-form-item has-feedback label="车次类型" name="type">
-        <a-input v-model:value="train.type"/>
+        <a-select
+            ref="select"
+            v-model:value="train.type"
+        >
+          <a-select-option  v-for="(item,index) in [{code:0,name:'高铁'},{code:1,name:'动车'},{code:2,name:'快速'}]" :key="index" :value="item.code" >{{item.name}}</a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item has-feedback label="始发站" name="start">
         <a-input v-model:value="train.start"/>
       </a-form-item>
       <a-form-item has-feedback label="始发站拼音" name="startPinyin">
-        <a-input v-model:value="train.startPinyin"/>
+        <a-input v-model:value="train.startPinyin" disabled/>
       </a-form-item>
       <a-form-item has-feedback label="终点站" name="end">
         <a-input v-model:value="train.end"/>
       </a-form-item>
       <a-form-item has-feedback label="终点站拼音" name="endPinyin">
-        <a-input v-model:value="train.endPinyin"/>
+        <a-input v-model:value="train.endPinyin" disabled />
       </a-form-item>
       <a-form-item has-feedback label="出发时间" name="startTime">
-        <a-input v-model:value="train.startTime"/>
+        <a-time-picker v-model:value="train.startTime" value-format="HH:mm:ss" />
       </a-form-item>
       <a-form-item has-feedback label="到站时间" name="endTime">
-        <a-input v-model:value="train.endTime"/>
+        <a-time-picker v-model:value="train.endTime" value-format="HH:mm:ss" />
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, reactive, ref, watch} from 'vue';
 import request from "@/util/request";
 import {message, notification} from "ant-design-vue";
 import {EditOutlined, QuestionCircleOutlined} from "@ant-design/icons-vue";
+import {pinyin} from "pinyin-pro"
 
-const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
+const TRAIN_TYPE_ARRAY = reactive([
+  {value: '0', label: '高铁'},
+  {value: '1', label: '动车'},
+  {value: '2', label: '普速'},
+])
 const visible = ref(false);
+
 let train = ref({
   id: undefined,
   code: undefined,
@@ -152,18 +163,23 @@ const columns = [
     dataIndex: 'operation'
   },
 ];
+watch([()=>train.value.start,()=>train.value.end], () => {
+
+    train.value.startPinyin= train.value.start? pinyin(train.value.start, {toneType: 'none'}).replaceAll(" ", ""):""
+    train.value.endPinyin = train.value.end?pinyin(train.value.end, {toneType:'none'}).replaceAll(" ", ""):""
+})
 const handleQuery = (param) => {
   if (!param) {
     param = {
-      page: 1,
-      size: pagination.value.pageSize
+      pageNum: 1,
+      pageSize: pagination.value.pageSize
     };
   }
   loading.value = true;
   request.get("/admin/train/query-list", {
     params: {
-      pageNum: param.page,
-      pageSize: param.size
+      pageNum: param.pageNum,
+      pageSize: param.pageSize
     }
   }).then((res) => {
     loading.value = false
@@ -180,15 +196,15 @@ const handleQuery = (param) => {
 const handleTableChange = (page) => {
   pagination.value.pageSize = page.pageSize;
   handleQuery({
-    page: page.current,
-    size: page.pageSize
+    pageNum: page.current,
+    pageSize: page.pageSize
   });
 };
 
 onMounted(() => {
   handleQuery({
-    page: 1,
-    size: pagination.value.pageSize
+    pageNum: 1,
+    pageSize: pagination.value.pageSize
   });
 })
 
@@ -214,13 +230,10 @@ const handleOk = () => {
     if (res.code === '200') {
       message.success({content: "操作成功"})
       visible.value = false;
-
-      handleQuery({
-        pageNum: pagination.value.current,
-        pageSize: pagination.value.pageSize
-      })
-      train.value = {}
       handleQuery()
+      train.value = {}
+
+
     } else {
       notification.error({message: res.msg})
     }

@@ -13,13 +13,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 功能:
  * 作者:何宇
  * 日期：2024/3/23 17:36
  */
 @RestController
-@Api(tags = "乘客管理")
+@Api(tags = "火车管理")
 @Validated
 @RequestMapping("/admin/train")
 @RequiredArgsConstructor
@@ -39,6 +44,23 @@ public class TrainController {
         return Result.success(trainService.queryList(req));
 
     }
+
+    @ApiOperation("查询车次")
+    @GetMapping("query-train-code")
+    public Result<List<Map<String,String>>> queryTrainCodes(@RequestParam(defaultValue = "101") String code) {
+List<Map<String,String>> list=new ArrayList<>();
+        List<String> res = trainService.queryTrainCodes(code);
+        for(String e:res){
+            Map<String,String> map=new HashMap<>();
+            map.put("value",e);
+            map.put("label",e);
+            list.add(map);
+        }
+        return Result.success(list);
+    }
+
+
+
 
     @ApiOperation("删除乘客")
     @DeleteMapping("/del/{id}")
