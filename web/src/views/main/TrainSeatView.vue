@@ -35,7 +35,7 @@
            ok-text="确认" cancel-text="取消">
     <a-form :model="trainSeat" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
       <a-form-item label="车次编号">
-        <a-input v-model:value="trainSeat.trainCode"/>
+        <train-select v-model:value="trainSeat.trainCode"></train-select>
       </a-form-item>
       <a-form-item label="厢序">
         <a-input v-model:value="trainSeat.carriageIndex"/>
@@ -69,6 +69,7 @@
 import {onMounted, ref} from 'vue';
 import request from "@/util/request";
 import {notification} from "ant-design-vue";
+import TrainSelect from "@/component/train-select.vue";
 
 const visible = ref(false);
 let trainSeat = ref({
@@ -105,7 +106,7 @@ const Cols = ref([])
 const updateCols = (type) => {
 
   request.get("/admin/train-seat/query-seat-col/" + type).then(res => {
-    if (res.success ){
+    if (res.success) {
       Cols.value = res.data
 
     }
@@ -215,7 +216,7 @@ const handleQuery = (param) => {
     if (res.success) {
       trainSeats.value = res.data.list;
       pagination.value.current = param.page;
-      pagination.value.total =res.data.total;
+      pagination.value.total = res.data.total;
     } else {
       notification.error({description: res.msg});
     }

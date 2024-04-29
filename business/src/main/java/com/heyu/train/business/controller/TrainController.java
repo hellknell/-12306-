@@ -47,19 +47,9 @@ public class TrainController {
 
     @ApiOperation("查询车次")
     @GetMapping("query-train-code")
-    public Result<List<Map<String,String>>> queryTrainCodes(@RequestParam(defaultValue = "101") String code) {
-List<Map<String,String>> list=new ArrayList<>();
-        List<String> res = trainService.queryTrainCodes(code);
-        for(String e:res){
-            Map<String,String> map=new HashMap<>();
-            map.put("value",e);
-            map.put("label",e);
-            list.add(map);
-        }
-        return Result.success(list);
+    public Result<List<TrainQueryResp>> queryTrainCodes() {
+        return Result.success(trainService.queryTrainCodes());
     }
-
-
 
 
     @ApiOperation("删除乘客")

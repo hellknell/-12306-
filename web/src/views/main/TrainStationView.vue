@@ -38,11 +38,7 @@
     <a-form :model="trainStation" label-align="right" :label-col="{span:6}"
             :wrapper-col="{span:18,offset:0}">
       <a-form-item has-feedback label="车次编号" name="trainCode">
-        <a-auto-complete
-            v-model:value="trainStation.trainCode"
-            :options="trainCodes"
-            @search="onSearch"
-        />
+        <train-select v-model:value="trainStation.trainCode"></train-select>
       </a-form-item>
       <a-form-item has-feedback label="站序" name="index">
         <a-input v-model:value="trainStation.index"/>
@@ -82,6 +78,7 @@ import request from "@/util/request";
 import {message, notification} from "ant-design-vue";
 import {EditOutlined, QuestionCircleOutlined, SmileOutlined} from "@ant-design/icons-vue";
 import dayjs from "dayjs";
+import TrainSelect from "@/component/train-select.vue";
 
 
 const visible = ref(false);
@@ -98,7 +95,6 @@ const trainStation = ref({
   createTime: undefined,
   updateTime: undefined,
 });
-const trainCodes= ref([]);
 const trainStations = ref([]);
 // 分页的三个属性名是固定的
 const pagination = ref({
@@ -154,18 +150,6 @@ const columns = [
   },
 ];
 
-const onSearch=()=>{
-  request.get("/admin/train/query-train-code",{
-    params:{
-      code:trainStation.value.trainCode
-    }
-  }).then(res=>{
-    if(res.success){
-      trainCodes.value=res.data
-    }
-
-  })
-}
 
 const handleQuery = (param) => {
   if (!param) {

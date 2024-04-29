@@ -69,7 +69,12 @@ public class TrainService {
         trainMapper.deleteByPrimaryKey(id);
     }
 
-    public List<String> queryTrainCodes(String code) {
-        return  trainMapper.queryTrainCodes(code);
+    public List<TrainQueryResp> queryTrainCodes() {
+        MyBatisWrapper<Train> wrapper = new MyBatisWrapper<>();
+        wrapper.select(TrainField.Id, TrainField.Code, TrainField.Start, TrainField.End);
+        List<Train> list = trainMapper.list(wrapper);
+        List<TrainQueryResp> resp = BeanUtil.copyToList(list, TrainQueryResp.class);
+        return  resp;
+
     }
 }
