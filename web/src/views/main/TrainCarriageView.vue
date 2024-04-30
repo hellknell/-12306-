@@ -27,12 +27,10 @@
         </a-space>
       </template>
       <template v-else-if="column.dataIndex === 'seatType'">
-
         <a-tag color="pink" v-if="'1'===record.seatType">一等座</a-tag>
         <a-tag color="red" v-if="'2'===record.seatType">二等座</a-tag>
         <a-tag color="orange" v-if="'3'===record.seatType">硬卧</a-tag>
         <a-tag color="green" v-if="'4'===record.seatType">软卧</a-tag>
-
       </template>
     </template>
   </a-table>
@@ -47,7 +45,8 @@
     <a-form :model="trainCarriage" label-align="right" :label-col="{span:6}"
             :wrapper-col="{span:18,offset:0}">
       <a-form-item has-feedback label="车次编号" name="trainCode">
-        <a-input v-model:value="trainCarriage.trainCode"/>
+        <TrainSelect v-model:value="trainCarriage.trainCode"></TrainSelect>
+
       </a-form-item>
       <a-form-item has-feedback label="车厢号" name="index">
         <a-input v-model:value="trainCarriage.index"/>
@@ -74,7 +73,7 @@ import {onMounted, ref} from 'vue';
 import request from "@/util/request";
 import {message, notification} from "ant-design-vue";
 import {EditOutlined, QuestionCircleOutlined} from "@ant-design/icons-vue";
-
+import TrainSelect from "@/component/train-select.vue";
 const options = [{
   value: '1',
   label: '一等座',

@@ -61,13 +61,13 @@
         </a-select>
       </a-form-item>
       <a-form-item has-feedback label="始发站" name="start">
-        <a-input v-model:value="train.start"/>
+        <station-select v-model:value="train.start"></station-select>
       </a-form-item>
       <a-form-item has-feedback label="始发站拼音" name="startPinyin">
         <a-input v-model:value="train.startPinyin" disabled/>
       </a-form-item>
       <a-form-item has-feedback label="终点站" name="end">
-        <a-input v-model:value="train.end"/>
+        <station-select v-model:value="train.end"></station-select>
       </a-form-item>
       <a-form-item has-feedback label="终点站拼音" name="endPinyin">
         <a-input v-model:value="train.endPinyin" disabled />
@@ -81,21 +81,19 @@
     </a-form>
   </a-modal>
 </template>
-
 <script setup>
 import {onMounted, reactive, ref, watch} from 'vue';
 import request from "@/util/request";
+import StationSelect from "@/component/station-select.vue";
 import {message, notification} from "ant-design-vue";
 import {EditOutlined, QuestionCircleOutlined} from "@ant-design/icons-vue";
 import {pinyin} from "pinyin-pro"
-
 const TRAIN_TYPE_ARRAY = reactive([
   {value: '0', label: '高铁'},
   {value: '1', label: '动车'},
   {value: '2', label: '普速'},
 ])
 const visible = ref(false);
-
 let train = ref({
   id: undefined,
   code: undefined,
@@ -109,7 +107,8 @@ let train = ref({
   createTime: undefined,
   updateTime: undefined,
 });
-const trains = ref([]);
+const trains = ref([])
+
 // 分页的三个属性名是固定的
 const pagination = ref({
   total: 0,
@@ -217,14 +216,12 @@ const del = (record) => {
       notification.error({description: res.msg})
     }
   })
-
 }
 const save = (data) => {
   train.value = JSON.parse(JSON.stringify(data))
   visible.value = true
 }
 const handleOk = () => {
-
   request.post("/admin/train/save", train.value
   ).then(res => {
     if (res.code === '200') {

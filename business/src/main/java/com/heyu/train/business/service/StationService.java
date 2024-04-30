@@ -73,4 +73,12 @@ public class StationService {
     public void del(Long id) {
         stationMapper.deleteByPrimaryKey(id);
     }
+
+    public List<StationQueryResp> queryStation() {
+        MyBatisWrapper<Station> wrapper=new MyBatisWrapper();
+        wrapper.select(StationField.Id,StationField.Name,StationField.NamePinyin,StationField.NamePy);
+        List<Station> list = stationMapper.list(wrapper);
+        List<StationQueryResp> stationQueryResps = BeanUtil.copyToList(list, StationQueryResp.class);
+        return stationQueryResps;
+    }
 }

@@ -47,7 +47,7 @@
         <a-input v-model:value="trainStation.namePinyin"/>
       </a-form-item>
       <a-form-item has-feedback label="站名" name="name">
-        <a-input v-model:value="trainStation.name"/>
+        <station-select v-model:value="trainStation.name"></station-select>
       </a-form-item>
       <a-form-item has-feedback label="入站时间" name="inTime">
         <a-time-picker v-model:value="trainStation.inTime" value-format="HH:mm:ss"
@@ -79,6 +79,7 @@ import {message, notification} from "ant-design-vue";
 import {EditOutlined, QuestionCircleOutlined, SmileOutlined} from "@ant-design/icons-vue";
 import dayjs from "dayjs";
 import TrainSelect from "@/component/train-select.vue";
+import StationSelect from "@/component/station-select.vue";
 
 
 const visible = ref(false);
