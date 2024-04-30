@@ -1,10 +1,10 @@
 <template>
-  <p>
-    <a-space :size="14" style="display: flex;justify-content: flex-start">
-      <a-button type="primary" @click="handleQuery()">刷新</a-button>
-      <a-button type="primary" danger @click="onAdd">新增</a-button>
-    </a-space>
-  </p>
+
+  <a-space :size="14" style="display: flex;justify-content: flex-start">
+    <train-select v-model:value="params.trainCode" width="200"></train-select>
+    <a-button type="primary" @click="handleQuery()">查询</a-button>
+    <a-button type="primary" danger @click="onAdd">新增</a-button>
+  </a-space>
   <a-table :dataSource="trainSeats"
            :columns="columns"
            :pagination="pagination"
@@ -101,7 +101,9 @@ const SEAT_TYPE_ARRAY = ref([
   }
 ])
 const Cols = ref([])
-
+const params = ref({
+  trainCode: ""
+})
 
 const updateCols = (type) => {
 
@@ -169,12 +171,12 @@ const onEdit = (record) => {
 
 const onDelete = (record) => {
   request.delete("/admin/train-seat/del/" + record.id).then((res) => {
-
     if (res.success) {
       notification.success({description: "删除成功！"});
       handleQuery({
         page: pagination.value.current,
         size: pagination.value.pageSize,
+        trainCode: params.value.trainCode
       });
     } else {
       notification.error({description: res.msg});
@@ -209,7 +211,8 @@ const handleQuery = (param) => {
   request.get("/admin/train-seat/query-list", {
     params: {
       pageNum: param.page,
-      pageSize: param.size
+      pageSize: param.size,
+      trainCode: params.value.trainCode
     }
   }).then((res) => {
     loading.value = false;

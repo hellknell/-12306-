@@ -3,8 +3,10 @@ package com.heyu.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.heyu.train.business.domain.Train;
 import com.heyu.train.business.domain.TrainCarriage;
 import com.heyu.train.business.domain.TrainCarriageField;
+import com.heyu.train.business.domain.TrainStationField;
 import com.heyu.train.business.mapper.TrainCarriageMapper;
 import com.heyu.train.business.req.TrainCarriageQueryReq;
 import com.heyu.train.business.req.TrainCarriageSaveReq;
@@ -53,7 +55,11 @@ public class TrainCarriageService {
 
     public PageInfo<TrainCarriageQueryResp> queryList(TrainCarriageQueryReq req) {
         MyBatisWrapper<TrainCarriageQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(TrainCarriageField.Id,TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount,  TrainCarriageField.SeatType);
+        if(ObjectUtil.isEmpty(req.getTrainCode())){
+            wrapper.select(TrainCarriageField.Id,TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount,  TrainCarriageField.SeatType);
+        }else{
+            wrapper.select(TrainCarriageField.Id,TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount,  TrainCarriageField.SeatType).whereBuilder().andEq(TrainCarriageField.setTrainCode(req.getTrainCode()));
+        }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = trainCarriageMapper.list(wrapper).size();
         List<TrainCarriage> list = trainCarriageMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));

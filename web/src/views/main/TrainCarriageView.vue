@@ -1,9 +1,9 @@
 <template>
   <a-space direction="horizontal" :size="10" style="display: flex;justify-content: flex-start">
+    <train-select v-model:model-value="params.trainCode" width="200"></train-select>
+    <a-button type="primary" @click="handleQuery()">查询</a-button>
     <a-button type="primary" danger @click="save">新增</a-button>
-    <a-button type="primary" @click="handleQuery()">刷新</a-button>
   </a-space>
-
   <a-table :dataSource="trainCarriages"
            :columns="columns"
            :pagination="pagination"
@@ -107,6 +107,9 @@ const pagination = ref({
   current: 1,
   pageSize: 3,
 });
+const params=ref({
+  trainCode:""
+})
 let loading = ref(false);
 const columns = [
   {
@@ -157,7 +160,8 @@ const handleQuery = (param) => {
   request.get("/admin/train-carriage/query-list", {
     params: {
       pageNum: param.pageNum,
-      pageSize: param.pageSize
+      pageSize: param.pageSize,
+      trainCode: params.value.trainCode
     }
   }).then((res) => {
     loading.value = false;

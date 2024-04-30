@@ -37,7 +37,6 @@ public class TrainStationController {
     @GetMapping("/query-list")
     public   Result<PageInfo<TrainStationQueryResp>> queryList(@Valid TrainStationQueryReq req) {
         return Result.success(trainStationService.queryList(req));
-
     }
     @ApiOperation("删除乘客")
     @DeleteMapping("/del/{id}")

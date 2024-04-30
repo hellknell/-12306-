@@ -51,8 +51,6 @@ public class StationService {
             p1.setUpdateTime(now);
             stationMapper.updateByPrimaryKey(p1);
         }
-
-
     }
 
     public PageInfo

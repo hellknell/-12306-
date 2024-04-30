@@ -41,6 +41,7 @@ public class TrainSeatController {
     public   Result<PageInfo<TrainSeatQueryResp>> queryList(@Validated TrainSeatQueryReq req) {
         return Result.success(trainSeatService.queryList(req));
     }
+
     @ApiOperation("删除车座")
     @DeleteMapping("/del/{id}")
     public   Result<Void> queryList(@PathVariable  Long id) {

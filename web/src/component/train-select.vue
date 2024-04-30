@@ -1,5 +1,5 @@
 <template>
-  <a-select v-model:value="trainCode" show-search :filterOption="filter" allow-clear @change="change">
+  <a-select v-model:value="trainCode" :style="'width :'+width" show-search :filterOption="filter" allow-clear @change="change">
     <a-select-option v-for="(item,index) in trains" :value="item.code" :key="index" :label="item.code+item.start+item.end">
       {{ item.code }} | {{ item.start }}--{{ item.end}}
     </a-select-option>
@@ -9,12 +9,17 @@
 import {defineProps, onMounted, ref, watch,defineEmits} from "vue";
 import request from "@/util/request"
 const emit = defineEmits(['update:modelValue'])
-const props = defineProps(['modelValue'])
+const props = defineProps(['modelValue','width'])
 const trains = ref([])
 const trainCode = ref('')
 watch(() => props.modelValue, () => {
   trainCode.value = props.modelValue
 }, {immediate: true})
+const width =ref(props.width || '100%')
+if(width.value){
+  width.value=width.value+'px'
+}
+
 const filter = (input, option) => {
   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
 }

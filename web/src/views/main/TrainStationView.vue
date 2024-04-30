@@ -1,7 +1,8 @@
 <template>
   <a-space direction="horizontal" :size="10" style="display: flex;justify-content: flex-start">
+    <train-select v-model:value="params.trainCode" width="200" />
+    <a-button type="primary" @click="handleQuery()">查询</a-button>
     <a-button type="primary" danger @click="visible=true">新增</a-button>
-    <a-button type="primary" @click="handleQuery()">刷新</a-button>
   </a-space>
   <a-table :dataSource="trainStations"
            :columns="columns"
@@ -44,7 +45,7 @@
         <a-input v-model:value="trainStation.index"/>
       </a-form-item>
       <a-form-item has-feedback label="站名拼音" name="startPinyin">
-        <a-input v-model:value="trainStation.namePinyin"/>
+        <a-input v-model:value="trainStation.namePinyin" disabled/>
       </a-form-item>
       <a-form-item has-feedback label="站名" name="name">
         <station-select v-model:value="trainStation.name"></station-select>
@@ -73,15 +74,14 @@
   </a-modal>
 </template>
 <script setup>
-import {onMounted, ref,} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import request from "@/util/request";
 import {message, notification} from "ant-design-vue";
 import {EditOutlined, QuestionCircleOutlined, SmileOutlined} from "@ant-design/icons-vue";
 import dayjs from "dayjs";
 import TrainSelect from "@/component/train-select.vue";
 import StationSelect from "@/component/station-select.vue";
-
-
+import {pinyin} from "pinyin-pro";
 const visible = ref(false);
 const trainStation = ref({
   id: undefined,
@@ -102,7 +102,10 @@ const pagination = ref({
   total: 0,
   current: 1,
   pageSize: 10,
-});
+})
+const params=ref({
+  trainCode:""
+})
 let loading = ref(false);
 const columns = [
   {
@@ -150,8 +153,9 @@ const columns = [
     dataIndex: 'operation'
   },
 ];
-
-
+watch(()=>trainStation.value.name, () => {
+  trainStation.value.namePinyin= trainStation.value.name? pinyin(trainStation.value.name, {toneType: 'none'}).replaceAll(" ", ""):""
+ })
 const handleQuery = (param) => {
   if (!param) {
     param = {
@@ -163,7 +167,8 @@ const handleQuery = (param) => {
   request.get("/admin/train-station/query-list", {
     params: {
       pageNum: param.page,
-      pageSize: param.size
+      pageSize: param.size,
+      trainCode:params.value.trainCode,
     }
   }).then((res) => {
     loading.value = false
@@ -174,9 +179,8 @@ const handleQuery = (param) => {
     } else {
       notification.error({description: res.msg});
     }
-  });
-};
-
+  })
+}
 const handleTableChange = (page) => {
   pagination.value.pageSize = page.pageSize;
   handleQuery({
@@ -185,7 +189,6 @@ const handleTableChange = (page) => {
   })
 };
 onMounted(() => {
-  // getTrainCodes()
   handleQuery({
     page: 1,
     size: pagination.value.pageSize

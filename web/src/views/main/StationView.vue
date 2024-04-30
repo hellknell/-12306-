@@ -2,8 +2,8 @@
   <div>
     <div style="text-align: left">
       <a-space direction="horizontal" :size="10" align="start" style="text-align: left">
-        <a-button type="primary" danger @click="save">新增</a-button>
         <a-button type="primary" @click="handlePage">刷新</a-button>
+        <a-button type="primary" danger @click="save">新增</a-button>
       </a-space>
     </div>
     <a-table :data-source="dataSource" :columns="columns" :loading="loading" :pagination=pagination @change="onChange"

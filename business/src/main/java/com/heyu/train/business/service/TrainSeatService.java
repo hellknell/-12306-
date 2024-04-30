@@ -56,7 +56,12 @@ public class TrainSeatService {
     public PageInfo
             <TrainSeatQueryResp> queryList(TrainSeatQueryReq req) {
         MyBatisWrapper<TrainSeatQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(TrainSeatField.Id, TrainSeatField.CarriageSeatIndex, TrainSeatField.CarriageIndex, TrainSeatField.Row, TrainSeatField.Col, TrainSeatField.TrainCode, TrainSeatField.SeatType);
+        if (ObjectUtil.isEmpty(req.getTrainCode())) {
+            wrapper.select(TrainSeatField.Id, TrainSeatField.CarriageSeatIndex, TrainSeatField.CarriageIndex, TrainSeatField.Row, TrainSeatField.Col, TrainSeatField.TrainCode, TrainSeatField.SeatType);
+        } else {
+            wrapper.select(TrainSeatField.Id, TrainSeatField.CarriageSeatIndex, TrainSeatField.CarriageIndex, TrainSeatField.Row, TrainSeatField.Col, TrainSeatField.TrainCode, TrainSeatField.SeatType).whereBuilder().andEq(TrainSeatField.setTrainCode(req.getTrainCode()));
+        }
+
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
 
         int total = trainSeatMapper.list(wrapper).size();

@@ -56,7 +56,12 @@ public class TrainService {
 
     public PageInfo<TrainQueryResp> queryList(TrainQueryReq req) {
         MyBatisWrapper<Train> wrapper = new MyBatisWrapper<>();
-        wrapper.select(TrainField.Id, TrainField.UpdateTime, TrainField.CreateTime, TrainField.End, TrainField.Code, TrainField.StartTime, TrainField.Start, TrainField.End, TrainField.EndTime, TrainField.Type, TrainField.StartPinyin, TrainField.EndPinyin);
+        if(ObjectUtil.isEmpty(req.getTrainCode())){
+            wrapper.select(TrainField.Id, TrainField.UpdateTime, TrainField.CreateTime, TrainField.End, TrainField.Code, TrainField.StartTime, TrainField.Start, TrainField.End, TrainField.EndTime, TrainField.Type, TrainField.StartPinyin, TrainField.EndPinyin);
+        }else{
+            wrapper.select(TrainField.Id, TrainField.UpdateTime, TrainField.CreateTime, TrainField.End, TrainField.Code, TrainField.StartTime, TrainField.Start, TrainField.End, TrainField.EndTime, TrainField.Type, TrainField.StartPinyin, TrainField.EndPinyin).whereBuilder().andEq(TrainField.setCode(req.getTrainCode()));
+        }
+
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = trainMapper.list(wrapper).size();
         List<Train> list = trainMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));

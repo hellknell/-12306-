@@ -1,7 +1,8 @@
 <template>
   <p>
     <a-space style="display: flex;justify-content:flex-start">
-      <a-button type="primary" @click="handleQuery()">刷新</a-button>
+      <train-select v-model:value="params.trainCode" width="200"></train-select>
+      <a-button type="primary" @click="handleQuery()">查询</a-button>
       <a-button type="primary" danger @click="visible=true">新增</a-button>
     </a-space>
   </p>
@@ -88,6 +89,7 @@ import StationSelect from "@/component/station-select.vue";
 import {message, notification} from "ant-design-vue";
 import {EditOutlined, QuestionCircleOutlined} from "@ant-design/icons-vue";
 import {pinyin} from "pinyin-pro"
+import TrainSelect from "@/component/train-select.vue";
 const TRAIN_TYPE_ARRAY = reactive([
   {value: '0', label: '高铁'},
   {value: '1', label: '动车'},
@@ -108,7 +110,9 @@ let train = ref({
   updateTime: undefined,
 });
 const trains = ref([])
-
+const params=ref({
+  trainCode:""
+})
 // 分页的三个属性名是固定的
 const pagination = ref({
   total: 0,
@@ -178,7 +182,8 @@ const handleQuery = (param) => {
   request.get("/admin/train/query-list", {
     params: {
       pageNum: param.pageNum,
-      pageSize: param.pageSize
+      pageSize: param.pageSize,
+      trainCode: params.value.trainCode
     }
   }).then((res) => {
     loading.value = false
