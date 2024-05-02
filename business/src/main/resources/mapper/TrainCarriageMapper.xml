@@ -130,7 +130,7 @@
   <update id="updateByPrimaryKey" parameterType="com.heyu.train.business.domain.TrainCarriage">
     update train_carriage
     set train_code = #{trainCode,jdbcType=VARCHAR},
-      index = #{index,jdbcType=INTEGER},
+      `index` = #{index,jdbcType=INTEGER},
       seat_type = #{seatType,jdbcType=CHAR},
       seat_count = #{seatCount,jdbcType=INTEGER},
       row_count = #{rowCount,jdbcType=INTEGER},

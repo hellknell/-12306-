@@ -110,7 +110,6 @@ const updateCols = (type) => {
   request.get("/admin/train-seat/query-seat-col/" + type).then(res => {
     if (res.success) {
       Cols.value = res.data
-
     }
   })
 }
@@ -119,7 +118,7 @@ const trainSeats = ref([]);
 const pagination = ref({
   total: 0,
   current: 1,
-  pageSize: 10,
+  pageSize: 6,
 });
 let loading = ref(false);
 const columns = [

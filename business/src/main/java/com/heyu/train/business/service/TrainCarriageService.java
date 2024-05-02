@@ -70,4 +70,10 @@ public class TrainCarriageService {
     public void del(Long id) {
         trainCarriageMapper.deleteByPrimaryKey(id);
     }
+    public List<TrainCarriage> selectByTrainCode(String trainCode){
+        MyBatisWrapper<TrainCarriage> wrapper=new MyBatisWrapper<>();
+        wrapper.select(TrainCarriageField.Id,TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount,  TrainCarriageField.SeatType).whereBuilder().andEq(TrainCarriageField.setTrainCode(trainCode));
+        return trainCarriageMapper.list(wrapper);
+
+    }
 }

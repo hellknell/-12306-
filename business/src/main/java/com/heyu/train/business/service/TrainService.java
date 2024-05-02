@@ -3,9 +3,11 @@ package com.heyu.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.heyu.train.business.domain.Train;
-import com.heyu.train.business.domain.TrainField;
+import cn.hutool.core.util.StrUtil;
+import com.heyu.train.business.domain.*;
+import com.heyu.train.business.enums.SeatTypeEnum;
 import com.heyu.train.business.mapper.TrainMapper;
+import com.heyu.train.business.mapper.TrainSeatMapper;
 import com.heyu.train.business.req.TrainQueryReq;
 import com.heyu.train.business.req.TrainSaveReq;
 import com.heyu.train.business.resp.TrainQueryResp;
@@ -17,8 +19,10 @@ import com.heyu.train.generator.generator.help.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 功能:
@@ -30,6 +34,8 @@ import java.util.List;
 @Slf4j
 public class TrainService {
     final TrainMapper trainMapper;
+    final TrainCarriageService trainCarriageService;
+    final TrainSeatMapper trainSeatMapper;
 
     public void save(TrainSaveReq req) {
         Train p1 = BeanUtil.copyProperties(req, Train.class);
@@ -56,9 +62,9 @@ public class TrainService {
 
     public PageInfo<TrainQueryResp> queryList(TrainQueryReq req) {
         MyBatisWrapper<Train> wrapper = new MyBatisWrapper<>();
-        if(ObjectUtil.isEmpty(req.getTrainCode())){
+        if (ObjectUtil.isEmpty(req.getTrainCode())) {
             wrapper.select(TrainField.Id, TrainField.UpdateTime, TrainField.CreateTime, TrainField.End, TrainField.Code, TrainField.StartTime, TrainField.Start, TrainField.End, TrainField.EndTime, TrainField.Type, TrainField.StartPinyin, TrainField.EndPinyin);
-        }else{
+        } else {
             wrapper.select(TrainField.Id, TrainField.UpdateTime, TrainField.CreateTime, TrainField.End, TrainField.Code, TrainField.StartTime, TrainField.Start, TrainField.End, TrainField.EndTime, TrainField.Type, TrainField.StartPinyin, TrainField.EndPinyin).whereBuilder().andEq(TrainField.setCode(req.getTrainCode()));
         }
 
@@ -79,7 +85,38 @@ public class TrainService {
         wrapper.select(TrainField.Id, TrainField.Code, TrainField.Start, TrainField.End);
         List<Train> list = trainMapper.list(wrapper);
         List<TrainQueryResp> resp = BeanUtil.copyToList(list, TrainQueryResp.class);
-        return  resp;
+        return resp;
+
+    }
+
+    @Transactional
+    public void genTrainSeat(String trainCode) {
+        trainSeatMapper.deleteBatchs(trainCode);
+        List<TrainCarriage> trainCarriages = trainCarriageService.selectByTrainCode(trainCode);
+        for (TrainCarriage trainCarriage : trainCarriages) {
+            int index = 1;
+            Integer rowCount = trainCarriage.getRowCount();
+            List<String> colsByType = SeatTypeEnum.getColsByType(trainCarriage.getSeatType());
+            DateTime now = DateTime.now();
+            for (int i = 1; i < rowCount; i++) {
+                for (String col : colsByType) {
+                    TrainSeat trainSeat = new TrainSeat();
+                    trainSeat.setTrainCode(trainCode);
+                    trainSeat.setCarriageIndex(trainCarriage.getIndex());
+                    trainSeat.setId(SnowFlask.getSnowFlaskId());
+                    trainSeat.setCarriageSeatIndex(index++);
+                    trainSeat.setRow(StrUtil.fillBefore(String.valueOf(i), '0', 2));
+                    trainSeat.setCol(col);
+                    trainSeat.setSeatType(trainCarriage.getSeatType());
+                    trainSeat.setCreateTime(now);
+                    trainSeat.setUpdateTime(now);
+                    trainSeatMapper.insert(trainSeat);
+                }
+
+            }
+
+
+        }
 
     }
 }

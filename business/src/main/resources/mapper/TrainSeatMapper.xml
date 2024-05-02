@@ -23,11 +23,17 @@
         from train_seat
         where id = #{id,jdbcType=BIGINT}
     </select>
+
+    <delete id="deleteBatchs" parameterType="string">
+        delete from train_seat where train_code=#{trainCode,jdbcType=VARCHAR}
+    </delete>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from train_seat
         where id = #{id,jdbcType=BIGINT}
     </delete>
+
     <insert id="insert" parameterType="com.heyu.train.business.domain.TrainSeat">
         insert into train_seat (id, train_code, carriage_index,
                                 `row`, col, seat_type, carriage_seat_index,
