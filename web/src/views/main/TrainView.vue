@@ -61,7 +61,7 @@
     <a-form :model="train" label-align="right" :rules="rules" :label-col="{span:6}"
             :wrapper-col="{span:18,offset:0}">
       <a-form-item has-feedback label="车次编号" name="code">
-        <a-input v-model:value="train.code"/>
+        <a-input v-model:value="train.code" :disabled="!!train.id"/>
       </a-form-item>
       <a-form-item has-feedback label="车次类型" name="type">
         <a-select

@@ -44,10 +44,12 @@
             火车车座管理
           </router-link>
         </a-menu-item>
+
       </a-menu>
     </div>
     <div style="flex: 2;color: white;font-weight: 400;font-size: 17px;display: flex">
       <div style="flex: 2">
+        <theme-translator />
         <span style="white-space: nowrap;text-overflow: ellipsis">你好! 管理员</span>
       </div>
       <div style="flex: 2">
@@ -64,6 +66,7 @@
 import {ref, watch} from "vue";
 import router from "@/router";
 import {UserOutlined} from "@ant-design/icons-vue";
+import ThemeTranslator from "@/component/theme-translator.vue";
 
 const selectedKeys = ref([])
 // const logout = () => {

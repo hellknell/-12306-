@@ -1,7 +1,9 @@
 <template>
   <a-layout style="min-height: 100vh">
-    <TheHeader></TheHeader>
+    <TheHeader>
+    </TheHeader>
     <a-layout style="margin-top:10px">
+
       <a-layout-sider v-model:collapsed="collapsed" collapsible
                       style="background: #fff;height: calc(90vh - 10px);overflow: scroll">
         <TheSider/>
@@ -50,7 +52,11 @@ const collapsed = ref(false)
 // }
 
 </script>
+
+
+
 <style>
+
 #components-layout-demo-top-side-2 .logo {
   float: left;
   width: 120px;
@@ -84,4 +90,12 @@ const collapsed = ref(false)
 .site-layout-background {
   background: #fff;
 }
+//响应式
+@media (max-width: 768px) {
+  .ant-layout-sider-children {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 </style>
