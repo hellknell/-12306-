@@ -109,17 +109,17 @@ const onChange = (page) => {
   })
 }
 const visible = ref(false);
-const station = reactive(
+const station = ref(
     {
       name: '',
       namePinyin: '',
       namePy: ''
     }
 )
-watch(() =>station.name, () => {
-  if (station.name) {
-    station.namePinyin = pinyin(station.name, {toneType: 'none'}).replaceAll(" ", "")
-    station.namePy = pinyin(station.name, {pattern: 'first', toneType: 'none'}).replaceAll(" ", "")
+watch(() =>station.value.name, () => {
+  if (station.value.name) {
+    station.value.namePinyin = pinyin(station.value.name, {toneType: 'none'}).replaceAll(" ", "")
+    station.value.namePy = pinyin(station.value.name, {pattern: 'first', toneType: 'none'}).replaceAll(" ", "")
   }
 })
 onMounted(() => {
@@ -167,7 +167,7 @@ const del = (record) => {
   })
 }
 const handleOk = () => {
-  request.post("/admin/station/save", station
+  request.post("/admin/station/save", station.value
   ).then(res => {
     if (res.code === '200') {
       message.success({content: "操作成功"})

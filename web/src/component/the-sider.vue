@@ -11,7 +11,7 @@
       <template #title>
         <span>
           <user-outlined/>
-                数据管理
+          火车基础数据
         </span>
       </template>
       <a-menu-item key="/welcome">

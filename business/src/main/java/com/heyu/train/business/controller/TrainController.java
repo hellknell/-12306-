@@ -58,8 +58,9 @@ public class TrainController {
     }
     @Operation(summary = "生成火车座位",description =  "根据车次和座位数生成座位")
     @GetMapping("gen-train-seat/{trainCode}")
-    public void genTrainSeat(@PathVariable String trainCode) {
+    public Result<Void> genTrainSeat(@PathVariable String trainCode) {
         trainService.genTrainSeat(trainCode);
+        return Result.success();
     }
 
 }

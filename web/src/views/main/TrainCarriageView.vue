@@ -105,7 +105,7 @@ const trainCarriages = ref([]);
 const pagination = ref({
   total: 0,
   current: 1,
-  pageSize: 3,
+  pageSize: 7,
 });
 const params=ref({
   trainCode:""

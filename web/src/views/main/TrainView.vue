@@ -35,6 +35,16 @@
               <EditOutlined/>
             </template>
           </a-button>
+          <a-popconfirm
+          title="生成车座将删除原有车座，确定继续吗？"
+          @confirm="genSeat(record.code)"
+          ok-text="确认"
+          cancel-text="取消"
+          >
+            <a style="color:green" href="#">生成车座</a>
+
+          </a-popconfirm>
+
         </a-space>
       </template>
     </template>
@@ -108,7 +118,20 @@ let train = ref({
   endTime: undefined,
   createTime: undefined,
   updateTime: undefined,
-});
+})
+const genSeat=(code)=>{
+  loading.value=true
+  request.get("/admin/train/gen-train-seat/"+code).then(res=>{
+    loading.value=false
+    if (res.success){
+
+      message.success("生成成功")
+
+    }else {
+      message.error(res.msg)
+    }
+  })
+}
 const trains = ref([])
 const params=ref({
   trainCode:""

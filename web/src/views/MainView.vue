@@ -27,9 +27,8 @@
         <!--          <a-breadcrumb-item>App</a-breadcrumb-item>-->
         <!--        </a-breadcrumb>-->
         <a-layout-content
-            :style="{ background: '#fff', padding: '10px', margin: 0, minHeight: '300px' }"
+            :style="{ background: '#fff', padding: '10px', margin: 0, maxHeight: '86vh' ,overflow:'scroll'}"
         >
-
           <router-view/>
         </a-layout-content>
       </a-layout>
