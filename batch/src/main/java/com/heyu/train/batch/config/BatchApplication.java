@@ -1,6 +1,7 @@
 package com.heyu.train.batch.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,10 +15,11 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 @Slf4j
 @ComponentScan("com.heyu")
+@MapperScan("com.heyu.train.*.mapper")
 @SpringBootApplication
-public class BathchApplication {
+public class BatchApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext app = SpringApplication.run(BathchApplication.class, args);
+        ConfigurableApplicationContext app = SpringApplication.run(BatchApplication.class, args);
         ConfigurableEnvironment environment = app.getEnvironment();
         log.info("启动成功!!地址: \thttp://127.0.0.1:{}", environment.getProperty("server.port"));
     }
