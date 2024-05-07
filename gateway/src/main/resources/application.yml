@@ -10,6 +10,10 @@ spring:
           uri: http://127.0.0.1:8002
           predicates:
             - Path=/business/**
+        - id: batch
+          uri: http://127.0.0.1:8003
+          predicates:
+            - Path=/batch/**
       globalcors:
         cors-configurations:
           '[/**]':
@@ -19,8 +23,5 @@ spring:
             #            跨域请求的有效，会发送option请求
             maxAge: 3600
             allowCredentials: true
-
-
-
 server:
   port: 10010

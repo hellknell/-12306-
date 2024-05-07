@@ -7,6 +7,7 @@ import com.heyu.train.business.domain.Train;
 import com.heyu.train.business.domain.TrainCarriage;
 import com.heyu.train.business.domain.TrainCarriageField;
 import com.heyu.train.business.domain.TrainStationField;
+import com.heyu.train.business.enums.SeatTypeEnum;
 import com.heyu.train.business.mapper.TrainCarriageMapper;
 import com.heyu.train.business.req.TrainCarriageQueryReq;
 import com.heyu.train.business.req.TrainCarriageSaveReq;
@@ -31,6 +32,9 @@ import java.util.List;
 public class TrainCarriageService {
     final TrainCarriageMapper trainCarriageMapper;
     public void save(TrainCarriageSaveReq req) {
+        List<String> colsByType = SeatTypeEnum.getColsByType(req.getSeatType());
+        req.setColCount(colsByType.size());
+        req.setSeatCount(req.getRowCount() * colsByType.size());
         TrainCarriage p1 = BeanUtil.copyProperties(req, TrainCarriage.class);
         DateTime now = DateTime.now();
         if (ObjectUtil.isNull(p1.getId())) {
@@ -40,11 +44,10 @@ public class TrainCarriageService {
 //            if (ObjectUtil.isNotNull(trainCarriage)) {
 //                throw new BizException(BizExceptionEnum.TRAIN_CARRIAGE_EXIST_ERROR);
 //            }
-            req.setCreateTime(now);
-            req.setUpdateTime(now);
-            req.setId(SnowFlask.getSnowFlaskId());
-            TrainCarriage pass = BeanUtil.copyProperties(req, TrainCarriage.class);
-            trainCarriageMapper.insert(pass);
+            p1.setCreateTime(now);
+            p1.setUpdateTime(now);
+            p1.setId(SnowFlask.getSnowFlaskId());
+            trainCarriageMapper.insert(p1);
         } else {
             p1.setUpdateTime(now);
             trainCarriageMapper.updateByPrimaryKey(p1);

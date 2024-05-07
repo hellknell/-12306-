@@ -19,3 +19,19 @@ redis:
   host: 127.0.0.1
 jwt:
   key: Heyu55534534
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
+knife4j:
+  # 开启增强配置
+  enable: true
+  # 开启生产环境屏蔽（如果是生产环境，需要把下面配置设置true）
+  #  production: true
+  setting:
+    language: zh_cn
+    swagger-model-name: 实体类列表
+  basic: # 开始授权认证
+    enable: true
+    username: admin
+    password: 123456
+
