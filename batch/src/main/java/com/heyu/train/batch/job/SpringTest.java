@@ -1,6 +1,7 @@
 package com.heyu.train.batch.job;
 
 import cn.hutool.core.date.DateTime;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,11 +16,20 @@ import org.springframework.stereotype.Component;
  */
 //Spring定时任务,适合单机应用
 @Component
+@DisallowConcurrentExecution
 @EnableScheduling
 public class SpringTest implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        DateTime now = DateTime.now();
-        System.out.println("定时任务执行了,当前时间:" + now);
+        DateTime now = null;
+        now=DateTime.now();
+        System.out.println(Thread.currentThread().getName()+"定时任务执行了,当前时间:" + now);
+        try {
+            Thread.sleep(3000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        now = DateTime.now();
+        System.out.println(Thread.currentThread().getName()+"定时任务结束,当前时间:" + now);
     }
 }
