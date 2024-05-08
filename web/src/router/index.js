@@ -18,33 +18,55 @@ const routes = [
                 meta: {requiresAuth: true}
             },
             {
-                path: '/station',
-                name: 'Station',
-                component: () => import('../views/main/StationView.vue')
-            },
+                path: 'base',
+                name: 'Base',
+                children: [
+                    {
+                        path: 'station',
+                        name: 'Station',
+                        component: () => import('../views/main/base/StationView.vue')
+                    },
 
-            {
-                path: '/train',
-                name: 'Train',
-                component: () => import('../views/main/TrainView.vue')
+                    {
+                        path: 'train',
+                        name: 'Train',
+                        component: () => import('../views/main/base/TrainView.vue')
+                    },
+                    {
+                        path: 'train-station',
+                        name: 'TrainStation',
+                        component: () => import('../views/main/base/TrainStationView.vue')
+                    },
+                    {
+                        path: 'train-carriage',
+                        name: 'TrainCarriage',
+                        component: () => import('../views/main/base/TrainCarriageView.vue')
+                    },
+                    {
+                        path: 'train-seat',
+                        name: 'TrainSeat',
+                        component: () => import('../views/main/base/TrainSeatView.vue')
+                    }
+
+                ]
             },
             {
-                path: '/train-station',
-                name: 'TrainStation',
-                component: () => import('../views/main/TrainStationView.vue')
-            },
-            {
-                path: '/train-carriage',
-                name: 'TrainCarriage',
-                component: () => import('../views/main/TrainCarriageView.vue')
-            },
-            {
-                path: '/train-seat',
-                name: 'TrainSeat',
-                component: () => import('../views/main/TrainSeatView.vue')
+                path: '/batch',
+                name: 'Batch',
+                children: [
+
+                    {
+                        path: 'job'
+                        , name: 'Job'
+                        , component: () => import('../views/main/batch/JobView.vue')
+                    }
+                ]
             }
+
         ]
-    }]
+    },
+
+]
 const router = createRouter({
     history: createWebHistory(),
     routes

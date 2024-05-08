@@ -107,7 +107,7 @@ const params = ref({
 
 const updateCols = (type) => {
 
-  request.get("/admin/train-seat/query-seat-col/" + type).then(res => {
+  request.get("/business/admin/train-seat/query-seat-col/" + type).then(res => {
     if (res.success) {
       Cols.value = res.data
     }
@@ -156,7 +156,7 @@ const columns = [
 
 
 const handleOk = () => {
-  request.post("/admin/train-seat/save", trainSeat.value).then((res) => {
+  request.post("/business/admin/train-seat/save", trainSeat.value).then((res) => {
     if (res.success) {
       notification.success({description: "保存成功！"});
       visible.value = false;
@@ -179,7 +179,7 @@ const handleQuery = (param) => {
     };
   }
   loading.value = true;
-  request.get("/admin/train-seat/query-list", {
+  request.get("/business/admin/train-seat/query-list", {
     params: {
       pageNum: param.page,
       pageSize: param.size,

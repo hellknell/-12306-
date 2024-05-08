@@ -7,63 +7,77 @@
       :inline-collapsed="state.collapsed"
       :style="{ height: '100%', borderRight: 0 }"
   >
-    <a-sub-menu key="/" :popupOffset="10">
+    <a-menu-item key="/welcome">
+      <router-link to="/welcome">
+        <CoffeeOutlined/>
+        欢迎页
+      </router-link>
+    </a-menu-item>
+    <a-sub-menu key="/base">
       <template #title>
         <span>
           <user-outlined/>
           火车基础数据
         </span>
       </template>
-      <a-menu-item key="/welcome">
-        <router-link to="/welcome">
-          <CoffeeOutlined/>
-          欢迎页
-        </router-link>
-      </a-menu-item>
-      <a-menu-item key="/station">
-        <router-link to="/station">
+      <a-menu-item key="/base/station">
+        <router-link to="/base/station">
           <user-outlined/>
           车站管理
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/train">
-        <router-link to="/train">
+      <a-menu-item key="/base/train">
+        <router-link to="/base/train">
           <user-outlined/>
           火车管理
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/train-station">
-        <router-link to="/train-station">
+      <a-menu-item key="/base/train-station">
+        <router-link to="/base/train-station">
           <user-outlined/>
           火车车站管理
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/train-carriage">
-        <router-link to="train-carriage">
+      <a-menu-item key="/base/train-carriage">
+        <router-link to="/base/train-carriage">
           <user-outlined/>
           火车车厢管理
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/train-seat">
-        <router-link to="/train-seat">
+      <a-menu-item key="/base/train-seat">
+        <router-link to="/base/train-seat">
           <user-outlined/>
           火车车座管理
         </router-link>
       </a-menu-item>
     </a-sub-menu>
 
+    <a-sub-menu key="/batch" :popupOffset="10">
+      <template #title>
+           <span>
+          <user-outlined/>
+          跑批管理
+        </span>
+      </template>
+      <a-menu-item key="/batch/job">
+        <router-link to="/batch/job">
+          <UnorderedListOutlined/>
+          任务管理
+        </router-link>
+      </a-menu-item>
+    </a-sub-menu>
   </a-menu>
 
 </template>
 <script setup>
-import {CoffeeOutlined, UserOutlined} from '@ant-design/icons-vue';
+import {CoffeeOutlined, UnorderedListOutlined, UserOutlined} from '@ant-design/icons-vue';
 import {reactive, watch} from 'vue';
 import router from "@/router";
 
 const state = reactive({
   collapsed: false,
   selectedKeys: [],
-  openKeys: ['/'],
+  openKeys: ['/base','/batch'],
   preOpenKeys: ['/'],
 });
 // const toggleCollapsed = () => {

@@ -164,7 +164,7 @@ const handleQuery = (param) => {
     };
   }
   loading.value = true;
-  request.get("/admin/train-station/query-list", {
+  request.get("/business/admin/train-station/query-list", {
     params: {
       pageNum: param.page,
       pageSize: param.size,
@@ -195,7 +195,7 @@ onMounted(() => {
   });
 })
 const del = (record) => {
-  request.delete("/admin/train-station/del/" + record).then(res => {
+  request.delete("/business/admin/train-station/del/" + record).then(res => {
     if (res.success) {
       message.success("删除成功")
       handleQuery()
@@ -209,7 +209,7 @@ const save = (data) => {
   visible.value = true
 }
 const handleOk = () => {
-  request.post("/admin/train-station/save", trainStation.value
+  request.post("/business/admin/train-station/save", trainStation.value
   ).then(res => {
     if (res.code === '200') {
       message.success({content: "操作成功"})

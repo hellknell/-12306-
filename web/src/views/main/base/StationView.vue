@@ -136,7 +136,7 @@ const handlePage = (param) => {
     }
   }
   loading.value = true
-  request.get("/admin/station/query-list", {
+  request.get("/business/admin/station/query-list", {
     params: {
       pageNum: param.pageNum,
       pageSize: param.pageSize
@@ -157,7 +157,7 @@ const handleResizeColumn = (w, col) => {
   col.width = w
 }
 const del = (record) => {
-  request.delete("/admin/station/del" + record).then(res => {
+  request.delete("/business/admin/station/del" + record).then(res => {
     if (res.success) {
       message.success("删除成功")
       handlePage()
@@ -167,7 +167,7 @@ const del = (record) => {
   })
 }
 const handleOk = () => {
-  request.post("/admin/station/save", station.value
+  request.post("/business/admin/station/save", station.value
   ).then(res => {
     if (res.code === '200') {
       message.success({content: "操作成功"})

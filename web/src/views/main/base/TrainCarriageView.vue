@@ -222,7 +222,7 @@ const handleQuery = (param) => {
     };
   }
   loading.value = true;
-  request.get("/admin/train-carriage/query-list", {
+  request.get("/business/admin/train-carriage/query-list", {
     params: {
       pageNum: param.pageNum,
       pageSize: param.pageSize,
@@ -256,7 +256,7 @@ onMounted(() => {
   });
 });
 const del = (record) => {
-  request.delete("/admin/train-carriage/del/" + record).then(res => {
+  request.delete("/business/admin/train-carriage/del/" + record).then(res => {
     if (res.success) {
       message.success("删除成功")
       handleQuery()
@@ -270,7 +270,7 @@ const save = (data) => {
   visible.value = true
 }
 const handleOk = () => {
-  request.post("/admin/train-carriage/save", trainCarriage.value
+  request.post("/business/admin/train-carriage/save", trainCarriage.value
   ).then(res => {
     if (res.code === '200') {
       handleQuery()

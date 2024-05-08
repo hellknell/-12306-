@@ -202,7 +202,7 @@ const handleQuery = (param) => {
     };
   }
   loading.value = true;
-  request.get("/admin/train/query-list", {
+  request.get("/business/admin/train/query-list", {
     params: {
       pageNum: param.pageNum,
       pageSize: param.pageSize,
@@ -236,7 +236,7 @@ onMounted(() => {
 })
 
 const del = (record) => {
-  request.delete("/admin/train/del/" + record).then(res => {
+  request.delete("/business/admin/train/del/" + record).then(res => {
     if (res.success) {
       message.success("删除成功")
       handleQuery()
@@ -250,7 +250,7 @@ const save = (data) => {
   visible.value = true
 }
 const handleOk = () => {
-  request.post("/admin/train/save", train.value
+  request.post("/business/admin/train/save", train.value
   ).then(res => {
     if (res.code === '200') {
       message.success({content: "操作成功"})

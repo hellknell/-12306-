@@ -12,44 +12,50 @@
       >
         <a-menu-item key="/welcome">
           <router-link to="/welcome">
+            <CoffeeOutlined/>
             欢迎页
           </router-link>
         </a-menu-item>
-        <a-menu-item key="/station">
-          <router-link to="/station">
-            <span style="margin-left: 10px">车站管理</span>
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train">
-          <router-link to="/train">
-            <user-outlined/>
-            火车管理
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train-station">
-          <router-link to="/train-station">
-            <user-outlined/>
-            火车车站管理
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train-carriage">
-          <router-link to="/train-carriage">
-            <user-outlined/>
-            火车车厢管理
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train-seat">
-          <router-link to="/train-seat">
-            <user-outlined/>
-            火车车座管理
-          </router-link>
-        </a-menu-item>
-
+          <a-menu-item key="/base/station">
+            <router-link to="/base/station">
+              <user-outlined/>
+              车站管理
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="/base/train">
+            <router-link to="/base/train">
+              <user-outlined/>
+              火车管理
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="/base/train-station">
+            <router-link to="/base/train-station">
+              <user-outlined/>
+              火车车站管理
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="/base/train-carriage">
+            <router-link to="/base/train-carriage">
+              <user-outlined/>
+              火车车厢管理
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="/base/train-seat">
+            <router-link to="/base/train-seat">
+              <user-outlined/>
+              火车车座管理
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="/batch/job">
+            <router-link to="/batch/job">
+              <UnorderedListOutlined/>
+              跑批管理
+            </router-link>
+          </a-menu-item>
       </a-menu>
     </div>
     <div style="flex: 2;color: white;font-weight: 400;font-size: 17px;display: flex">
       <div style="flex: 2">
-        <theme-translator />
         <span style="white-space: nowrap;text-overflow: ellipsis">你好! 管理员</span>
       </div>
       <div style="flex: 2">
@@ -65,8 +71,7 @@
 // import {message} from "ant-design-vue";
 import {ref, watch} from "vue";
 import router from "@/router";
-import {UserOutlined} from "@ant-design/icons-vue";
-import ThemeTranslator from "@/component/theme-translator.vue";
+import {CoffeeOutlined, UnorderedListOutlined, UserOutlined} from "@ant-design/icons-vue";
 
 const selectedKeys = ref([])
 // const logout = () => {
