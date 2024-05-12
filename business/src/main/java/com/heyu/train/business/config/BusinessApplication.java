@@ -17,7 +17,6 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.heyu")
 @MapperScan("com.heyu.train.business.mapper")
 public class BusinessApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(BusinessApplication.class, args);
     }

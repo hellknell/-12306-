@@ -51,6 +51,39 @@ const routes = [
                 ]
             },
             {
+                path: '/daily',
+                name: 'Daily',
+                children: [
+
+                    {
+                        path: 'train-carriage'
+                        , name: 'DailyTrainCarriage'
+                        , component: () => import('../views/main/daily/DailyTrainCarriageView.vue')
+                    },
+                    {
+                        path: 'train-seat'
+                        , name: 'DailyTrainSeat'
+                        , component: () => import('../views/main/daily/DailyTrainSeatView.vue')
+                    },
+                    {
+                        path: 'train-station'
+                        , name: 'DailyTrainStation'
+                        , component: () => import('../views/main/daily/DailyTrainStationView.vue')
+                    },
+                    {
+                        path: 'train'
+                        , name: 'DailyTrain'
+                        , component: () => import('../views/main/daily/DailyTrainView.vue')
+                    },
+                    {
+                        path: 'train-ticket',
+                        name: 'DailyTrainTicket',
+                        component: () => import('../views/main/daily/DailyTrainTicketView.vue')
+                    }
+                ]
+            }
+            ,
+            {
                 path: '/batch',
                 name: 'Batch',
                 children: [

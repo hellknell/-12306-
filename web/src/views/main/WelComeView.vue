@@ -1,5 +1,6 @@
 <template>
   <div>
+    <MyJsxComponent></MyJsxComponent>
     <a-calendar v-model:value="value" >
       <template #dateCellRender="{ current }">
         <ul class="events">
@@ -20,7 +21,9 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue';
+import MyJsxComponent from "@/views/main/MyJsxComponent.vue";
 export default defineComponent({
+  components: {MyJsxComponent},
   setup() {
     const value = ref();
     const getListData = value => {

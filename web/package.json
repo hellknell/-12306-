@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@vue/babel-plugin-jsx": "^1.2.2",
     "@vueuse/core": "^10.9.0",
     "ant-design-vue": "^3.2.20",
     "axios": "^1.6.8",
@@ -45,7 +46,9 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
-      "vue/multi-word-component-names": 0
+      "multi-word-component-names": "off",
+      "no-undef": "off",
+      "no-unused-vars": "off"
     }
   }
 }

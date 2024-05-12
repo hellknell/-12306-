@@ -13,6 +13,40 @@
         欢迎页
       </router-link>
     </a-menu-item>
+
+    <a-sub-menu key="/daily" :popupOffset="10">
+      <template #title>
+           <span>
+          <user-outlined/>
+          每日数据
+        </span>
+      </template>
+      <a-menu-item key="/daily/train-ticket">
+        <router-link to="/daily/train-ticket">
+          <UnorderedListOutlined/>
+          每日余票查询
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="/daily/train">
+        <router-link to="/daily/train">
+          <UnorderedListOutlined/>
+          每日火车
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="/daily/train-station">
+        <router-link to="/daily/train-station">
+          <UnorderedListOutlined/>
+          每日车次
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="/daily/train-seat">
+      <router-link to="/daily/train-seat">
+        <UnorderedListOutlined/>
+        每日车座
+      </router-link>
+    </a-menu-item>
+
+    </a-sub-menu>
     <a-sub-menu key="/base">
       <template #title>
         <span>
@@ -77,13 +111,13 @@ import router from "@/router";
 const state = reactive({
   collapsed: false,
   selectedKeys: [],
-  openKeys: ['/base','/batch'],
+  openKeys: ['/base','/daily'],
   preOpenKeys: ['/'],
 });
 // const toggleCollapsed = () => {
 //   state.collapsed = !state.collapsed;
 //   state.openKeys = state.collapsed ? [] : state.preOpenKeys;
-// };
+// }
 watch(() => router.currentRoute.value.path, (newValue) => {
   console.log(newValue)
   state.selectedKeys = []

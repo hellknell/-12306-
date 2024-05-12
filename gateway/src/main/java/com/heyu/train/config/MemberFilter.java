@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 @Order(-1)
 @Component
 public class MemberFilter implements GlobalFilter {
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path= exchange.getRequest().getURI().getPath();
@@ -30,7 +29,6 @@ public class MemberFilter implements GlobalFilter {
             return chain.filter(exchange);
         }else {
             log.info("需要拦截的请求路径:{}",path);
-
         }
         String token=exchange.getRequest().getHeaders().getFirst("token");
         if(token==null||token.isEmpty()){

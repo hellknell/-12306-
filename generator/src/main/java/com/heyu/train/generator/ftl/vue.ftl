@@ -10,7 +10,7 @@
            :pagination="pagination"
            @change="handleTableChange"
            :loading="loading">
-    <template #bodyCell="{ column, record }">
+    <template #bodyCell="{ column,record }">
       <template v-if="column.dataIndex === 'operation'">
         <#if !readOnly>
         <a-space>
@@ -115,66 +115,60 @@ import {notification} from "ant-design-vue";
       ${domain}.value = {};
       visible.value = true;
     };
-
     const onEdit = (record) => {
       ${domain}.value = window.Tool.copy(record);
       visible.value = true;
     };
     
     const onDelete = (record) => {
-      request.delete("/admin/${do_main}/delete/" + record.id).then((response) => {
-        const data = response.data;
-        if (data.success) {
+      request.delete("/admin/${do_main}/delete/" + record.id).then((res) => {
+        if (res.success) {
           notification.success({description: "删除成功！"});
           handleQuery({
             page: pagination.value.current,
             size: pagination.value.pageSize,
           });
         } else {
-          notification.error({description: data.message});
+          notification.error({description: res.msg});
         }
-      });
-    };
-
+      })
+    }
     const handleOk = () => {
-      request.post("/admin/${do_main}/save", ${domain}.value).then((response) => {
-        let data = response.data;
-        if (data.success) {
+      request.post("/admin/${do_main}/save", ${domain}.value).then((res) => {
+        if (res.success) {
           notification.success({description: "保存成功！"});
           visible.value = false;
           handleQuery({
-            page: pagination.value.current,
-            size: pagination.value.pageSize
-          });
+            pageNum: pagination.value.current,
+            pageSize: pagination.value.pageSize
+          })
         } else {
-          notification.error({description: data.message});
+          notification.error({description: res.msg});
         }
       });
     };
     </#if>
-
     const handleQuery = (param) => {
       if (!param) {
         param = {
-          page: 1,
-          size: pagination.value.pageSize
+          pageNum: 1,
+          pageSize: pagination.value.pageSize
         };
       }
       loading.value = true;
       request.get("/admin/${do_main}/query-list", {
         params: {
-          pageNum: param.page,
-          pageSize: param.size
+          pageNum: param.pageNum,
+          pageSize: param.pageSize
         }
-      }).then((response) => {
+      }).then((res) => {
         loading.value = false;
-        let data = response.data;
-        if (data.success) {
-          ${domain}s.value = data.content.list;
-          pagination.value.current = param.page;
-          pagination.value.total = data.content.total;
+        if (res.success) {
+          ${domain}s.value = res.data.list;
+          pagination.value.current = param.pageNum;
+          pagination.value.total = res.content.total;
         } else {
-          notification.error({description: data.message});
+          notification.error({description: res.msg});
         }
       });
     };
@@ -182,15 +176,14 @@ import {notification} from "ant-design-vue";
     const handleTableChange = (page) => {
       pagination.value.pageSize = page.pageSize;
       handleQuery({
-        page: page.current,
-        size: page.pageSize
-      });
-    };
-
+        pageNum: page.current,
+        pageSize: page.pageSize
+      })
+    }
     onMounted(() => {
       handleQuery({
-        page: 1,
-        size: pagination.value.pageSize
+        pageNum: 1,
+        pageSize: pagination.value.pageSize
       });
     });
 </script>

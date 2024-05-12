@@ -13,7 +13,6 @@ const TrainSeat_TYPE_ARRAY = [
     {code: "2", desc: "二等座", price: 0.4},
     {code: "3", desc: "硬卧", price: 0.5},
     {code: "4", desc: "软卧", price: 0.6}]
-console.log(PASSAGER_TYPE)
-console.log(TrainSeat_TYPE_ARRAY)
-console.log(TrainSeat_TYPE)
-console.log(PASSAGER_TYPE_ARRAY)
+
+
+

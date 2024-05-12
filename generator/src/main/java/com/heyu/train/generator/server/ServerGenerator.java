@@ -16,7 +16,7 @@ import java.util.*;
 
 public class ServerGenerator {
     static boolean readOnly = false;
-    static String vuePath = "E://IdeaProhect/train12306/web/src/views/main/";
+    static String vuePath = "E://IdeaProhect/train12306/web/src/views/main/daily/";
     static String pomPath = "generator\\pom.xml";
     static String servicePath = "[module]/src/main/java/com/heyu/train/[module]/";
 
@@ -65,7 +65,7 @@ public class ServerGenerator {
         map.put("module", module);
         map.put("typeSet", typeSet);
         map.put("readOnly", readOnly);
-        
+//
 //        gen(servicePathFinal, domain, map, "service", "service");
 //        gen(servicePathFinal, domain, map, "controller", "controller");
 //        gen(servicePathFinal, domain, map, "req", "saveReq");

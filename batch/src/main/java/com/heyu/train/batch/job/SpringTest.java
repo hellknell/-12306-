@@ -23,13 +23,13 @@ public class SpringTest implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         DateTime now = null;
         now=DateTime.now();
-        System.out.println(Thread.currentThread().getName()+"定时任务执行了,当前时间:" + now);
-        try {
-            Thread.sleep(3000);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println(Thread.currentThread().getName()+"定时任务111执行了,当前时间:" + now);
+//        try {
+//            Thread.sleep(3000);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
         now = DateTime.now();
-        System.out.println(Thread.currentThread().getName()+"定时任务结束,当前时间:" + now);
+        System.out.println(Thread.currentThread().getName()+"定时任务111结束,当前时间:" + now);
     }
 }

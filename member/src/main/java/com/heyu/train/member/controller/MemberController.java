@@ -6,8 +6,8 @@ import com.heyu.train.member.req.MemberLoginReq;
 import com.heyu.train.member.req.MemberRegisterReq;
 import com.heyu.train.member.req.MemberSendCodeReq;
 import com.heyu.train.member.service.MemberSevice;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -19,27 +19,27 @@ import org.springframework.web.bind.annotation.*;
  * 日期：2024/3/23 17:36
  */
 @RestController
-@Api(tags = "会员管理")
+@Tag(name= "会员管理")
 @Validated
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
     final MemberSevice memberSevice;
 
-    @ApiOperation("会员注册")
+    @Operation(summary = "会员注册")
     @PostMapping("/register")
     public Result<Long> register(@Valid MemberRegisterReq req) {
         return Result.success(memberSevice.register(req));
     }
 
-    @ApiOperation("发送验证码")
+    @Operation(summary = "发送验证码")
     @GetMapping("/sendCode")
     public Result<Long> sendCode(@Valid MemberSendCodeReq req) {
         memberSevice.sendCode(req);
         return Result.success();
     }
 
-    @ApiOperation("会员数量")
+    @Operation(summary="会员数量")
     @GetMapping("/count")
     public Result<Integer> count() {
         Integer count = memberSevice.count();

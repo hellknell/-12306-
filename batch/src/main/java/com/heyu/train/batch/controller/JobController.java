@@ -11,10 +11,7 @@ import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,8 +38,7 @@ public class JobController {
         schedulerFactoryBean.getScheduler().triggerJob(JobKey.jobKey(jobClassName, jobGroupName));
         return new Result<>();
     }
-
-    @RequestMapping(value = "/add",method =  RequestMethod.POST)
+    @PostMapping(value = "/add")
     @Operation(summary = "创建定时任务")
     public Result add(@RequestBody  CronReq cronReq){
         String jodName = cronReq.getName();
@@ -114,7 +110,7 @@ public class JobController {
         log.info("重启定时任务结束：{}", commonResp);
         return commonResp;
     }
-    @Operation(summary =  "重新执行定时任务")
+    @Operation(summary =  "重置定时任务")
     @RequestMapping(value = "/reschedule",method =  RequestMethod.PUT)
     public Result reschedule(@RequestBody CronReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
@@ -131,7 +127,6 @@ public class JobController {
             CronTriggerImpl trigger1 = (CronTriggerImpl) scheduler.getTrigger(triggerKey);
             trigger1.setStartTime(new Date()); // 重新设置开始时间
             CronTrigger trigger = trigger1;
-
             // 按新的cronExpression表达式重新构建trigger
             trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withDescription(description).withSchedule(scheduleBuilder).build();
 

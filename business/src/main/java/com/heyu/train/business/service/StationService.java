@@ -41,7 +41,6 @@ public class StationService {
             if (ObjectUtil.isNotNull(station)) {
                 throw new BizException(BizExceptionEnum.USER_EXIST_ERROR);
             }
-
             req.setCreateTime(now);
             req.setUpdateTime(now);
             req.setId(SnowFlask.getSnowFlaskId());
@@ -53,8 +52,7 @@ public class StationService {
         }
     }
 
-    public PageInfo
-            <StationQueryResp> queryList(StationQueryReq req) {
+    public PageInfo<StationQueryResp> queryList(StationQueryReq req) {
         MyBatisWrapper<StationQueryResp> wrapper = new MyBatisWrapper<>();
         wrapper.select(StationField.Id, StationField.Name, StationField.CreateTime, StationField.UpdateTime, StationField.NamePinyin, StationField.NamePy);
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
@@ -62,8 +60,7 @@ public class StationService {
         int total = stationMapper.list(wrapper).size();
         List<Station> list = stationMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(),
                 req.getPageSize()));
-        List
-                <StationQueryResp> resp = BeanUtil.copyToList(list, StationQueryResp.class);
+        List<StationQueryResp> resp = BeanUtil.copyToList(list, StationQueryResp.class);
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
 
     }
@@ -73,8 +70,8 @@ public class StationService {
     }
 
     public List<StationQueryResp> queryStation() {
-        MyBatisWrapper<Station> wrapper=new MyBatisWrapper();
-        wrapper.select(StationField.Id,StationField.Name,StationField.NamePinyin,StationField.NamePy);
+        MyBatisWrapper<Station> wrapper = new MyBatisWrapper();
+        wrapper.select(StationField.Id, StationField.Name, StationField.NamePinyin, StationField.NamePy);
         List<Station> list = stationMapper.list(wrapper);
         List<StationQueryResp> stationQueryResps = BeanUtil.copyToList(list, StationQueryResp.class);
         return stationQueryResps;
