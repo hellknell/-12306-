@@ -10,7 +10,6 @@ public class DailyTrainField {
     public static DbField Date = new DbField("date","date","DATE","java.util.Date");
 
     public static DbField Code = new DbField("code","code","VARCHAR","java.lang.String");
-
     public static DbField Type = new DbField("type","type","CHAR","java.lang.String");
 
     public static DbField Start = new DbField("start","start","VARCHAR","java.lang.String");
@@ -44,11 +43,9 @@ public class DailyTrainField {
     public static FieldResult setType(String type) {
         return new FieldResult(Type, Collections.singletonList(type));
     }
-
     public static FieldResult setStart(String start) {
         return new FieldResult(Start, Collections.singletonList(start));
     }
-
     public static FieldResult setStartPinyin(String startPinyin) {
         return new FieldResult(StartPinyin, Collections.singletonList(startPinyin));
     }

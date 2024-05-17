@@ -150,7 +150,7 @@
   <update id="updateByPrimaryKey" parameterType="com.heyu.train.business.domain.TrainStation">
     update train_station
     set train_code = #{trainCode,jdbcType=VARCHAR},
-      index = #{index,jdbcType=INTEGER},
+        `index` = #{index,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       name_pinyin = #{namePinyin,jdbcType=VARCHAR},
       in_time = #{inTime,jdbcType=TIME},

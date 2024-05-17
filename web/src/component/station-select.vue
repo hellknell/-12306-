@@ -1,5 +1,5 @@
 <template>
-  <a-select v-model:value="name" show-search :filterOption="filter" allow-clear @change="change">
+  <a-select v-model:value="name" show-search :filterOption="filter" allow-clear @change="onChange">
     <a-select-option v-for="(item,index) in stations" :value="item.name" :key="index" :label="item.name+item.namePinyin+item.namePy">
       {{ item.name }} | {{ item.namePinyin}}--{{ item.namePy}}
     </a-select-option>
@@ -18,11 +18,16 @@ watch(() => props.modelValue, () => {
 const filter = (input, option) => {
   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
 }
-const change=()=>{
-  emit('update:modelValue',name.value)
-}
+const onChange = (value) => {
+  emit('update:modelValue', value);
+  let train = stations.value.filter(item => item.code === value)[0];
+  if (train ===null) {
+    train = {};
+  }
+  emit('change', train);
+};
 onMounted(() => {
-  request.get("/admin/station/query-station").then(res => {
+  request.get("/business/admin/station/query-station").then(res => {
     if (res.success) {
       stations.value = res.data
     }

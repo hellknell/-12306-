@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface CommonMapper<T>  {
     int deleteByPrimaryKey(Long id);
-
     int insert(T row);
 
     int insertSelective(T row);

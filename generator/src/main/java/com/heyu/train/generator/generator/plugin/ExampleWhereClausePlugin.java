@@ -14,7 +14,6 @@ public class ExampleWhereClausePlugin extends PluginAdapter {
     public boolean validate(List<String> list) {
         return true;
     }
-
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
         XmlElement rootElement = document.getRootElement();

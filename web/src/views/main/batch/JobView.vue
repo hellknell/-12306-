@@ -81,7 +81,7 @@
         </a-form-item>
         <a-form-item label="表达式">
           <a-input v-model:value="job.cronExpression"/>
-          <div class="ant-alert ant-alert-success">
+          <div class="ant-alert ant-alert-error">
             每5秒执行一次：0/5 * * * * ?
             <br>
             每5分钟执行一次：* 0/5 * * * ?
@@ -155,7 +155,7 @@ const handleModalOk = () => {
       notification.success({description: "保存成功！"});
       handleQuery();
     } else {
-      notification.error({description:res.msg});
+      notification.error({description: res.msg});
     }
   });
 };
@@ -182,8 +182,10 @@ const handleEdit = (record) => {
  */
 const handleDelete = (record) => {
   request.delete('/batch/admin/job/delete', {
-    name: record.name,
-    group: record.group
+    params: {
+      name: record.name,
+      group: record.group
+    }
   }).then((res) => {
     if (res.success) {
       notification.success({description: "删除成功！"});
@@ -252,4 +254,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
 </style>

@@ -30,8 +30,4 @@ knife4j:
   setting:
     language: zh_cn
     swagger-model-name: 实体类列表
-  basic: # 开始授权认证
-    enable: true
-    username: admin
-    password: 123456
 

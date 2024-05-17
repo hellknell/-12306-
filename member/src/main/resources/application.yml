@@ -11,6 +11,8 @@ logging:
   level:
     com.heyu.train.member.mapper: trace
 spring:
+  application:
+    name: member
   datasource:
     url: jdbc:mysql:///train_member?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: train

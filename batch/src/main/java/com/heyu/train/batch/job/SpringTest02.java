@@ -6,7 +6,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,10 +21,10 @@ public class SpringTest02 implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         DateTime now = null;
-        now=DateTime.now();
-        System.out.println(Thread.currentThread().getName()+"定时任务222执行了,当前时间:" + now);
+        now = DateTime.now();
+        System.out.println(Thread.currentThread().getName() + "定时任务222执行了,当前时间:" + now);
 
         now = DateTime.now();
-        System.out.println(Thread.currentThread().getName()+"定时任务2222结束,当前时间:" + now);
+        System.out.println(Thread.currentThread().getName() + "定时任务2222结束,当前时间:" + now);
     }
 }

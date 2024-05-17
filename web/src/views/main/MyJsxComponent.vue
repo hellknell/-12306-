@@ -11,11 +11,7 @@ export default defineComponent({
           <a-button onClick={getjsx}>加一</a-button>
           <div>{count.value}</div>
         </div>
-
     )
-
   },
-
 })
-
 </script>

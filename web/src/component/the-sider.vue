@@ -39,6 +39,12 @@
           每日车次
         </router-link>
       </a-menu-item>
+      <a-menu-item key="/daily/train-carriage">
+        <router-link to="/daily/train-carriage">
+          <UnorderedListOutlined/>
+          每日车厢
+        </router-link>
+      </a-menu-item>
       <a-menu-item key="/daily/train-seat">
       <router-link to="/daily/train-seat">
         <UnorderedListOutlined/>

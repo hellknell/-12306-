@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 ;
 
 /**
@@ -41,9 +40,12 @@ public class DailyTrainTicketController {
 
     }
     @Operation(summary = "删除每日车票")
-    @DeleteMapping("/del/{id}")
+    @DeleteMapping("/delete/{id}")
     public   Result<Void> queryList(@PathVariable  Long id) {
         dailyTrainTicketService.del(id);
         return  Result.success();
     }
+
+
+
 }

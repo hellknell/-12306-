@@ -30,7 +30,7 @@
   </delete>
   <insert id="insert" parameterType="com.heyu.train.business.domain.DailyTrainSeat">
     insert into daily_train_seat (id, date, train_code, 
-      carriage_index, row, col, 
+      carriage_index, `row`, `col`,
       seat_type, carriage_seat_index, sell, 
       create_time, update_time)
     values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE}, #{trainCode,jdbcType=VARCHAR}, 

@@ -29,7 +29,7 @@ import java.util.List;
 @Slf4j
 public class JobController {
     final SchedulerFactoryBean schedulerFactoryBean;
-    @RequestMapping(value = "/run",method = RequestMethod.POST)
+    @RequestMapping(value = "/run")
     @Operation(summary = "手动执行任务")
     public Result<Object> run(@RequestBody CronReq cronJobReq) throws SchedulerException {
         String jobClassName = cronJobReq.getName();
@@ -75,7 +75,7 @@ public class JobController {
     }
 
     @Operation(summary = "暂停定时任务")
-    @RequestMapping(value = "/pause",method =  {RequestMethod.POST})
+    @RequestMapping(value = "/pause")
     public Result pause(@RequestBody CronReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
@@ -93,7 +93,7 @@ public class JobController {
         return commonResp;
     }
     @Operation(summary = "重启定时任务")
-    @RequestMapping(value = "/resume",method=RequestMethod.POST)
+    @RequestMapping(value = "/resume")
     public Result resume(@RequestBody CronReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
@@ -111,7 +111,7 @@ public class JobController {
         return commonResp;
     }
     @Operation(summary =  "重置定时任务")
-    @RequestMapping(value = "/reschedule",method =  RequestMethod.PUT)
+    @RequestMapping(value = "/reschedule")
     public Result reschedule(@RequestBody CronReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
@@ -141,8 +141,8 @@ public class JobController {
         return commonResp;
     }
 @Operation(summary =  "删除定时任务")
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
-    public Result delete(@RequestBody CronReq cronJobReq) {
+    @RequestMapping(value = "/delete")
+    public Result delete( CronReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
         log.info("删除定时任务开始：{}，{}", jobClassName, jobGroupName);
@@ -161,7 +161,7 @@ public class JobController {
         return commonResp;
     }
 @Operation(summary =  "查看所有定时任务")
-    @RequestMapping(value="/query",method = RequestMethod.GET)
+    @RequestMapping(value="/query")
     public Result query() {
         log.info("查看所有定时任务开始");
         Result commonResp = new Result();

@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
  * 功能:
  * 作者:何宇
  * 日期：2024/3/21 15:04
- *
  * @author heyu
  */
 @SpringBootApplication

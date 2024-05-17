@@ -6,10 +6,13 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-    type-aliases-package:  com.heyu.train.business.domain
+    type-aliases-package: com.heyu.train.business.domain
 logging:
-  com.heyu.train.member.mapper: trace
+  level:
+    com.heyu.train.business.mapper: trace
 spring:
+  application:
+    name: business
   datasource:
     url: jdbc:mysql:///train_business?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: train_business
@@ -25,16 +28,3 @@ spring:
       connection-timeout: 30000 # 数据库链接超时时间，默认30秒，即30000
       connection-test-query: SELECT 1
 
-swagger:
-  enable: true
-  name: MAIYUN-FINANCE-ADMIN-API
-  description: MAIYUN-FINANCE-ADMIN-API 接口文档
-  version: 0.0.1
-
-# Swagger UI
-knife4j:
-  enable: true
-  production: false
-  setting:
-    language: zh-CN
-    enableDynamicParameter: true

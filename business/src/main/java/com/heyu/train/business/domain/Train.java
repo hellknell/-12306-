@@ -69,7 +69,6 @@ public class Train {
      * This method returns the value of the database column train.id
      *
      * @return the value of train.id
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public Long getId() {
@@ -81,7 +80,6 @@ public class Train {
      * This method sets the value of the database column train.id
      *
      * @param id the value for train.id
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setId(Long id) {
@@ -93,7 +91,6 @@ public class Train {
      * This method returns the value of the database column train.code
      *
      * @return the value of train.code
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public String getCode() {
@@ -105,7 +102,6 @@ public class Train {
      * This method sets the value of the database column train.code
      *
      * @param code the value for train.code
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setCode(String code) {
@@ -117,7 +113,6 @@ public class Train {
      * This method returns the value of the database column train.type
      *
      * @return the value of train.type
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public String getType() {
@@ -129,7 +124,6 @@ public class Train {
      * This method sets the value of the database column train.type
      *
      * @param type the value for train.type
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setType(String type) {
@@ -141,7 +135,6 @@ public class Train {
      * This method returns the value of the database column train.start
      *
      * @return the value of train.start
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public String getStart() {
@@ -153,7 +146,6 @@ public class Train {
      * This method sets the value of the database column train.start
      *
      * @param start the value for train.start
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setStart(String start) {
@@ -165,7 +157,6 @@ public class Train {
      * This method returns the value of the database column train.start_pinyin
      *
      * @return the value of train.start_pinyin
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public String getStartPinyin() {
@@ -177,7 +168,6 @@ public class Train {
      * This method sets the value of the database column train.start_pinyin
      *
      * @param startPinyin the value for train.start_pinyin
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setStartPinyin(String startPinyin) {
@@ -189,7 +179,6 @@ public class Train {
      * This method returns the value of the database column train.start_time
      *
      * @return the value of train.start_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public Date getStartTime() {
@@ -201,7 +190,6 @@ public class Train {
      * This method sets the value of the database column train.start_time
      *
      * @param startTime the value for train.start_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setStartTime(Date startTime) {
@@ -213,7 +201,6 @@ public class Train {
      * This method returns the value of the database column train.end
      *
      * @return the value of train.end
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public String getEnd() {
@@ -225,7 +212,6 @@ public class Train {
      * This method sets the value of the database column train.end
      *
      * @param end the value for train.end
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setEnd(String end) {
@@ -237,7 +223,6 @@ public class Train {
      * This method returns the value of the database column train.end_pinyin
      *
      * @return the value of train.end_pinyin
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public String getEndPinyin() {
@@ -249,7 +234,6 @@ public class Train {
      * This method sets the value of the database column train.end_pinyin
      *
      * @param endPinyin the value for train.end_pinyin
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setEndPinyin(String endPinyin) {
@@ -261,7 +245,6 @@ public class Train {
      * This method returns the value of the database column train.end_time
      *
      * @return the value of train.end_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public Date getEndTime() {
@@ -273,7 +256,6 @@ public class Train {
      * This method sets the value of the database column train.end_time
      *
      * @param endTime the value for train.end_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setEndTime(Date endTime) {
@@ -285,7 +267,6 @@ public class Train {
      * This method returns the value of the database column train.create_time
      *
      * @return the value of train.create_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public Date getCreateTime() {
@@ -297,7 +278,6 @@ public class Train {
      * This method sets the value of the database column train.create_time
      *
      * @param createTime the value for train.create_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setCreateTime(Date createTime) {
@@ -309,7 +289,6 @@ public class Train {
      * This method returns the value of the database column train.update_time
      *
      * @return the value of train.update_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public Date getUpdateTime() {
@@ -321,7 +300,6 @@ public class Train {
      * This method sets the value of the database column train.update_time
      *
      * @param updateTime the value for train.update_time
-     *
      * @mbg.generated Tue Apr 16 00:05:23 CST 2024
      */
     public void setUpdateTime(Date updateTime) {
@@ -333,4 +311,6 @@ public class Train {
 
     public void initUpdate() {
     }
+
+
 }

@@ -12,9 +12,9 @@ import lombok.Data;
 @Data
 public class PageReq {
     @NotNull(message = "页码不能为空")
-    private int  pageSize;
+    private int  pageSize=10;
 
     @NotNull(message = "页数不能为空")
     @Max(value = 100, message = "页数不能超过100")
-    private int  pageNum;
+    private int  pageNum=1;
 }

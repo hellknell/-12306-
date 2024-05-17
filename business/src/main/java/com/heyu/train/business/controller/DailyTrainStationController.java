@@ -38,10 +38,9 @@ public class DailyTrainStationController {
     @GetMapping("/query-list")
     public   Result<PageInfo<DailyTrainStationQueryResp>> queryList(@Valid DailyTrainStationQueryReq req) {
         return Result.success(dailyTrainStationService.queryList(req));
-
     }
     @Operation(summary = "删除每日车站")
-    @DeleteMapping("/del/{id}")
+    @DeleteMapping("/delete/{id}")
     public   Result<Void> queryList(@PathVariable  Long id) {
         dailyTrainStationService.del(id);
         return  Result.success();

@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /batch
 spring:
+  application:
+    name: batch
   datasource:
     url: jdbc:mysql:///train_batch?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: train_batch

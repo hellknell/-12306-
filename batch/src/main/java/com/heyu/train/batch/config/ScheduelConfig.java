@@ -20,9 +20,9 @@ public class ScheduelConfig {
     private MyJobFactory myJobFactory;
 
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("dataSource") DataSource dataSourc) {
+    public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("dataSource") DataSource dataSource) {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
-        schedulerFactoryBean.setDataSource(dataSourc);
+        schedulerFactoryBean.setDataSource(dataSource);
         schedulerFactoryBean.setJobFactory(myJobFactory);
         schedulerFactoryBean.setStartupDelay(2);
         return schedulerFactoryBean;

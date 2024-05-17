@@ -1,7 +1,8 @@
 <template>
   <a-space :size="15" style="display: flex;justify-content: flex-start">
-    <a-button type="primary" @click="handleQuery()">刷新</a-button>
-    <a-button type="primary" @click="onAdd">新增</a-button>
+    <train-select v-model:value="params.code" width="100"></train-select>
+    <a-date-picker placeholder="请输入日期" value-format="YYYY-MM-DD" v-model:value="params.date"/>
+    <a-button type="primary" @click="handleQuery()">查询</a-button>
   </a-space>
   <a-table :dataSource="dailyTrainTickets"
            :columns="columns"
@@ -87,6 +88,7 @@
 import {onMounted, ref} from 'vue';
 import request from "@/util/request";
 import {notification} from "ant-design-vue";
+import TrainSelect from "@/component/train-select.vue";
 
 const visible = ref(false);
 let dailyTrainTicket = ref({
@@ -221,6 +223,10 @@ const onAdd = () => {
   dailyTrainTicket.value = {};
   visible.value = true;
 };
+const params = ref({
+  date: undefined,
+  code: undefined
+})
 const onEdit = (record) => {
   dailyTrainTicket.value = JSON.parse(JSON.stringify(record));
   visible.value = true;
@@ -231,8 +237,8 @@ const onDelete = (record) => {
     if (res.success) {
       notification.success({description: "删除成功！"});
       handleQuery({
-        page: pagination.value.current,
-        size: pagination.value.pageSize,
+        pageNum: pagination.value.current,
+        pageSize: pagination.value.pageSize,
       });
     } else {
       notification.error({description: res.msg});
@@ -264,14 +270,17 @@ const handleQuery = (param) => {
   request.get("/business/admin/daily-train-ticket/query-list", {
     params: {
       pageNum: param.pageNum,
-      pageSize: param.pageSize
+      pageSize: param.pageSize,
+      trainCode: params.value.code,
+      date: params.value.date
     }
   }).then((res) => {
     loading.value = false;
     if (res.success) {
       dailyTrainTickets.value = res.data.list;
       pagination.value.current = param.pageNum;
-      pagination.value.total = res.content.total;
+      pagination.value.total = res.data.total;
+
     } else {
       notification.error({description: res.msg});
     }

@@ -97,9 +97,9 @@
 <!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
 <!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
 <!--        </table>-->
-<!--        <table tableName="daily_train_ticket" domainObjectName="DailyTrainTicket" enableCountByExample="false"-->
-<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
-<!--        </table>-->
+        <table tableName="daily_train_ticket" domainObjectName="DailyTrainTicket" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
     </context>
 </generatorConfiguration>

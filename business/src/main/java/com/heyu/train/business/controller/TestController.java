@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class TestController {
-    @GetMapping("/test")
+    @GetMapping("/hello")
     public String hello() {
-        return "hello";
+        return "hello World";
     }
 }

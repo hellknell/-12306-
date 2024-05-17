@@ -67,8 +67,7 @@ public class TrainSeatService {
         int total = trainSeatMapper.list(wrapper).size();
         List<TrainSeat> list = trainSeatMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(),
                 req.getPageSize()));
-        List
-                <TrainSeatQueryResp> resp = BeanUtil.copyToList(list, TrainSeatQueryResp.class);
+        List<TrainSeatQueryResp> resp = BeanUtil.copyToList(list, TrainSeatQueryResp.class);
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
 
     }

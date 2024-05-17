@@ -161,7 +161,7 @@
     update daily_train_station
     set date = #{date,jdbcType=DATE},
       train_code = #{trainCode,jdbcType=VARCHAR},
-      index = #{index,jdbcType=INTEGER},
+      `index` = #{index,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       name_pinyin = #{namePinyin,jdbcType=VARCHAR},
       in_time = #{inTime,jdbcType=TIME},

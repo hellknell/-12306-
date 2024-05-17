@@ -10,10 +10,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-;
+;import java.util.Date;
 
 /**
  * 功能:
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  * 日期：2024/3/23 17:36
  */
 @RestController
-@Tag(name= "乘客管理")
+@Tag(name= "每日车次管理")
 @Validated
 @RequestMapping("/admin/daily-train")
 @RequiredArgsConstructor
@@ -38,13 +39,18 @@ public class DailyTrainController {
     @GetMapping("/query-list")
     public   Result<PageInfo<DailyTrainQueryResp>> queryList(@Valid DailyTrainQueryReq req) {
         return Result.success(dailyTrainService.queryList(req));
-
     }
     @Operation(summary = "删除乘客")
     @DeleteMapping("/delete/{id}")
     public   Result<Void> queryList(@PathVariable  Long id) {
         dailyTrainService.del(id);
         return  Result.success();
-
     }
+    @Operation(summary = "生成余票")
+    @GetMapping("/generate/{date}")
+    public Result<Void> generateTicket(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable Date date) {
+        dailyTrainService.generate(date);
+        return Result.success();
+    }
+
 }

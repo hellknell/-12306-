@@ -1,8 +1,10 @@
 <template>
 
   <a-space :size="15" style="display: flex;justify-content: flex-start">
-    <a-button type="primary" @click="handleQuery()">刷新</a-button>
-    <a-button type="primary" @click="onAdd">新增</a-button>
+    <train-select v-model:value="params.code" width="100"></train-select>
+    <a-date-picker placeholder="请输入日期" v-model:value="params.date"/>
+    <a-button type="primary" @click="handleQuery()">查询</a-button>
+    <a-button type="primary" @click="gen">生成每日车次信息</a-button>
   </a-space>
   <a-table :dataSource="dailyTrains"
            :columns="columns"
@@ -34,10 +36,10 @@
            ok-text="确认" cancel-text="取消">
     <a-form :model="dailyTrain" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
       <a-form-item label="日期">
-        <a-date-picker v-model:value="dailyTrain.date" valueFormat="YYYY-MM-DD" placeholder="请选择日期"/>
+        <a-date-picker v-model:value="dailyTrain.date" value-format="YYYY-MM-DD" placeholder="请选择日期"/>
       </a-form-item>
       <a-form-item label="车次编号">
-        <a-input v-model:value="dailyTrain.code"/>
+        <train-select v-model:value="dailyTrain.code" @change="onChange"></train-select>
       </a-form-item>
       <a-form-item label="车次类型">
         <a-select v-model:value="dailyTrain.type">
@@ -50,19 +52,27 @@
         <a-input v-model:value="dailyTrain.start"/>
       </a-form-item>
       <a-form-item label="始发站拼音">
-        <a-input v-model:value="dailyTrain.startPinyin"/>
+        <a-input v-model:value="dailyTrain.startPinyin" disabled/>
       </a-form-item>
       <a-form-item label="出发时间">
-        <a-time-picker v-model:value="dailyTrain.startTime" valueFormat="HH:mm:ss" placeholder="请选择时间"/>
+        <a-time-picker v-model:value="dailyTrain.startTime" value-format="HH:mm:ss" placeholder="请选择时间"/>
       </a-form-item>
       <a-form-item label="终点站">
         <a-input v-model:value="dailyTrain.end"/>
       </a-form-item>
       <a-form-item label="终点站拼音">
-        <a-input v-model:value="dailyTrain.endPinyin"/>
+        <a-input v-model:value="dailyTrain.endPinyin" disabled/>
       </a-form-item>
       <a-form-item label="到站时间">
-        <a-time-picker v-model:value="dailyTrain.endTime" valueFormat="HH:mm:ss" placeholder="请选择时间"/>
+        <a-time-picker v-model:value="dailyTrain.endTime" value-format="HH:mm:ss" placeholder="请选择时间"/>
+      </a-form-item>
+    </a-form>
+  </a-modal>
+  <a-modal v-model:visible="genVisible" title="生成车次" @ok="handleGenDailyOk"
+           :confirm-loading="genDailyLoading" ok-text="确认" cancel-text="取消">
+    <a-form :model="genDaily" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
+      <a-form-item label="日期">
+        <a-date-picker v-model:value="genDaily.date" value-format="YYYY-MM-DD" placeholder="请选择日期"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -72,21 +82,26 @@
 import {onMounted, ref} from 'vue';
 import request from "@/util/request";
 import {notification} from "ant-design-vue";
+import TrainSelect from "@/component/train-select.vue";
+import dayjs from "dayjs";
+
 const TRAIN_TYPE_ARRAY = ref([{
-  code: "1",
+  code: "0",
   desc: "高铁",
 
 }, {
-  code: "2",
+  code: "1",
   desc: "动车",
 },
   {
-    code: "3",
+    code: "2",
     desc: "普快",
   }
 
 ])
+const genVisible = ref(false)
 const visible = ref(false);
+const genDailyLoading = ref(false);
 let dailyTrain = ref({
   id: undefined,
   date: undefined,
@@ -101,6 +116,9 @@ let dailyTrain = ref({
   createTime: undefined,
   updateTime: undefined,
 });
+const genDaily = ref({
+  date: undefined
+})
 const dailyTrains = ref([]);
 // 分页的三个属性名是固定的
 const pagination = ref({
@@ -108,6 +126,10 @@ const pagination = ref({
   current: 1,
   pageSize: 10,
 });
+const params = ref({
+  code: null,
+  date: null
+})
 let loading = ref(false);
 const columns = [
   {
@@ -166,17 +188,19 @@ const onAdd = () => {
   visible.value = true;
 };
 const onEdit = (record) => {
-  dailyTrain.value = JSON.parse(JSON.stringify(record));
   visible.value = true;
+  dailyTrain.value = JSON.parse(JSON.stringify(record))
+
 };
 
 const onDelete = (record) => {
+  Object.assign(dailyTrain, record);
   request.delete("/business/admin/daily-train/delete/" + record.id).then((res) => {
     if (res.success) {
       notification.success({description: "删除成功！"});
       handleQuery({
-        page: pagination.value.current,
-        size: pagination.value.pageSize,
+        pageNum: pagination.value.current,
+        pageSize: pagination.value.pageSize,
       });
     } else {
       notification.error({description: res.msg});
@@ -197,6 +221,12 @@ const handleOk = () => {
     }
   });
 };
+const onChange = (train) => {
+  console.log(train)
+  let t = JSON.parse(JSON.stringify(train))
+  delete t.id;
+  Object.assign(dailyTrain.value, t);
+}
 const handleQuery = (param) => {
   if (!param) {
     param = {
@@ -205,28 +235,50 @@ const handleQuery = (param) => {
     }
   }
   loading.value = true;
+  if (params.value.date) {
+    var date1 = dayjs(params.value.date, "YYYY-MM-DD")
+  }
   request.get("/business/admin/daily-train/query-list", {
     params: {
       pageNum: param.pageNum,
-      pageSize: param.pageSize
+      pageSize: param.pageSize,
+      code: params.value.code,
+      date: date1
     }
   }).then((res) => {
     loading.value = false;
     if (res.success) {
       dailyTrains.value = res.data.list;
       pagination.value.current = param.pageNum;
-      pagination.value.total = res.content.total;
+      pagination.value.total = res.data.total;
     } else {
       notification.error({description: res.msg});
     }
   });
 };
-
+const gen = () => {
+  genVisible.value = true
+}
 const handleTableChange = (page) => {
   pagination.value.pageSize = page.pageSize;
   handleQuery({
     pageNum: page.current,
     pageSize: page.pageSize
+  })
+}
+const handleGenDailyOk = () => {
+  genDailyLoading.value = true;
+  request.get("/business/admin/daily-train/generate/" + genDaily.value.date).then(res => {
+    genDailyLoading.value = false;
+    if (res.success) {
+      notification.success({description: "生成成功！"});
+      genVisible.value = false
+      handleQuery({
+        pageNum: pagination.value.current,
+        pageSize: pagination.value.pageSize
+      })
+    }
+
   })
 }
 onMounted(() => {

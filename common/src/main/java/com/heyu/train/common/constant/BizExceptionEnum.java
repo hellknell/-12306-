@@ -21,7 +21,8 @@ public enum BizExceptionEnum {
     TRAIN_EXIST_ERROR("5007", "火车已存在"),
     TRAIN_STATION_EXIST_ERROR("5008", "车站已存在"),
 
-    TRAIN_CARRIAGE_EXIST_ERROR("5009", "车厢已存在");
+    TRAIN_CARRIAGE_EXIST_ERROR("5009", "车厢已存在"),
+    NO_DAILY_TRAIN("50010", "没有车次可生成");
 
 
     private String code;

@@ -156,8 +156,12 @@ public class MyBatisWrapper<T> {
             if (orderByClause.length() > 0) {
                 orderByClause.append(",");
             }
-            orderByClause.append(field.getDbName());
-        }
+            if(field.getDbName().equals("index")){
+                orderByClause.append("`index`");
+            }else{
+                orderByClause.append(field.getDbName());
+            }
+            }
         return this;
     }
 

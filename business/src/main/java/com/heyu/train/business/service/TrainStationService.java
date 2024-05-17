@@ -15,7 +15,9 @@ import com.heyu.train.generator.generator.help.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import  static com.heyu.train.business.domain.TrainStationField.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +59,7 @@ public class TrainStationService {
         }else {
             wrapper.select(TrainStationField.TrainCode, TrainStationField.Id, TrainStationField.Index, TrainStationField.Name, TrainStationField.InTime, TrainStationField.StopTime, TrainStationField.OutTime, TrainStationField.NamePinyin, TrainStationField.NamePinyin, TrainStationField.Km).orderByAsc(TrainStationField.TrainCode).whereBuilder().andEq(TrainStationField.setTrainCode(req.getTrainCode()));
         }
+
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = trainStationMapper.list(wrapper).size();
         List<TrainStation> list = trainStationMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(),
@@ -67,5 +70,11 @@ public class TrainStationService {
 
     public void del(Long id) {
         trainStationMapper.deleteByPrimaryKey(id);
+    }
+    public List<TrainStation> selectByTrainCode(String trainCode){
+        MyBatisWrapper<TrainStation> wrapper = new MyBatisWrapper<>();
+        wrapper.select(TrainStationField.TrainCode, TrainStationField.Id, TrainStationField.Index, TrainStationField.Name, TrainStationField.InTime, TrainStationField.StopTime, TrainStationField.OutTime, TrainStationField.NamePinyin, TrainStationField.NamePinyin, TrainStationField.Km).orderByAsc(TrainStationField.TrainCode).whereBuilder().andEq(setTrainCode(trainCode));
+       wrapper.orderByAsc(TrainStationField.Index);
+        return trainStationMapper.list(wrapper);
     }
 }

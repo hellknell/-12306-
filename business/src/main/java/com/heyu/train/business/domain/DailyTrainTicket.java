@@ -7,7 +7,7 @@ import java.util.Date;
  * 余票信息（表：daily_train_ticket）
  *
  * @author heyu
- * @date 2024-05-10 00:57:12
+ * @date 2024-05-15 11:32:11
  */
 public class DailyTrainTicket {
     /**
@@ -24,7 +24,6 @@ public class DailyTrainTicket {
      * 车次编号
      */
     private String trainCode;
-
     /**
      * 出发站
      */
@@ -121,7 +120,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.id
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Long getId() {
         return id;
@@ -133,7 +132,7 @@ public class DailyTrainTicket {
      *
      * @param id the value for daily_train_ticket.id
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setId(Long id) {
         this.id = id;
@@ -145,7 +144,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.date
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Date getDate() {
         return date;
@@ -157,7 +156,7 @@ public class DailyTrainTicket {
      *
      * @param date the value for daily_train_ticket.date
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setDate(Date date) {
         this.date = date;
@@ -169,7 +168,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.train_code
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public String getTrainCode() {
         return trainCode;
@@ -181,7 +180,7 @@ public class DailyTrainTicket {
      *
      * @param trainCode the value for daily_train_ticket.train_code
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setTrainCode(String trainCode) {
         this.trainCode = trainCode;
@@ -193,7 +192,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.start
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public String getStart() {
         return start;
@@ -205,7 +204,7 @@ public class DailyTrainTicket {
      *
      * @param start the value for daily_train_ticket.start
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setStart(String start) {
         this.start = start;
@@ -217,7 +216,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.start_pinyin
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public String getStartPinyin() {
         return startPinyin;
@@ -229,7 +228,7 @@ public class DailyTrainTicket {
      *
      * @param startPinyin the value for daily_train_ticket.start_pinyin
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setStartPinyin(String startPinyin) {
         this.startPinyin = startPinyin;
@@ -241,7 +240,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.start_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Date getStartTime() {
         return startTime;
@@ -253,7 +252,7 @@ public class DailyTrainTicket {
      *
      * @param startTime the value for daily_train_ticket.start_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
@@ -265,7 +264,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.start_index
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Integer getStartIndex() {
         return startIndex;
@@ -277,7 +276,7 @@ public class DailyTrainTicket {
      *
      * @param startIndex the value for daily_train_ticket.start_index
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setStartIndex(Integer startIndex) {
         this.startIndex = startIndex;
@@ -289,7 +288,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.end
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public String getEnd() {
         return end;
@@ -301,7 +300,7 @@ public class DailyTrainTicket {
      *
      * @param end the value for daily_train_ticket.end
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setEnd(String end) {
         this.end = end;
@@ -313,7 +312,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.end_pinyin
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public String getEndPinyin() {
         return endPinyin;
@@ -325,7 +324,7 @@ public class DailyTrainTicket {
      *
      * @param endPinyin the value for daily_train_ticket.end_pinyin
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setEndPinyin(String endPinyin) {
         this.endPinyin = endPinyin;
@@ -337,7 +336,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.end_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Date getEndTime() {
         return endTime;
@@ -349,7 +348,7 @@ public class DailyTrainTicket {
      *
      * @param endTime the value for daily_train_ticket.end_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
@@ -361,7 +360,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.end_index
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Integer getEndIndex() {
         return endIndex;
@@ -373,7 +372,7 @@ public class DailyTrainTicket {
      *
      * @param endIndex the value for daily_train_ticket.end_index
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setEndIndex(Integer endIndex) {
         this.endIndex = endIndex;
@@ -385,7 +384,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.ydz
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Integer getYdz() {
         return ydz;
@@ -397,7 +396,7 @@ public class DailyTrainTicket {
      *
      * @param ydz the value for daily_train_ticket.ydz
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setYdz(Integer ydz) {
         this.ydz = ydz;
@@ -409,7 +408,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.ydz_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public BigDecimal getYdzPrice() {
         return ydzPrice;
@@ -421,7 +420,7 @@ public class DailyTrainTicket {
      *
      * @param ydzPrice the value for daily_train_ticket.ydz_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setYdzPrice(BigDecimal ydzPrice) {
         this.ydzPrice = ydzPrice;
@@ -433,7 +432,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.edz
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Integer getEdz() {
         return edz;
@@ -445,7 +444,7 @@ public class DailyTrainTicket {
      *
      * @param edz the value for daily_train_ticket.edz
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setEdz(Integer edz) {
         this.edz = edz;
@@ -457,7 +456,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.edz_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public BigDecimal getEdzPrice() {
         return edzPrice;
@@ -469,7 +468,7 @@ public class DailyTrainTicket {
      *
      * @param edzPrice the value for daily_train_ticket.edz_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setEdzPrice(BigDecimal edzPrice) {
         this.edzPrice = edzPrice;
@@ -481,7 +480,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.rw
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Integer getRw() {
         return rw;
@@ -493,7 +492,7 @@ public class DailyTrainTicket {
      *
      * @param rw the value for daily_train_ticket.rw
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setRw(Integer rw) {
         this.rw = rw;
@@ -505,7 +504,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.rw_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public BigDecimal getRwPrice() {
         return rwPrice;
@@ -517,7 +516,7 @@ public class DailyTrainTicket {
      *
      * @param rwPrice the value for daily_train_ticket.rw_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setRwPrice(BigDecimal rwPrice) {
         this.rwPrice = rwPrice;
@@ -529,7 +528,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.yw
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Integer getYw() {
         return yw;
@@ -541,7 +540,7 @@ public class DailyTrainTicket {
      *
      * @param yw the value for daily_train_ticket.yw
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setYw(Integer yw) {
         this.yw = yw;
@@ -553,7 +552,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.yw_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public BigDecimal getYwPrice() {
         return ywPrice;
@@ -565,7 +564,7 @@ public class DailyTrainTicket {
      *
      * @param ywPrice the value for daily_train_ticket.yw_price
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setYwPrice(BigDecimal ywPrice) {
         this.ywPrice = ywPrice;
@@ -577,7 +576,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.create_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Date getCreateTime() {
         return createTime;
@@ -589,7 +588,7 @@ public class DailyTrainTicket {
      *
      * @param createTime the value for daily_train_ticket.create_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
@@ -601,7 +600,7 @@ public class DailyTrainTicket {
      *
      * @return the value of daily_train_ticket.update_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public Date getUpdateTime() {
         return updateTime;
@@ -613,7 +612,7 @@ public class DailyTrainTicket {
      *
      * @param updateTime the value for daily_train_ticket.update_time
      *
-     * @mbg.generated Fri May 10 00:57:12 CST 2024
+     * @mbg.generated Wed May 15 11:32:11 CST 2024
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;

@@ -1,6 +1,6 @@
 package com.heyu.train.batch.config;
 
-import com.heyu.train.batch.job.SpringTest;
+import com.heyu.train.batch.job.DailyTrainJob;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
@@ -19,11 +19,10 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail jobDetail(){
-        return JobBuilder.newJob(SpringTest.class).withIdentity("SpringTest","g01").storeDurably().build();
-
+        return JobBuilder.newJob(DailyTrainJob.class).withIdentity("DailyTrainJob","g01").storeDurably().build();
     }
     @Bean
     public Trigger trigger(){
-        return TriggerBuilder.newTrigger().forJob(jobDetail()).withIdentity("SpringTest","trigger").startNow().withSchedule(org.quartz.CronScheduleBuilder.cronSchedule("1/2 * * * * ?")).build();
+        return TriggerBuilder.newTrigger().forJob(jobDetail()).withIdentity("DailyTrainJob","trigger").startNow().withSchedule(org.quartz.CronScheduleBuilder.cronSchedule("1/2 * * * * ?")).build();
     }
 }

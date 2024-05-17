@@ -79,4 +79,5 @@ public class TrainCarriageService {
         return trainCarriageMapper.list(wrapper);
 
     }
+
 }

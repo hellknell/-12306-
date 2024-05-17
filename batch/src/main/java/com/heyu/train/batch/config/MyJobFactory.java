@@ -19,7 +19,6 @@ public class MyJobFactory extends SpringBeanJobFactory {
     @Resource
     private AutowireCapableBeanFactory beanFactory;
 
-
     @Override
     protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
         Object jobInstance = super.createJobInstance(bundle);

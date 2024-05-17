@@ -82,7 +82,7 @@ public class TrainService {
 
     public List<TrainQueryResp> queryTrainCodes() {
         MyBatisWrapper<Train> wrapper = new MyBatisWrapper<>();
-        wrapper.select(TrainField.Id, TrainField.Code, TrainField.Start, TrainField.End);
+        wrapper.select(TrainField.Id, TrainField.UpdateTime, TrainField.CreateTime, TrainField.End, TrainField.Code, TrainField.StartTime, TrainField.Start, TrainField.End, TrainField.EndTime, TrainField.Type, TrainField.StartPinyin, TrainField.EndPinyin);
         List<Train> list = trainMapper.list(wrapper);
         List<TrainQueryResp> resp = BeanUtil.copyToList(list, TrainQueryResp.class);
         return resp;

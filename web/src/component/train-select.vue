@@ -1,5 +1,5 @@
 <template>
-  <a-select v-model:value="trainCode" :style="'width :'+width" show-search :filterOption="filter" allow-clear @change="change">
+  <a-select v-model:value="trainCode" :style="'width :'+width" show-search :filterOption="filter" allow-clear @change="onChange">
     <a-select-option v-for="(item,index) in trains" :value="item.code" :key="index" :label="item.code+item.start+item.end">
       {{ item.code }} | {{ item.start }}--{{ item.end}}
     </a-select-option>
@@ -23,11 +23,17 @@ if(width.value){
 const filter = (input, option) => {
   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
 }
-const change=()=>{
-  emit('update:modelValue',trainCode.value)
-}
+
+const onChange = (value) => {
+  emit('update:modelValue', value);
+  let train = trains.value.filter(item => item.code === value)[0];
+  if (train ===null) {
+    train = {};
+  }
+  emit('change', train);
+};
 onMounted(() => {
-  request.get("/admin/train/query-train-code").then(res => {
+  request.get("/business/admin/train/query-train-code").then(res => {
     if (res.success) {
       trains.value = res.data
     }
