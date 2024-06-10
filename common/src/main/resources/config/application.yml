@@ -1,6 +1,9 @@
 
 sys:
   redis-template-config: true
+logging:
+  level:
+    com.heyu.train.common.feign.MemberFeign: debug
 redis:
   database: 0
   port: 6379

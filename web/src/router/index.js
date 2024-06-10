@@ -22,6 +22,11 @@ const routes = [
                 name: 'Base',
                 children: [
                     {
+                        path: 'order'
+                        , name: 'Order'
+                        , component: () => import('../views/main/base/ConfirmOrderView.vue')
+                    },
+                    {
                         path: 'station',
                         name: 'Station',
                         component: () => import('../views/main/base/StationView.vue')

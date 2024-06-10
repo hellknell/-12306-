@@ -52,6 +52,12 @@
               跑批管理
             </router-link>
           </a-menu-item>
+        <a-menu-item key="/base/order">
+          <router-link to="/base/order">
+            <UnorderedListOutlined/>
+            订单管理
+          </router-link>
+        </a-menu-item>
       </a-menu>
     </div>
     <div style="flex: 2;color: white;font-weight: 400;font-size: 17px;display: flex">

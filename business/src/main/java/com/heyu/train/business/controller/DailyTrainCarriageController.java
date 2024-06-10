@@ -19,28 +19,30 @@ import org.springframework.web.bind.annotation.*;
  * 日期：2024/3/23 17:36
  */
 @RestController
-@Tag(name= "每日车厢管理")
+@Tag(name = "每日车厢管理")
 @Validated
 @RequestMapping("/admin/daily-train-carriage")
 @RequiredArgsConstructor
 public class DailyTrainCarriageController {
     final DailyTrainCarriageService dailyTrainCarriageService;
 
+    @Operation(summary = "删除车厢")
+    @DeleteMapping("/del/{id}")
+    public Result<Void> queryList(@PathVariable Long id) {
+        dailyTrainCarriageService.del(id);
+        return Result.success();
+    }
+
+    @Operation(summary = "查询车厢")
+    @GetMapping("/query-list")
+    public Result<PageInfo<DailyTrainCarriageQueryResp>> queryList(@Valid DailyTrainCarriageQueryReq req) {
+        return Result.success(dailyTrainCarriageService.queryList(req));
+    }
+
     @Operation(summary = "新增/保存每日车厢")
     @PostMapping("/save")
     public Result<Void> login(@Valid @RequestBody DailyTrainCarriageSaveReq req) {
         dailyTrainCarriageService.save(req);
         return Result.success();
-    }
-    @Operation(summary = "查询车厢")
-    @GetMapping("/query-list")
-    public   Result<PageInfo<DailyTrainCarriageQueryResp>> queryList(@Valid DailyTrainCarriageQueryReq req) {
-        return Result.success(dailyTrainCarriageService.queryList(req));
-    }
-    @Operation(summary = "删除车厢")
-    @DeleteMapping("/del/{id}")
-    public   Result<Void> queryList(@PathVariable  Long id) {
-        dailyTrainCarriageService.del(id);
-        return  Result.success();
     }
 }

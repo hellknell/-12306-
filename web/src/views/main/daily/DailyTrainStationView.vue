@@ -65,6 +65,7 @@ import request from "@/util/request";
 import {notification} from "ant-design-vue";
 import {pinyin} from "pinyin-pro";
 import TrainSelect from "@/component/train-select.vue";
+import dayjs from "dayjs";
 
 const visible = ref(false);
 const dailyTrainStation = ref({
@@ -147,6 +148,17 @@ const params = ref({
 watch(() => dailyTrainStation.value.name, () => {
   dailyTrainStation.value.namePinyin = dailyTrainStation.value.name ? pinyin(dailyTrainStation.value.name, {toneType: 'none'}).replaceAll(" ", "") : ""
 })
+watch(() => dailyTrainStation.value.inTime, () => {
+  let diff = dayjs(dailyTrainStation.value.outTime, 'HH:mm:ss').diff(dayjs(dailyTrainStation.value.inTime, 'HH:mm:ss'), 'seconds');
+  dailyTrainStation.value.stopTime = dayjs('00:00:0', 'HH:mm:ss').second(diff).format('HH:mm:ss');
+}, {immediate: true});
+
+// 自动计算停车时长
+watch(() => dailyTrainStation.value.outTime, () => {
+  let diff = dayjs(dailyTrainStation.value.outTime, 'HH:mm:ss').diff(dayjs(dailyTrainStation.value.inTime, 'HH:mm:ss'), 'seconds');
+  dailyTrainStation.value.stopTime = dayjs('00:00:00', 'HH:mm:ss').second(diff).format('HH:mm:ss');
+}, {immediate: true});
+
 const onAdd = () => {
   dailyTrainStation.value = {};
   visible.value = true;

@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public enum SeatTypeEnum {
+
     FIRST_A("A", "A", "1"),
     FIRST_C("C", "C", "1"),
     FIRST_D("D", "D", "1"),
@@ -15,7 +16,6 @@ public enum SeatTypeEnum {
     SECOND_B("B", "B", "2"),
     SECOND_C("C", "C", "2"),
     SECOND_D("D", "D", "2"),
-    SECOND_E("E", "E", "2"),
     SECOND_F("F", "F", "2"),
     SOLID_UP("上铺", "上铺", "3"),
     SOLID_DOWN("下铺", "下铺", "3"),

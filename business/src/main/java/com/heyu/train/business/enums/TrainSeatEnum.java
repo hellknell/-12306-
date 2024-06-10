@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 
 public enum TrainSeatEnum {
     //    N元/公里
-    FIRST("1", "一等座", new BigDecimal("0.4")),
-    SECOND("2", "二等座", new BigDecimal("0.3")),
-    SOLID("3", "硬卧", new BigDecimal("0.5")),
-    SOFT("4", "软卧", new BigDecimal("0.6"));
+    YDZ("1", "一等座", new BigDecimal("0.4")),
+    EDZ("2", "二等座", new BigDecimal("0.3")),
+    YW("3", "硬卧", new BigDecimal("0.5")),
+    RW("4", "软卧", new BigDecimal("0.6"));
     private String code;
     private String desc;
     private BigDecimal price;

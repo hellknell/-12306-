@@ -36,13 +36,6 @@ public void save(${Domain}SaveReq req) {
 ${Domain} p1 = BeanUtil.copyProperties(req, ${Domain}.class);
 DateTime now = DateTime.now();
 if (ObjectUtil.isNull(p1.getId()) ) {
-MyBatisWrapper<${Domain}> wrapper = new MyBatisWrapper<>();
-wrapper.select(${Domain}Field.Id);
-${Domain} ${domain} = ${domain}Mapper.topOne(wrapper);
-if (ObjectUtil.isNotNull(${domain})) {
-throw new BizException(BizExceptionEnum.USER_EXIST_ERROR);
-}
-
 req.setCreateTime(now);
 req.setUpdateTime(now);
 req.setId(SnowFlask.getSnowFlaskId());
@@ -56,23 +49,22 @@ ${domain}Mapper.updateByPrimaryKey(p1);
 
 }
 
-public PageInfo
-<${Domain}QueryResp> queryList(${Domain}QueryReq req) {
-    MyBatisWrapper
-    <${Domain}QueryResp> wrapper = new MyBatisWrapper<>();
+public PageInfo<${Domain}QueryResp> queryList(${Domain}QueryReq req) {
+    MyBatisWrapper<${Domain}QueryResp> wrapper = new MyBatisWrapper<>();
         wrapper.select();
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
 
         int total = ${domain}Mapper.list(wrapper).size();
         List<${Domain}> list = ${domain}Mapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(),
         req.getPageSize()));
-        List
-        <${Domain}QueryResp> resp = BeanUtil.copyToList(list, ${Domain}QueryResp.class);
+        List<${Domain}QueryResp> resp = BeanUtil.copyToList(list, ${Domain}QueryResp.class);
             return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
 
             }
 
             public void del(Long id) {
             ${domain}Mapper.deleteByPrimaryKey(id);
+            }
+
             }
             }

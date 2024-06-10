@@ -48,9 +48,6 @@ const collapsed = ref(false)
 // const toggleCollapsed = () => {
 //   state.collapsed =!state.collapsed
 //   state.openKeys = state.collapsed ? [] : state.preOpenKeys
-//
-// }
-
 </script>
 
 

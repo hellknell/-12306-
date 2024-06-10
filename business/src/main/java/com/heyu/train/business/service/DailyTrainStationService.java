@@ -37,7 +37,6 @@ public class DailyTrainStationService {
         DailyTrainStation p1 = BeanUtil.copyProperties(req, DailyTrainStation.class);
         DateTime now = DateTime.now();
         if (ObjectUtil.isNull(p1.getId())) {
-
             req.setCreateTime(now);
             req.setUpdateTime(now);
             req.setId(SnowFlask.getSnowFlaskId());
@@ -56,9 +55,9 @@ public class DailyTrainStationService {
         Criteria criteria = wrapper.select(DailyTrainStationField.TrainCode, DailyTrainTicketField.Date, DailyTrainStationField.Id, DailyTrainStationField.Index, DailyTrainStationField.Name, DailyTrainStationField.InTime, DailyTrainStationField.StopTime, DailyTrainStationField.OutTime, DailyTrainStationField.NamePinyin, DailyTrainStationField.NamePinyin, DailyTrainStationField.Km).orderByAsc(DailyTrainStationField.TrainCode).whereBuilder();
         if(StrUtil.isEmpty(req.getTrainCode())&&ObjectUtil.isNotEmpty(req.getDate())){
             criteria.andEq(DailyTrainStationField.setDate(req.getDate()));
-        } else if (StrUtil.isNotEmpty(req.getTrainCode())&&ObjectUtil.isEmpty(req.getDate())) {
+        } if (StrUtil.isNotEmpty(req.getTrainCode())&&ObjectUtil.isEmpty(req.getDate())) {
             criteria.andEq(DailyTrainStationField.setTrainCode((req.getTrainCode())));
-        } else if(StrUtil.isNotEmpty(req.getTrainCode())&&ObjectUtil.isNotEmpty(req.getDate())){
+        } if(StrUtil.isNotEmpty(req.getTrainCode())&&ObjectUtil.isNotEmpty(req.getDate())){
             criteria.andEq(DailyTrainStationField.setTrainCode(req.getTrainCode())).andEq(DailyTrainField.setDate(req.getDate()));
         }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());

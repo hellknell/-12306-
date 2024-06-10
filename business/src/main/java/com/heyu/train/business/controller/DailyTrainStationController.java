@@ -3,6 +3,7 @@ package com.heyu.train.business.controller;
 import com.heyu.train.business.req.DailyTrainStationQueryReq;
 import com.heyu.train.business.req.DailyTrainStationSaveReq;
 import com.heyu.train.business.resp.DailyTrainStationQueryResp;
+import com.heyu.train.business.service.ConfirmOrderService;
 import com.heyu.train.business.service.DailyTrainStationService;
 import com.heyu.train.common.resp.Result;
 import com.heyu.train.generator.generator.help.PageInfo;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class DailyTrainStationController {
     final DailyTrainStationService dailyTrainStationService;
-
     @Operation(summary= "新增/保存每日车站")
     @PostMapping("/save")
     public Result<Void> login(@Valid @RequestBody DailyTrainStationSaveReq req) {
@@ -36,14 +36,14 @@ public class DailyTrainStationController {
     }
     @Operation(summary = "查询每日车站")
     @GetMapping("/query-list")
-    public   Result<PageInfo<DailyTrainStationQueryResp>> queryList(@Valid DailyTrainStationQueryReq req) {
-        return Result.success(dailyTrainStationService.queryList(req));
-    }
-    @Operation(summary = "删除每日车站")
-    @DeleteMapping("/delete/{id}")
-    public   Result<Void> queryList(@PathVariable  Long id) {
-        dailyTrainStationService.del(id);
-        return  Result.success();
+        public   Result<PageInfo<DailyTrainStationQueryResp>> queryList(@Valid DailyTrainStationQueryReq req) {
+            return Result.success(dailyTrainStationService.queryList(req));
+        }
+        @Operation(summary = "删除每日车站")
+        @DeleteMapping("/delete/{id}")
+        public   Result<Void> queryList(@PathVariable  Long id) {
+            dailyTrainStationService.del(id);
+            return  Result.success();
 
     }
 }

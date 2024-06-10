@@ -22,9 +22,11 @@ public enum BizExceptionEnum {
     TRAIN_STATION_EXIST_ERROR("5008", "车站已存在"),
 
     TRAIN_CARRIAGE_EXIST_ERROR("5009", "车厢已存在"),
-    NO_DAILY_TRAIN("50010", "没有车次可生成");
-
-
+    NO_DAILY_TRAIN("50010", "没有车次可生成"),
+    PASSENGER_COUNT_LIMIT("50011", "最多只能添加50个乘客"),
+    NO_TRAINS("50012", "对应车次不存在"),
+    NO_TICKETS("500113", "对应车票不存在"),
+    TICKETS_LIMITS("500114", "余票不足");
     private String code;
     private String message;
 

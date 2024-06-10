@@ -24,27 +24,24 @@ request.interceptors.request.use(config => {
 
 // response 拦截器
 // 可以在接口响应后统一处理结果
-request.interceptors.response.use(
-    response => {
-        let res = response.data;
-        // if (typeof res === 'string') {
-        //     res = res ? JSON.parse(res) : res
-        // }
-        // if (res.code === "401") {
-        //     store.commit("setMember", {});
-        //     notification.error({
-        //         message: '错误',
-        //         description: '登录已过期，请重新登录',
-        //     })
-        //     router.push('/login')
-        // }
-        // return res;
-        return res
-    },
-    error => {
-        console.error('response error: ' + error) // for debug
-        return Promise.reject(error)
-    }
-)
+request.interceptors.response.use(response => {
+    let res = response.data;
+    // if (typeof res === 'string') {
+    //     res = res ? JSON.parse(res) : res
+    // }
+    // if (res.code === "401") {
+    //     store.commit("setMember", {});
+    //     notification.error({
+    //         message: '错误',
+    //         description: '登录已过期，请重新登录',
+    //     })
+    //     router.push('/login')
+    // }
+    // return res;
+    return res
+}, error => {
+    console.error('response error: ' + error) // for debug
+    return Promise.reject(error)
+})
 
 export default request

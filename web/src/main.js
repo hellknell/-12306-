@@ -4,10 +4,10 @@ import router from './router'
 import store from '@/store/index'
 import Antd from 'ant-design-vue'
 import dayjs from "dayjs";
-import 'ant-design-vue/dist/antd.variable.min.css';
 import * as Icons from '@ant-design/icons-vue'
 import '@/assets/css/global.css'
 import { ConfigProvider } from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.variable.min.css';
 ConfigProvider.config({
   theme: {
     primaryColor: '',

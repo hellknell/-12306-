@@ -60,14 +60,15 @@ public class DailyTrainService {
         Criteria criteria = wrapper.select(DailyTrainField.Id, DailyTrainField.UpdateTime, DailyTrainField.CreateTime, DailyTrainField.End, DailyTrainField.Code, DailyTrainField.StartTime, DailyTrainField.Start, DailyTrainField.End, DailyTrainField.EndTime, DailyTrainField.Type, DailyTrainField.StartPinyin, DailyTrainField.Date, DailyTrainField.Type, DailyTrainField.EndPinyin).whereBuilder();
         if(StrUtil.isEmpty(req.getCode())&&ObjectUtil.isNotEmpty(req.getDate())){
             criteria.andEq(DailyTrainField.setDate(req.getDate()));
-        } else if (StrUtil.isNotEmpty(req.getCode())&&ObjectUtil.isEmpty(req.getDate())) {
+        } if (StrUtil.isNotEmpty(req.getCode())&&ObjectUtil.isEmpty(req.getDate())) {
                 criteria.andEq(DailyTrainField.setCode(req.getCode()));
-        } else if(StrUtil.isNotEmpty(req.getCode())&&ObjectUtil.isNotEmpty(req.getDate())){
+        } if(StrUtil.isNotEmpty(req.getCode())&&ObjectUtil.isNotEmpty(req.getDate())){
             criteria.andEq(DailyTrainField.setCode(req.getCode())).andEq(DailyTrainField.setDate(req.getDate()));
         }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = dailyTrainMapper.list(wrapper).size();
         List<DailyTrain> list = dailyTrainMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));
+        
         List<DailyTrainQueryResp> resp = BeanUtil.copyToList(list, DailyTrainQueryResp.class);
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
     }

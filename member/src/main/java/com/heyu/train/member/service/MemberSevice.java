@@ -65,7 +65,6 @@ public class MemberSevice {
         // 保存验证码到redis
         log.info("保存验证码到redis");
         log.info("对接短信平台");
-
     }
 
     private Member selectMembers(String mobile) {
@@ -82,7 +81,6 @@ public class MemberSevice {
             throw new BizException(BizExceptionEnum.MEMBER_NO_EXISTS);
         }
         if (!"8888".equals(code)) {
-
             throw new BizException(BizExceptionEnum.CODE_ERROR);
         }
         MemberDTO memberDTO = BeanUtil.copyProperties(m, MemberDTO.class);
@@ -90,8 +88,6 @@ public class MemberSevice {
         memberDTO.setToken(token);
         return memberDTO;
     }
-
-
     public Integer count() {
         MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
         return memberMapper.count(wrapper);

@@ -3,13 +3,9 @@ package com.heyu.train.common.controller;
 import com.heyu.train.common.exception.BizException;
 import com.heyu.train.common.resp.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
  * 功能:
@@ -20,13 +16,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
-
     public Result<Object> handleException(Exception e) {
         log.error("系统异常，请联系管理员", e);
         Result<Object> result = new Result<>();
         result.setMsg("系统出现异常,请联系管理员");
         return result;
     }
+
     @ExceptionHandler(BizException.class)
 
     public Result<Object> handleException(BizException e) {
@@ -37,6 +33,7 @@ public class ControllerExceptionHandler {
         result.setCode(e.getE().getCode());
         return result;
     }
+
     @ExceptionHandler(BindException.class)
     public Result<Object> handleException(BindException e) {
         log.error("参数校验异常，请联系管理员", e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());

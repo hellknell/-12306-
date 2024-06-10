@@ -16,7 +16,7 @@ import java.util.*;
 
 public class ServerGenerator {
     static boolean readOnly = false;
-    static String vuePath = "E://IdeaProhect/train12306/web/src/views/main/daily/";
+    static String vuePath = "E://IdeaProhect/train12306/web/src/views/main/base/";
     static String pomPath = "generator\\pom.xml";
     static String servicePath = "[module]/src/main/java/com/heyu/train/[module]/";
 
@@ -65,7 +65,7 @@ public class ServerGenerator {
         map.put("module", module);
         map.put("typeSet", typeSet);
         map.put("readOnly", readOnly);
-//
+
 //        gen(servicePathFinal, domain, map, "service", "service");
 //        gen(servicePathFinal, domain, map, "controller", "controller");
 //        gen(servicePathFinal, domain, map, "req", "saveReq");
@@ -84,7 +84,6 @@ public class ServerGenerator {
         FreemarkerUtil.generator(dir + StrUtil.upperFirst(domain) + StrUtil.upperFirst(target) + ".java", map);
         System.out.println("生成成功！！");
     }
-
     public static void genVue(String Domain, Map<String, Object> map) throws IOException, TemplateException {
         FreemarkerUtil.initConfig("vue.ftl");
         String fileName = vuePath + Domain + "View.vue";

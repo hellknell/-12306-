@@ -1,13 +1,18 @@
 <template>
   <a-space :size="15" style="display: flex;justify-content: flex-start">
-    <train-select v-model:value="params.code" width="100"></train-select>
+    <train-select v-model:value="params.code" width="180"></train-select>
+    <a-button @click="batch">批量删除</a-button>
     <a-date-picker placeholder="请输入日期" value-format="YYYY-MM-DD" v-model:value="params.date"/>
+    <station-select width="150" info="请输入出发站" v-model:value="params.start"/>
+    <station-select width="150" info="请输入到达站" v-model:value="params.end"/>
     <a-button type="primary" @click="handleQuery()">查询</a-button>
   </a-space>
   <a-table :dataSource="dailyTrainTickets"
+           :row-selection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+           @resizeColumn="handleResizeColumn"
+           @change="handleTableChange"
            :columns="columns"
            :pagination="pagination"
-           @change="handleTableChange"
            :loading="loading">
     <template #bodyCell="{ column,record }">
       <template v-if="column.dataIndex === 'operation'">
@@ -20,6 +25,67 @@
           </a-popconfirm>
           <a @click="onEdit(record)">编辑</a>
         </a-space>
+      </template>
+
+      <template v-if="column.dataIndex === 'ydz'">
+        <div v-if="record.ydz>=0">
+          <div style="text-align: center"> {{ record.ydz }}张</div>
+          <div style="white-space:nowrap;text-align:center">￥ {{ record.ydzPrice }}</div>
+
+        </div>
+        <div v-else style="text-align: center">
+          --
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'start'">
+        <div style="width: max-content">
+          <div> {{ record.start }}</div>
+          <div style="text-align: center">to</div>
+          <div>{{ record.end }}</div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'startTime'">
+        <div style="width: max-content">
+          <div> {{ record.startTime }}</div>
+          <div style="text-align: center">~</div>
+          <div>{{ record.endTime }}</div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'edz'">
+        <div v-if="record.edz>=0">
+          <div style="text-align: center">{{ record.edz }}张<br/></div>
+          <div style="text-align: center;;white-space: nowrap">￥ {{ record.edzPrice }}</div>
+        </div>
+        <div v-else style="text-align: center">
+          --
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'yw'">
+        <div v-if="record.yw>=0">
+          <div style="text-align: center">{{ record.yw }}张</div>
+          <br/>
+          <div style="text-align: center;white-space: nowrap">￥ {{ record.ywPrice }}</div>
+        </div>
+        <div style="text-align: center" v-else>
+          --
+        </div>
+      </template>
+      <template v-if="column.dataIndex==='time'">
+        <div style="width: max-content">
+          <div> {{ record.time }}</div>
+          <div v-if="record.startTime<record.endTime">当日到达</div>
+          <div v-else>次日到达</div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'rw'">
+        <div v-if="record.rw>=0">
+          <div style="text-align: center">{{ record.rw }}张</div>
+          <div style="white-space: nowrap;text-align: center">￥ {{ record.rwPrice }}</div>
+          <br/>
+        </div>
+        <div style="text-align: center" v-else>
+          --
+        </div>
       </template>
     </template>
   </a-table>
@@ -83,12 +149,12 @@
     </a-form>
   </a-modal>
 </template>
-
 <script setup>
 import {onMounted, ref} from 'vue';
 import request from "@/util/request";
 import {notification} from "ant-design-vue";
 import TrainSelect from "@/component/train-select.vue";
+import StationSelect from "@/component/station-select.vue";
 
 const visible = ref(false);
 let dailyTrainTicket = ref({
@@ -119,105 +185,105 @@ const dailyTrainTickets = ref([]);
 const pagination = ref({
   total: 0,
   current: 1,
-  pageSize: 10,
+  pageSize: 10
 });
+const handleResizeColumn = (w, col) => {
+  col.width = w
+}
 let loading = ref(false);
 const columns = [
   {
     title: '日期',
     dataIndex: 'date',
     key: 'date',
+    width: 200,
+    resizable: true
   },
   {
     title: '车次编号',
     dataIndex: 'trainCode',
     key: 'trainCode',
+    resizable: true,
+    width: 100
   },
   {
-    title: '出发站',
+    title: '车站',
     dataIndex: 'start',
     key: 'start',
-  },
-  {
-    title: '出发站拼音',
-    dataIndex: 'startPinyin',
-    key: 'startPinyin',
-  },
-  {
-    title: '出发时间',
-    dataIndex: 'startTime',
-    key: 'startTime',
+    width: 100,
+    resizable: true
   },
   {
     title: '出发站序',
     dataIndex: 'startIndex',
-    key: 'startIndex',
+    key: 'startIndex', width: 100,
+    resizable: true
   },
   {
-    title: '到达站',
-    dataIndex: 'end',
-    key: 'end',
+    title: '时间',
+    dataIndex: 'startTime',
+    width: 100,
+    key: 'startTime',
+    resizable: true
   },
   {
-    title: '到达站拼音',
-    dataIndex: 'endPinyin',
-    key: 'endPinyin',
+    title: '历时',
+    dataIndex: 'time',
+    width: 100,
+    resizable: true
   },
+
   {
-    title: '到站时间',
-    dataIndex: 'endTime',
-    key: 'endTime',
-  },
-  {
-    title: '到站站序',
+    title: '到达站序',
     dataIndex: 'endIndex',
-    key: 'endIndex',
+    width: 100,
+    resizable: true
   },
+
+
   {
     title: '一等座余票',
     dataIndex: 'ydz',
+    width: 150,
     key: 'ydz',
+    resizable: true
   },
-  {
-    title: '一等座票价',
-    dataIndex: 'ydzPrice',
-    key: 'ydzPrice',
-  },
+
   {
     title: '二等座余票',
+    width: 150,
     dataIndex: 'edz',
     key: 'edz',
+    resizable: true
   },
-  {
-    title: '二等座票价',
-    dataIndex: 'edzPrice',
-    key: 'edzPrice',
-  },
+
   {
     title: '软卧余票',
     dataIndex: 'rw',
     key: 'rw',
+    resizable: true,
+    width: 150,
   },
-  {
-    title: '软卧票价',
-    dataIndex: 'rwPrice',
-    key: 'rwPrice',
-  },
+
   {
     title: '硬卧余票',
     dataIndex: 'yw',
+    width: 100,
     key: 'yw',
+    resizable: true
   },
-  {
-    title: '硬卧票价',
-    dataIndex: 'ywPrice',
-    key: 'ywPrice',
-  },
+
   {
     title: '操作',
-    dataIndex: 'operation'
+    dataIndex: 'operation',
+    width: 200
   }
 ];
+const ids = ref([])
+const selectedRowKeys = ref([]); // Check here to configure the default column
+const batch = () => {
+  request.delete("")
+}
 
 const onAdd = () => {
   dailyTrainTicket.value = {};
@@ -225,7 +291,9 @@ const onAdd = () => {
 };
 const params = ref({
   date: undefined,
-  code: undefined
+  code: undefined,
+  start: undefined,
+  end: undefined
 })
 const onEdit = (record) => {
   dailyTrainTicket.value = JSON.parse(JSON.stringify(record));
@@ -272,7 +340,9 @@ const handleQuery = (param) => {
       pageNum: param.pageNum,
       pageSize: param.pageSize,
       trainCode: params.value.code,
-      date: params.value.date
+      date: params.value.date,
+      start: params.value.start,
+      end: params.value.end
     }
   }).then((res) => {
     loading.value = false;

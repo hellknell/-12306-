@@ -6,6 +6,7 @@ export default defineComponent({
     const getjsx = ()=>{
       count.value += 1
     }
+
     return () => (
         <div>
           <a-button onClick={getjsx}>加一</a-button>

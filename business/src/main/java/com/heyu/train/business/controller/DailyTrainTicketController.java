@@ -1,11 +1,11 @@
 package com.heyu.train.business.controller;
 
-import com.heyu.train.business.req.DailyTrainTicketQueryReq;
 import com.heyu.train.business.req.DailyTrainTicketSaveReq;
-import com.heyu.train.business.resp.DailyTrainTicketQueryResp;
 import com.heyu.train.business.service.DailyTrainTicketService;
+import com.heyu.train.business.req.DailyTrainTicketQueryReq;
+import com.heyu.train.common.resp.DailyTrainTicketQueryResp;
+import com.heyu.train.common.resp.PageInfo;
 import com.heyu.train.common.resp.Result;
-import com.heyu.train.generator.generator.help.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

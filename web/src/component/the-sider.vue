@@ -21,6 +21,12 @@
           每日数据
         </span>
       </template>
+      <a-menu-item key="/base/order">
+        <router-link to="/base/order">
+          <UnorderedListOutlined/>
+          订单管理
+        </router-link>
+      </a-menu-item>
       <a-menu-item key="/daily/train-ticket">
         <router-link to="/daily/train-ticket">
           <UnorderedListOutlined/>
@@ -46,11 +52,11 @@
         </router-link>
       </a-menu-item>
       <a-menu-item key="/daily/train-seat">
-      <router-link to="/daily/train-seat">
-        <UnorderedListOutlined/>
-        每日车座
-      </router-link>
-    </a-menu-item>
+        <router-link to="/daily/train-seat">
+          <UnorderedListOutlined/>
+          每日车座
+        </router-link>
+      </a-menu-item>
 
     </a-sub-menu>
     <a-sub-menu key="/base">
@@ -117,7 +123,7 @@ import router from "@/router";
 const state = reactive({
   collapsed: false,
   selectedKeys: [],
-  openKeys: ['/base','/daily'],
+  openKeys: ['/base', '/daily'],
   preOpenKeys: ['/'],
 });
 // const toggleCollapsed = () => {

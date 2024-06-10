@@ -1,11 +1,11 @@
 package com.heyu.train.business.controller;
 
-import com.heyu.train.business.req.TrainQueryReq;
 import com.heyu.train.business.req.TrainSaveReq;
-import com.heyu.train.business.resp.TrainQueryResp;
 import com.heyu.train.business.service.TrainService;
+import com.heyu.train.common.req.TrainQueryReq;
+import com.heyu.train.common.resp.PageInfo;
 import com.heyu.train.common.resp.Result;
-import com.heyu.train.generator.generator.help.PageInfo;
+import com.heyu.train.common.resp.TrainQueryResp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class TrainController {
     }
     @Operation(summary = "查询火车")
     @GetMapping("/query-list")
-    public Result<PageInfo<TrainQueryResp>> queryList(@Valid TrainQueryReq req) {
+    public Result<PageInfo<com.heyu.train.common.resp.TrainQueryResp>> queryList(@Valid TrainQueryReq req) {
         return Result.success(trainService.queryList(req));
 
     }
@@ -57,7 +57,7 @@ public class TrainController {
         return Result.success();
     }
     @Operation(summary = "生成火车座位",description =  "根据车次和座位数生成座位")
-    @GetMapping("gen-train-seat/{trainCode}")
+    @GetMapping("/gen-train-seat/{trainCode}")
     public Result<Void> genTrainSeat(@PathVariable String trainCode) {
         trainService.genTrainSeat(trainCode);
         return Result.success();

@@ -8,12 +8,12 @@ import com.heyu.train.business.domain.StationField;
 import com.heyu.train.business.mapper.StationMapper;
 import com.heyu.train.business.req.StationQueryReq;
 import com.heyu.train.business.req.StationSaveReq;
-import com.heyu.train.business.resp.StationQueryResp;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
+import com.heyu.train.common.resp.PageInfo;
+import com.heyu.train.common.resp.StationQueryResp;
 import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
-import com.heyu.train.generator.generator.help.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class StationService {
         }
     }
 
-    public PageInfo<StationQueryResp> queryList(StationQueryReq req) {
+    public PageInfo<com.heyu.train.common.resp.StationQueryResp> queryList(StationQueryReq req) {
         MyBatisWrapper<StationQueryResp> wrapper = new MyBatisWrapper<>();
         wrapper.select(StationField.Id, StationField.Name, StationField.CreateTime, StationField.UpdateTime, StationField.NamePinyin, StationField.NamePy);
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());

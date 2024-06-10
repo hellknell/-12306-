@@ -2,10 +2,10 @@ package com.heyu.train.business.controller;
 
 import com.heyu.train.business.req.StationQueryReq;
 import com.heyu.train.business.req.StationSaveReq;
-import com.heyu.train.business.resp.StationQueryResp;
 import com.heyu.train.business.service.StationService;
+import com.heyu.train.common.resp.PageInfo;
 import com.heyu.train.common.resp.Result;
-import com.heyu.train.generator.generator.help.PageInfo;
+import com.heyu.train.common.resp.StationQueryResp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -36,7 +36,7 @@ public class StationController {
     }
     @Operation(summary = "查询车站")
     @GetMapping("/query-list")
-    public Result<PageInfo<StationQueryResp>> queryList(@Valid StationQueryReq req) {
+    public Result<PageInfo<com.heyu.train.common.resp.StationQueryResp>> queryList(@Valid StationQueryReq req) {
         return Result.success(stationService.queryList(req));
     }
     @Operation(summary = "删除车站")

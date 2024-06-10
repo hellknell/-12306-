@@ -121,7 +121,7 @@ let train = ref({
 })
 const genSeat=(code)=>{
   loading.value=true
-  request.get("/admin/train/gen-train-seat/"+code).then(res=>{
+  request.get("/business/admin/train/gen-train-seat/"+code).then(res=>{
     loading.value=false
     if (res.success){
 

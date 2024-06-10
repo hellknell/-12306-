@@ -86,11 +86,9 @@ public class DailyTrainSeatService {
             dailyTrainSeatMapper.insert(dailyTrainSeat);
         }
     }
-
     public void del(Long id) {
         dailyTrainSeatMapper.deleteByPrimaryKey(id);
-    }
-
+    } 
     protected Integer countBy(Date date, String trainCode, String seatType) {
         MyBatisWrapper<DailyTrainSeat> wrapper = new MyBatisWrapper<>();
         wrapper.select(Id).whereBuilder().andEq(setDate(date)).andEq(setTrainCode(trainCode)).andEq(setSeatType(seatType));

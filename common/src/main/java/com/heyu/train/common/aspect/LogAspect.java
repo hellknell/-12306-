@@ -1,8 +1,6 @@
 package com.heyu.train.common.aspect;
 
-import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
-
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -15,7 +13,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -37,6 +34,7 @@ public class LogAspect {
     @Pointcut("execution(public * com.heyu..*Controller.*(..))")
     public void controllerPointcut() {
     }
+
     @Before("controllerPointcut()")
     public void doBefore(JoinPoint jointPoint) {
 //        MDC.put("LOG_ID", System.currentTimeMillis() + RandomUtil.randomString(3));

@@ -17,7 +17,7 @@ import java.lang.reflect.Member;
 public class LoginMemberContext {
     private static   final ThreadLocal<MemberDTO> threadLocal = new ThreadLocal<>();
     public static MemberDTO getMember(){
-        return threadLocal.get();
+return threadLocal.get();
     }
 
     public static void setMember(MemberDTO member){

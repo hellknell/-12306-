@@ -1,24 +1,27 @@
 package com.heyu.train.business.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.math.BigDecimal;
 import lombok.Data;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
 @Data
 public class DailyTrainTicketQueryResp {
 
     /**
      * id
      */
-    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
+
+    private String time;
 
     /**
      * 日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date date;
 
     /**
@@ -39,7 +42,7 @@ public class DailyTrainTicketQueryResp {
     /**
      * 出发时间
      */
-    @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
@@ -60,7 +63,7 @@ public class DailyTrainTicketQueryResp {
     /**
      * 到站时间
      */
-    @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -111,13 +114,13 @@ public class DailyTrainTicketQueryResp {
     /**
      * 新增时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 修改时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     @Override

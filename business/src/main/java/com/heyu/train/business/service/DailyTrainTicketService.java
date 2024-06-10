@@ -2,25 +2,26 @@ package com.heyu.train.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.heyu.train.business.domain.*;
-import com.heyu.train.business.enums.TrainSeatEnum;
-import com.heyu.train.business.enums.TrainTypeEnum;
 import com.heyu.train.business.mapper.DailyTrainTicketMapper;
 import com.heyu.train.business.mapper.TrainStationMapper;
+import com.heyu.train.business.enums.TrainSeatEnum;
+import com.heyu.train.business.enums.TrainTypeEnum;
 import com.heyu.train.business.req.DailyTrainTicketQueryReq;
 import com.heyu.train.business.req.DailyTrainTicketSaveReq;
 import com.heyu.train.business.resp.DailyTrainTicketQueryResp;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
+import com.heyu.train.common.resp.PageInfo;
 import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.generator.generator.help.Criteria;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
-import com.heyu.train.generator.generator.help.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -59,22 +61,35 @@ public class DailyTrainTicketService {
         }
     }
 
-    public PageInfo<DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req) {
+    public com.heyu.train.common.resp.PageInfo<com.heyu.train.common.resp.DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req) {
         MyBatisWrapper<DailyTrainTicketQueryResp> wrapper = new MyBatisWrapper<>();
-        Criteria criteria = wrapper.select(DailyTrainTicketField.Id, DailyTrainTicketField.StartIndex, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime, DailyTrainTicketField.Date, DailyTrainTicketField.End, DailyTrainTicketField.Edz, DailyTrainTicketField.EdzPrice, DailyTrainTicketField.EndIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice, DailyTrainTicketField.Start, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Ydz, DailyTrainTicketField.EndPinyin, DailyTrainTicketField.StartPinyin, DailyTrainTicketField.TrainCode, DailyTrainTicketField.StartIndex, DailyTrainTicketField.YdzPrice, DailyTrainTicketField.Yw, DailyTrainTicketField.YwPrice, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice).whereBuilder();
-        if (StrUtil.isEmpty(req.getTrainCode()) && ObjectUtil.isNotEmpty(req.getDate())) {
+        Criteria criteria = wrapper.select(DailyTrainTicketField.Id, DailyTrainTicketField.StartIndex, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime, DailyTrainTicketField.Date, DailyTrainTicketField.End, DailyTrainTicketField.Edz, DailyTrainTicketField.EdzPrice, DailyTrainTicketField.EndIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice, DailyTrainTicketField.Start, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Ydz, DailyTrainTicketField.EndPinyin, DailyTrainTicketField.StartPinyin, DailyTrainTicketField.TrainCode, DailyTrainTicketField.StartIndex, DailyTrainTicketField.YdzPrice, DailyTrainTicketField.Yw, DailyTrainTicketField.YwPrice, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice).orderByDesc(DailyTrainTicketField.Date).whereBuilder();
+        if (ObjectUtil.isNotEmpty(req.getDate())) {
             criteria.andEq(DailyTrainStationField.setDate(req.getDate()));
-        } else if (StrUtil.isNotEmpty(req.getTrainCode()) && ObjectUtil.isEmpty(req.getDate())) {
+        } if (StrUtil.isNotEmpty(req.getTrainCode())) {
             criteria.andEq(DailyTrainStationField.setTrainCode((req.getTrainCode())));
-        } else if (StrUtil.isNotEmpty(req.getTrainCode()) && ObjectUtil.isNotEmpty(req.getDate())) {
-            criteria.andEq(DailyTrainStationField.setTrainCode(req.getTrainCode())).andEq(DailyTrainField.setDate(req.getDate()));
+        } if (StrUtil.isNotEmpty(req.getStart())) {
+            criteria.andEq(DailyTrainTicketField.setStart((req.getStart())));
+        } if (StrUtil.isNotEmpty(req.getEnd())) {
+            criteria.andEq(DailyTrainTicketField.setEnd((req.getEnd())));
         }
-
-
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = dailyTrainTicketMapper.list(wrapper).size();
         List<DailyTrainTicket> list = dailyTrainTicketMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));
-        List<DailyTrainTicketQueryResp> resp = BeanUtil.copyToList(list, DailyTrainTicketQueryResp.class);
+        List<com.heyu.train.common.resp.DailyTrainTicketQueryResp> resp = BeanUtil.copyToList(list, com.heyu.train.common.resp.DailyTrainTicketQueryResp.class);
+        for (com.heyu.train.common.resp.DailyTrainTicketQueryResp r : resp) {
+            Date startTime = r.getStartTime();
+            Date endTime = r.getEndTime();
+            if (endTime.before(startTime)) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(endTime);
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                endTime = calendar.getTime();
+            }
+            String s = DateUtil.formatBetween(startTime, endTime, BetweenFormatter.Level.MILLISECOND);
+            log.info("date:{}", s);
+            r.setTime(s);
+        }
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
     }
 
@@ -96,26 +111,26 @@ public class DailyTrainTicketService {
         }
         DateTime now = DateTime.now();
         String type = dailyTrain.getType();
-
         BigDecimal priceRate = EnumUtil.getFieldBy(TrainTypeEnum::getPriceRate, TrainTypeEnum::getCode, type);
         log.info("车次{}的票面价格系数为{}", trainCode, priceRate);
-        BigDecimal ydz = priceRate.multiply(TrainSeatEnum.FIRST.getPrice());
-        BigDecimal edz = priceRate.multiply(TrainSeatEnum.SECOND.getPrice());
-        BigDecimal yw = priceRate.multiply(TrainSeatEnum.SOLID.getPrice());
-        BigDecimal rw = priceRate.multiply(TrainSeatEnum.SOFT.getPrice());
-        Integer ydzCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.FIRST.getCode());
-        Integer edzCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.SECOND.getCode());
-        Integer ywCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.SOLID.getCode());
-        Integer rwCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.SOFT.getCode());
+        BigDecimal ydz = priceRate.multiply(TrainSeatEnum.YDZ.getPrice());
+        BigDecimal edz = priceRate.multiply(TrainSeatEnum.EDZ.getPrice());
+        BigDecimal yw = priceRate.multiply(TrainSeatEnum.YW.getPrice());
+        BigDecimal rw = priceRate.multiply(TrainSeatEnum.RW.getPrice());
+        Integer ydzCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.YDZ.getCode());
+        Integer edzCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.EDZ.getCode());
+        Integer ywCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.YW.getCode());
+        Integer rwCount = dailyTrainSeatService.countBy(date, trainCode, TrainSeatEnum.RW.getCode());
         //遍历所有途经车站
         for (int i = 0; i < stationLists.size(); i++) {
             BigDecimal sumKm = BigDecimal.ZERO;
             TrainStation trainStationStart = stationLists.get(i);
             for (int j = i + 1; j < stationLists.size(); j++) {
+                TrainStation trainStationEnd = stationLists.get(j);
+
                 log.info("{}", trainStationStart.getKm());
                 sumKm = sumKm.add(trainStationStart.getKm());
                 log.info("{}", sumKm);
-                TrainStation trainStationEnd = stationLists.get(j);
                 DailyTrainTicket dailyTrainTicket = new DailyTrainTicket();
                 dailyTrainTicket.setId(SnowFlask.getSnowFlaskId());
                 dailyTrainTicket.setDate(date);
@@ -136,11 +151,12 @@ public class DailyTrainTicketService {
                 dailyTrainTicket.setEndIndex(trainStationEnd.getIndex());
                 dailyTrainTicket.setStartTime(trainStationStart.getOutTime());
                 dailyTrainTicket.setEndTime(trainStationEnd.getInTime());
+                //计算时长
+
                 dailyTrainTicket.setCreateTime(now);
                 dailyTrainTicket.setUpdateTime(now);
                 dailyTrainTicketMapper.insert(dailyTrainTicket);
             }
         }
-
     }
 }
