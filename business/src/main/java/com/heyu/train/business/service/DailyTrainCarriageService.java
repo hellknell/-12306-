@@ -83,4 +83,18 @@ public class DailyTrainCarriageService {
         }
 
     }
+
+    public List<DailyTrainCarriage> getBySeatType(String trainCode, Date date, String seatType) {
+        MyBatisWrapper<DailyTrainCarriage> wrapper = new MyBatisWrapper<>();
+        wrapper.select(DailyTrainCarriageField.Id, DailyTrainCarriageField.Index,
+                        DailyTrainCarriageField.TrainCode, DailyTrainCarriageField.ColCount,
+                        DailyTrainCarriageField.RowCount, DailyTrainCarriageField.SeatCount,
+                        DailyTrainCarriageField.SeatType).whereBuilder()
+                .andEq(DailyTrainCarriageField.setTrainCode(trainCode))
+                .andEq(DailyTrainCarriageField.setDate(date))
+                .andEq(DailyTrainCarriageField.setSeatType(seatType));
+
+        List<DailyTrainCarriage> list = dailyTrainCarriageMapper.list(wrapper);
+        return list;
+    }
 }

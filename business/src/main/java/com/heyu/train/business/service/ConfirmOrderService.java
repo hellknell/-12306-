@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,6 +48,8 @@ public class ConfirmOrderService {
     final ConfirmOrderMapper confirmOrderMapper;
     final DailyTrainMapper dailyTrainMapper;
     final DailyTrainTicketMapper dailyTrainTicketMapper;
+    final DailyTrainCarriageService dailyTrainCarriageService;
+    final DailyTrainSeatService dailyTrainSeatService;
 
     public void save(ConfirmOrderDoReq req) {
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
@@ -131,9 +134,32 @@ public class ConfirmOrderService {
                 offset.add(j);
             }
             log.info("偏移量:{}", offset);
+            getSeats(req.getDate(), req.getTrainCode(), req.getTickets().get(0).getSeatTypeCode(), req.getTickets().get(0).getSeat().split("")[0], offset);
         } else {
             log.info("本次没有选座");
+            for (ConfirmOrderTicketReq ticket : req.getTickets()) {
+                getSeats(
+
+                        req.getDate(),
+                        req.getTrainCode(),
+                        ticket.getSeatTypeCode(),
+                        null, null
+                );
+
+            }
         }
+    }
+
+    private List<DailyTrainSeat> getSeats(Date date, String trainCode, String seatType, String columnFirst, List<Integer> offsetList) {
+        List<DailyTrainCarriage> carriageList = dailyTrainCarriageService.getBySeatType(trainCode, date, seatType);
+        for (DailyTrainCarriage dailyTrainCarriage : carriageList) {
+            log.info("从车厢{}开始选", dailyTrainCarriage.getIndex());
+            List<DailyTrainSeat> seatByCarriage = dailyTrainSeatService.getSeatByCarriageIndex(date, trainCode, dailyTrainCarriage.getIndex());
+            log.info("车厢{}有{}个座位", dailyTrainCarriage.getIndex(), seatByCarriage.size());
+            log.info("车座:{}", seatByCarriage);
+            log.info("----------------------------------------------------");
+        }
+        return null;
     }
 
     private static void reduceTickets(ConfirmOrderDoReq req, DailyTrainTicket dbTicket) {

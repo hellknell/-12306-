@@ -56,11 +56,11 @@ public class DailyTrainSeatService {
         MyBatisWrapper<DailyTrainSeatQueryResp> wrapper = new MyBatisWrapper<>();
         Criteria criteria = wrapper.select(Id, Date, Sell, CarriageSeatIndex, CarriageIndex, Row, Col, TrainCode, SeatType).whereBuilder();
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
-        if(StrUtil.isEmpty(req.getTrainCode())&&ObjectUtil.isNotEmpty(req.getDate())){
+        if (StrUtil.isEmpty(req.getTrainCode()) && ObjectUtil.isNotEmpty(req.getDate())) {
             criteria.andEq(DailyTrainSeatField.setDate(req.getDate()));
-        } else if (StrUtil.isNotEmpty(req.getTrainCode())&&ObjectUtil.isEmpty(req.getDate())) {
+        } else if (StrUtil.isNotEmpty(req.getTrainCode()) && ObjectUtil.isEmpty(req.getDate())) {
             criteria.andEq(DailyTrainSeatField.setTrainCode((req.getTrainCode())));
-        } else if(StrUtil.isNotEmpty(req.getTrainCode())&&ObjectUtil.isNotEmpty(req.getDate())){
+        } else if (StrUtil.isNotEmpty(req.getTrainCode()) && ObjectUtil.isNotEmpty(req.getDate())) {
             criteria.andEq(DailyTrainSeatField.setTrainCode(req.getTrainCode())).andEq(DailyTrainField.setDate(req.getDate()));
         }
         int total = dailyTrainSeatMapper.list(wrapper).size();
@@ -86,9 +86,11 @@ public class DailyTrainSeatService {
             dailyTrainSeatMapper.insert(dailyTrainSeat);
         }
     }
+
     public void del(Long id) {
         dailyTrainSeatMapper.deleteByPrimaryKey(id);
-    } 
+    }
+
     protected Integer countBy(Date date, String trainCode, String seatType) {
         MyBatisWrapper<DailyTrainSeat> wrapper = new MyBatisWrapper<>();
         wrapper.select(Id).whereBuilder().andEq(setDate(date)).andEq(setTrainCode(trainCode)).andEq(setSeatType(seatType));
@@ -98,4 +100,12 @@ public class DailyTrainSeatService {
         }
         return count;
     }
+
+    public List<DailyTrainSeat> getSeatByCarriageIndex(Date date, String trainCode, Integer trainCarriageIndex) {
+        MyBatisWrapper<DailyTrainSeat> wrapper = new MyBatisWrapper<>();
+        wrapper.select(TrainSeatField.CarriageSeatIndex, TrainSeatField.CarriageIndex, TrainSeatField.Row, TrainSeatField.Col, TrainSeatField.TrainCode, TrainSeatField.SeatType).whereBuilder().andEq(setDate(date)).andEq(setTrainCode(trainCode)).andEq(setCarriageIndex(trainCarriageIndex));
+        List<DailyTrainSeat> list = dailyTrainSeatMapper.list(wrapper);
+        return list;
+    }
+
 }
