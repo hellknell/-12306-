@@ -4,9 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.heyu.train.business.domain.*;
 import com.heyu.train.business.enums.ConfirmOrderEnum;
+import com.heyu.train.business.enums.SeatTypeEnum;
 import com.heyu.train.business.enums.TrainSeatEnum;
 import com.heyu.train.business.mapper.ConfirmOrderMapper;
 import com.heyu.train.business.mapper.DailyTrainMapper;
@@ -27,6 +29,7 @@ import org.bouncycastle.util.Strings;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,6 +91,7 @@ public class ConfirmOrderService {
         if (Objects.isNull(dailyTrainTicket)) {
             throw new BizException(BizExceptionEnum.NO_TICKETS);
         }
+        List<ConfirmOrderTicketReq> lists = req.getTickets();
         //插入订单表
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
         DateTime now = DateTime.now();
@@ -103,6 +107,36 @@ public class ConfirmOrderService {
         tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.Rw).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
         DailyTrainTicket dbTicket = dailyTrainTicketMapper.topOne(tikcetWrapper);
         log.info("ticket信息:{}", dbTicket);
+        //预扣减余票
+        reduceTickets(req, dbTicket);
+//模拟出选座,并计算机出牌偏移量
+        if (StrUtil.isNotBlank(lists.get(0).getSeat())) {
+            log.info("本次有选座");
+            List<String> colsByType = SeatTypeEnum.getColsByType(lists.get(0).getSeatTypeCode());
+            ArrayList<String> seats = new ArrayList<>();
+            for (int i = 1; i <= 2; i++) {
+                for (String col : colsByType)
+                    seats.add(col + i);
+            }
+            log.info("选座信息:{}", seats);
+            ArrayList<Integer> absoluteCol = new ArrayList<>();
+            for (ConfirmOrderTicketReq ticketReq : lists) {
+                int i = seats.indexOf(ticketReq.getSeat());
+                absoluteCol.add(i);
+            }
+            log.info("绝对选座:{}", absoluteCol);
+            ArrayList<Integer> offset = new ArrayList<>();
+            for (int i = 0; i < absoluteCol.size(); i++) {
+                int j = absoluteCol.get(i) - absoluteCol.get(0);
+                offset.add(j);
+            }
+            log.info("偏移量:{}", offset);
+        } else {
+            log.info("本次没有选座");
+        }
+    }
+
+    private static void reduceTickets(ConfirmOrderDoReq req, DailyTrainTicket dbTicket) {
         List<ConfirmOrderTicketReq> tickets = req.getTickets();
         Integer i = null;
         Field field = null;
