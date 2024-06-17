@@ -104,7 +104,7 @@ public class DailyTrainSeatService {
 
     public List<DailyTrainSeat> getSeatByCarriageIndex(Date date, String trainCode, Integer trainCarriageIndex) {
         MyBatisWrapper<DailyTrainSeat> wrapper = new MyBatisWrapper<>();
-        wrapper.select(DailyTrainSeatField.CarriageSeatIndex, DailyTrainSeatField.CarriageIndex, DailyTrainSeatField.Row, DailyTrainSeatField.Col, DailyTrainSeatField.TrainCode, DailyTrainSeatField.SeatType, Sell).whereBuilder().andEq(setDate(date)).andEq(setTrainCode(trainCode)).andEq(setCarriageIndex(trainCarriageIndex));
+        wrapper.select(Id, DailyTrainSeatField.CarriageSeatIndex, DailyTrainSeatField.CarriageIndex, DailyTrainSeatField.Row, DailyTrainSeatField.Col, DailyTrainSeatField.TrainCode, DailyTrainSeatField.SeatType, Sell).whereBuilder().andEq(setDate(date)).andEq(setTrainCode(trainCode)).andEq(setCarriageIndex(trainCarriageIndex));
         List<DailyTrainSeat> list = dailyTrainSeatMapper.list(wrapper.orderByAsc(DailyTrainSeatField.CarriageSeatIndex));
         return list;
     }

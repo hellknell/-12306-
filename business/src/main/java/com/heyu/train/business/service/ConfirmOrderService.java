@@ -53,6 +53,7 @@ public class ConfirmOrderService {
     final DailyTrainTicketMapper dailyTrainTicketMapper;
     final DailyTrainCarriageService dailyTrainCarriageService;
     final DailyTrainSeatService dailyTrainSeatService;
+    final AfterConfirmOrderService afterConfirmOrderService;
 
     public void save(ConfirmOrderDoReq req) {
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
@@ -154,8 +155,9 @@ public class ConfirmOrderService {
 
             }
         }
-        log.info("最终选座:{}", finalSeats.stream().map(DailyTrainSeat::getCarriageSeatIndex).collect(Collectors.toSet()));
-        ;
+
+        log.info("最终选座:{}", finalSeats.stream().map(DailyTrainSeat::getCarriageSeatIndex).collect(Collectors.toList()));
+        afterConfirmOrderService.afterConfirm(finalSeats);
     }
 
     private void getSeats(List<DailyTrainSeat> finalChooseSeats, Date date, String trainCode, String seatType, String columnFirst, List<Integer> offsetList, Integer startIndex, Integer endIndex) {
@@ -163,7 +165,7 @@ public class ConfirmOrderService {
 
         for (DailyTrainCarriage dailyTrainCarriage : carriageList) {
             //每次在遍历下一个车厢重新选座,即清空最终车座表
-            finalChooseSeats.clear();
+//            finalChooseSeats.clear();
             log.info("从车厢{}开始选", dailyTrainCarriage.getIndex());
             List<DailyTrainSeat> seatLists = dailyTrainSeatService.getSeatByCarriageIndex(date, trainCode, dailyTrainCarriage.getIndex());
             log.info("车厢{}有{}个座位", dailyTrainCarriage.getIndex(), seatLists.size());
@@ -178,7 +180,7 @@ public class ConfirmOrderService {
                     }
                 }
                 if (isAlreadySelect) {
-                    break;
+                    continue;
                 }
                 Integer seatIndex = seat.getCarriageSeatIndex();
                 String col = seat.getCol();
