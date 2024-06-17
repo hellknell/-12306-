@@ -1,8 +1,10 @@
 package com.heyu.train.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.EnumUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -69,7 +71,7 @@ public class ConfirmOrderService {
 
     public PageInfo<ConfirmOrderQueryResp> queryList(ConfirmOrderQueryReq req) {
         MyBatisWrapper<ConfirmOrderQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(Id, MemberId, Date, TrainCode, Start, TrainCode, End, DailyTrainTicketId, Status);
+        wrapper.select(Id, MemberId, Date, TrainCode, Start, TrainCode, End, DailyTrainTicketId, Status, Tickets);
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = confirmOrderMapper.list(wrapper).size();
         List<ConfirmOrder> list = confirmOrderMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));
@@ -107,12 +109,12 @@ public class ConfirmOrderService {
         confirmOrderMapper.insert(confirmOrder);
         //查询余票
         MyBatisWrapper<DailyTrainTicket> tikcetWrapper = new MyBatisWrapper<>();
-        tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.Rw).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
+        tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.EndIndex).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
         DailyTrainTicket dbTicket = dailyTrainTicketMapper.topOne(tikcetWrapper);
         log.info("ticket信息:{}", dbTicket);
         //预扣减余票
         reduceTickets(req, dbTicket);
-//模拟出选座,并计算机出牌偏移量
+        //模拟出选座,并计算机出牌偏移量
         if (StrUtil.isNotBlank(lists.get(0).getSeat())) {
             log.info("本次有选座");
             List<String> colsByType = SeatTypeEnum.getColsByType(lists.get(0).getSeatTypeCode());
@@ -134,32 +136,102 @@ public class ConfirmOrderService {
                 offset.add(j);
             }
             log.info("偏移量:{}", offset);
-            getSeats(req.getDate(), req.getTrainCode(), req.getTickets().get(0).getSeatTypeCode(), req.getTickets().get(0).getSeat().split("")[0], offset);
+            getSeats(req.getDate(), req.getTrainCode(), req.getTickets().get(0).getSeatTypeCode(), req.getTickets().get(0).getSeat().split("")[0], offset, dbTicket.getStartIndex(), dbTicket.getEndIndex());
         } else {
             log.info("本次没有选座");
             for (ConfirmOrderTicketReq ticket : req.getTickets()) {
                 getSeats(
-
                         req.getDate(),
                         req.getTrainCode(),
                         ticket.getSeatTypeCode(),
-                        null, null
+                        null, null,
+                        dbTicket.getStartIndex(),
+                        dbTicket.getEndIndex()
                 );
 
             }
         }
     }
 
-    private List<DailyTrainSeat> getSeats(Date date, String trainCode, String seatType, String columnFirst, List<Integer> offsetList) {
+    private void getSeats(Date date, String trainCode, String seatType, String columnFirst, List<Integer> offsetList, Integer startIndex, Integer endIndex) {
         List<DailyTrainCarriage> carriageList = dailyTrainCarriageService.getBySeatType(trainCode, date, seatType);
         for (DailyTrainCarriage dailyTrainCarriage : carriageList) {
             log.info("从车厢{}开始选", dailyTrainCarriage.getIndex());
-            List<DailyTrainSeat> seatByCarriage = dailyTrainSeatService.getSeatByCarriageIndex(date, trainCode, dailyTrainCarriage.getIndex());
-            log.info("车厢{}有{}个座位", dailyTrainCarriage.getIndex(), seatByCarriage.size());
-            log.info("车座:{}", seatByCarriage);
+            List<DailyTrainSeat> seatLists = dailyTrainSeatService.getSeatByCarriageIndex(date, trainCode, dailyTrainCarriage.getIndex());
+            log.info("车厢{}有{}个座位", dailyTrainCarriage.getIndex(), seatLists.size());
+            log.info("车座:{}", seatLists);
             log.info("----------------------------------------------------");
+            for (DailyTrainSeat seat : seatLists) {
+                Integer seatIndex = seat.getCarriageSeatIndex();
+                String col = seat.getCol();
+                if (StrUtil.isBlank(columnFirst)) {
+                    log.info("无选座");
+                } else {
+                    log.info("有选座!!");
+                    if (!col.equals(columnFirst)) {
+                        log.info("当前座位{}不匹配,继续匹配下一个,当前座位列:{},目标座位列:{}", seatIndex, seat.getCol(), columnFirst);
+                        continue;
+                    }
+                }
+                if (isValid(seat, startIndex, endIndex)) {
+                    log.info("座位{}满足条件", seat.getCarriageSeatIndex());
+                } else {
+                    log.info("座位{}在区间{}~{}已经选过票,不满足条件", startIndex, endIndex, seat.getCarriageSeatIndex());
+                    continue;
+                }
+                boolean isGetAllSeats = true;
+                if (CollUtil.isNotEmpty(offsetList)) {
+                    log.info("偏移量:{}", offsetList);
+                    for (int i = 1; i <= offsetList.size() - 1; i++) {
+                        Integer offset = offsetList.get(i);
+                        int nextIndex = offset + seatIndex - 1;
+                        if (nextIndex > seatLists.size() - 1) {
+                            log.info("车厢{}已满,继续寻找下个车厢", seat.getCarriageIndex());
+                            isGetAllSeats = false;
+                            break;
+                        }
+                        DailyTrainSeat nextSeat = seatLists.get(nextIndex);
+                        boolean isChooseNext = isValid(nextSeat, startIndex, endIndex);
+                        if (isChooseNext) {
+                            log.info("已选择座位{}", nextIndex + 1);
+                        } else {
+                            log.info("座位{}不符合", nextIndex + 1);
+                            isGetAllSeats = false;
+                            break;
+                        }
+                    }
+
+                }
+                //
+                if (!isGetAllSeats) {
+                    continue;
+                }
+
+                return;
+
+            }
         }
-        return null;
+    }
+
+    //校验每个座位是否满足
+    public boolean isValid(DailyTrainSeat seat, Integer startIndex, Integer endIndex) {
+        String preSell = seat.getSell();
+        String sellPart = preSell.substring(startIndex, endIndex);
+        if (Integer.parseInt(sellPart) > 0) {
+            log.info("选座失败，有座位已经被售出");
+            return false;
+        } else {
+            log.info("选座成功");
+        }
+        String curSell = sellPart.replace('0', '1');
+        curSell = StrUtil.fillBefore(curSell, '0', endIndex);
+        curSell = StrUtil.fillAfter(curSell, '0', preSell.length());
+        int i = NumberUtil.binaryToInt(curSell) | NumberUtil.binaryToInt(preSell);
+        String finalSell = NumberUtil.getBinaryStr(i);
+        finalSell = StrUtil.fillBefore(finalSell, '0', preSell.length());
+        log.info("座位{}被选中,原售票信息:{},车站区间:{}~{},即{},最终售票信息:{}", seat.getCarriageSeatIndex(), preSell, startIndex, endIndex, curSell, finalSell);
+        seat.setSell(finalSell);
+        return true;
     }
 
     private static void reduceTickets(ConfirmOrderDoReq req, DailyTrainTicket dbTicket) {

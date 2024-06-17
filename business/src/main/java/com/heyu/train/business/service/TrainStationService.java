@@ -15,10 +15,10 @@ import com.heyu.train.generator.generator.help.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import  static com.heyu.train.business.domain.TrainStationField.*;
 
-import java.util.Date;
 import java.util.List;
+
+import static com.heyu.train.business.domain.TrainStationField.setTrainCode;
 
 /**
  * 功能:
@@ -54,9 +54,9 @@ public class TrainStationService {
 
     public PageInfo<TrainStationQueryResp> queryList(TrainStationQueryReq req) {
         MyBatisWrapper<TrainStationQueryResp> wrapper = new MyBatisWrapper<>();
-        if(ObjectUtil.isEmpty(req.getTrainCode())){
+        if (ObjectUtil.isEmpty(req.getTrainCode())) {
             wrapper.select(TrainStationField.TrainCode, TrainStationField.Id, TrainStationField.Index, TrainStationField.Name, TrainStationField.InTime, TrainStationField.StopTime, TrainStationField.OutTime, TrainStationField.NamePinyin, TrainStationField.NamePinyin, TrainStationField.Km).orderByAsc(TrainStationField.TrainCode);
-        }else {
+        } else {
             wrapper.select(TrainStationField.TrainCode, TrainStationField.Id, TrainStationField.Index, TrainStationField.Name, TrainStationField.InTime, TrainStationField.StopTime, TrainStationField.OutTime, TrainStationField.NamePinyin, TrainStationField.NamePinyin, TrainStationField.Km).orderByAsc(TrainStationField.TrainCode).whereBuilder().andEq(TrainStationField.setTrainCode(req.getTrainCode()));
         }
 
@@ -71,10 +71,18 @@ public class TrainStationService {
     public void del(Long id) {
         trainStationMapper.deleteByPrimaryKey(id);
     }
-    public List<TrainStation> selectByTrainCode(String trainCode){
+
+    public List<TrainStation> selectByTrainCode(String trainCode) {
         MyBatisWrapper<TrainStation> wrapper = new MyBatisWrapper<>();
         wrapper.select(TrainStationField.TrainCode, TrainStationField.Id, TrainStationField.Index, TrainStationField.Name, TrainStationField.InTime, TrainStationField.StopTime, TrainStationField.OutTime, TrainStationField.NamePinyin, TrainStationField.NamePinyin, TrainStationField.Km).orderByAsc(TrainStationField.TrainCode).whereBuilder().andEq(setTrainCode(trainCode));
-       wrapper.orderByAsc(TrainStationField.Index);
+        wrapper.orderByAsc(TrainStationField.Index);
         return trainStationMapper.list(wrapper);
+    }
+
+    public int countStations(String trainCode) {
+        MyBatisWrapper<TrainStation> wrapper = new MyBatisWrapper<>();
+        wrapper.select(TrainStationField.Id).whereBuilder().andEq(setTrainCode(trainCode));
+        Integer i = trainStationMapper.count(wrapper);
+        return i;
     }
 }

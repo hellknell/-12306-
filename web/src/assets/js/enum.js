@@ -27,4 +27,37 @@ SEAT_TYPE_ARRAY1 = [{
     code: "4",
     desc: "软卧"
 }]
+OrderStatusEnum = [
+
+
+    {
+        code: "I", desc: "初始化"
+    }
+    ,
+
+    {
+        code: "P", desc: "处理中"
+    }
+    ,
+
+    {
+        code: "S", desc: "成功"
+    }
+    ,
+
+    {
+        code: "F", desc: "失败"
+    }
+    ,
+
+    {
+        code: "E", desc: "没有订单"
+    }
+    ,
+
+    {
+        code: "C", desc: "取消"
+    }]
+
+
 

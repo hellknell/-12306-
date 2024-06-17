@@ -29,6 +29,7 @@ import java.util.List;
 @Slf4j
 public class TrainCarriageService {
     final TrainCarriageMapper trainCarriageMapper;
+
     public void save(TrainCarriageSaveReq req) {
         List<String> colsByType = SeatTypeEnum.getColsByType(req.getSeatType());
         req.setColCount(colsByType.size());
@@ -56,13 +57,13 @@ public class TrainCarriageService {
 
     public PageInfo<TrainCarriageQueryResp> queryList(TrainCarriageQueryReq req) {
         MyBatisWrapper<TrainCarriageQueryResp> wrapper = new MyBatisWrapper<>();
-        if(ObjectUtil.isEmpty(req.getTrainCode())){
-            wrapper.select(TrainCarriageField.Id,TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount,  TrainCarriageField.SeatType);
-        }else{
-            wrapper.select(TrainCarriageField.Id,TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount,  TrainCarriageField.SeatType).whereBuilder().andEq(TrainCarriageField.setTrainCode(req.getTrainCode()));
+        if (ObjectUtil.isEmpty(req.getTrainCode())) {
+            wrapper.select(TrainCarriageField.Id, TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount, TrainCarriageField.SeatType);
+        } else {
+            wrapper.select(TrainCarriageField.Id, TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount, TrainCarriageField.SeatType).whereBuilder().andEq(TrainCarriageField.setTrainCode(req.getTrainCode()));
         }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
-        int total = trainCarriageMapper.list(wrapper).size();
+        int total = trainCarriageMapper.list(wrapper.orderByAsc(TrainCarriageField.TrainCode, TrainCarriageField.Index)).size();
         List<TrainCarriage> list = trainCarriageMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));
         List<TrainCarriageQueryResp> resp = BeanUtil.copyToList(list, TrainCarriageQueryResp.class);
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
@@ -71,9 +72,10 @@ public class TrainCarriageService {
     public void del(Long id) {
         trainCarriageMapper.deleteByPrimaryKey(id);
     }
-    public List<TrainCarriage> selectByTrainCode(String trainCode){
-        MyBatisWrapper<TrainCarriage> wrapper=new MyBatisWrapper<>();
-        wrapper.select(TrainCarriageField.Id,TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount,  TrainCarriageField.SeatType).whereBuilder().andEq(TrainCarriageField.setTrainCode(trainCode));
+
+    public List<TrainCarriage> selectByTrainCode(String trainCode) {
+        MyBatisWrapper<TrainCarriage> wrapper = new MyBatisWrapper<>();
+        wrapper.select(TrainCarriageField.Id, TrainCarriageField.Index, TrainCarriageField.TrainCode, TrainCarriageField.ColCount, TrainCarriageField.RowCount, TrainCarriageField.SeatCount, TrainCarriageField.SeatType).whereBuilder().andEq(TrainCarriageField.setTrainCode(trainCode));
         return trainCarriageMapper.list(wrapper);
 
     }

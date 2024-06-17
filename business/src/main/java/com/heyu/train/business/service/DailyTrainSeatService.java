@@ -34,6 +34,7 @@ import static com.heyu.train.business.domain.DailyTrainSeatField.*;
 public class DailyTrainSeatService {
     final DailyTrainSeatMapper dailyTrainSeatMapper;
     final TrainSeatMapper trainSeatMapper;
+    final TrainStationService trainStationService;
 
     public void save(DailyTrainSeatSaveReq req) {
         DailyTrainSeat p1 = BeanUtil.copyProperties(req, DailyTrainSeat.class);
@@ -46,7 +47,7 @@ public class DailyTrainSeatService {
             dailyTrainSeatMapper.insert(pass);
         } else {
             p1.setUpdateTime(now);
-            dailyTrainSeatMapper.updateByPrimaryKey(p1);
+            dailyTrainSeatMapper.updateByPrimaryKeySelective(p1);
         }
 
 
@@ -75,11 +76,13 @@ public class DailyTrainSeatService {
         MyBatisWrapper<TrainSeat> wrapper = new MyBatisWrapper<>();
         wrapper.select(TrainSeatField.CarriageSeatIndex, TrainSeatField.CarriageIndex, TrainSeatField.Row, TrainSeatField.Col, TrainSeatField.TrainCode, TrainSeatField.SeatType).whereBuilder().andEq(TrainSeatField.setTrainCode(code));
         List<TrainSeat> list = trainSeatMapper.list(wrapper);
+        int size = trainStationService.countStations(code);
+        String s = StrUtil.fillBefore("", '0', size - 1);
         DateTime now = DateTime.now();
         for (TrainSeat ts : list) {
             DailyTrainSeat dailyTrainSeat = BeanUtil.copyProperties(ts, DailyTrainSeat.class);
             dailyTrainSeat.setDate(date);
-            dailyTrainSeat.setSell("0011");
+            dailyTrainSeat.setSell(s);
             dailyTrainSeat.setId(SnowFlask.getSnowFlaskId());
             dailyTrainSeat.setCreateTime(now);
             dailyTrainSeat.setUpdateTime(now);
@@ -103,8 +106,8 @@ public class DailyTrainSeatService {
 
     public List<DailyTrainSeat> getSeatByCarriageIndex(Date date, String trainCode, Integer trainCarriageIndex) {
         MyBatisWrapper<DailyTrainSeat> wrapper = new MyBatisWrapper<>();
-        wrapper.select(TrainSeatField.CarriageSeatIndex, TrainSeatField.CarriageIndex, TrainSeatField.Row, TrainSeatField.Col, TrainSeatField.TrainCode, TrainSeatField.SeatType).whereBuilder().andEq(setDate(date)).andEq(setTrainCode(trainCode)).andEq(setCarriageIndex(trainCarriageIndex));
-        List<DailyTrainSeat> list = dailyTrainSeatMapper.list(wrapper);
+        wrapper.select(DailyTrainSeatField.CarriageSeatIndex, DailyTrainSeatField.CarriageIndex, DailyTrainSeatField.Row, DailyTrainSeatField.Col, DailyTrainSeatField.TrainCode, DailyTrainSeatField.SeatType, Sell).whereBuilder().andEq(setDate(date)).andEq(setTrainCode(trainCode)).andEq(setCarriageIndex(trainCarriageIndex));
+        List<DailyTrainSeat> list = dailyTrainSeatMapper.list(wrapper.orderByAsc(DailyTrainSeatField.CarriageSeatIndex));
         return list;
     }
 

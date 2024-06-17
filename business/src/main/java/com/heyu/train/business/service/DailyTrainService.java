@@ -72,11 +72,9 @@ public class DailyTrainService {
         List<DailyTrainQueryResp> resp = BeanUtil.copyToList(list, DailyTrainQueryResp.class);
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
     }
-
     public void del(Long id) {
         dailyTrainMapper.deleteByPrimaryKey(id);
     }
-
     public void generate(Date date) {
         MyBatisWrapper<Train> wrapper = new MyBatisWrapper<>();
         wrapper.select(TrainField.UpdateTime, TrainField.CreateTime, TrainField.Code, TrainField.StartTime, TrainField.Start, TrainField.End, TrainField.EndTime, TrainField.Type, TrainField.StartPinyin, TrainField.EndPinyin);
@@ -85,7 +83,6 @@ public class DailyTrainService {
             genTrain(date, train);
         }
     }
-
     @Transactional
     public void genTrain(Date date, Train train) {
         dailyTrainMapper.deleteByDate(date, train.getCode());

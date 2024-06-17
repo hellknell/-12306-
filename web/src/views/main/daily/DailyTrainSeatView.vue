@@ -87,7 +87,7 @@ const params = ref({
   date: undefined,
 })
 const SEAT_COL_ARRAY = window.SEAT_COL_ARRAY;
-const SEAT_TYPE_ARRAY = window.SEAT_TYPE_ARRAY;
+const SEAT_TYPE_ARRAY = window.SEAT_TYPE_ARRAY1;
 const visible = ref(false);
 let dailyTrainSeat = ref({
   id: undefined,

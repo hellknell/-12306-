@@ -124,10 +124,10 @@
         carriage_index = #{carriageIndex,jdbcType=INTEGER},
       </if>
       <if test="row != null">
-        row = #{row,jdbcType=CHAR},
+        `row` = #{row,jdbcType=CHAR},
       </if>
       <if test="col != null">
-        col = #{col,jdbcType=CHAR},
+        `col` = #{col,jdbcType=CHAR},
       </if>
       <if test="seatType != null">
         seat_type = #{seatType,jdbcType=CHAR},

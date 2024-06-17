@@ -24,10 +24,8 @@
         </a-space>
       </template>
       <template v-else-if="column.dataIndex === 'status'">
-        <span v-for="item in CONFIRM_ORDER_STATUS_ARRAY" :key="item.code">
-          <span v-if="item.code === record.status">
-            {{ item.desc }}
-          </span>
+        <span v-for="item in ORDERSTATUS" :key="item.code">
+           <a-tag color="success" v-if="item.code === record.status">{{ item.desc }}</a-tag>
         </span>
       </template>
     </template>
@@ -58,7 +56,7 @@
       </a-form-item>
       <a-form-item label="订单状态">
         <a-select v-model:value="confirmOrder.status">
-          <a-select-option v-for="item in CONFIRM_ORDER_STATUS_ARRAY" :key="item.code" :value="item.code">
+          <a-select-option v-for="item in ORDERSTATUS" :key="item.code" :value="item.code">
             {{ item.desc }}
           </a-select-option>
         </a-select>
@@ -73,7 +71,7 @@ import request from "@/util/request";
 import {notification} from "ant-design-vue";
 import TrainSelect from "@/component/train-select.vue";
 
-const CONFIRM_ORDER_STATUS_ARRAY = window.CONFIRM_ORDER_STATUS_ARRAY;
+const ORDERSTATUS = window.OrderStatusEnum;
 const visible = ref(false);
 let confirmOrder = ref({
   id: undefined,
