@@ -49,8 +49,6 @@ public class DailyTrainSeatService {
             p1.setUpdateTime(now);
             dailyTrainSeatMapper.updateByPrimaryKeySelective(p1);
         }
-
-
     }
 
     public PageInfo<DailyTrainSeatQueryResp> queryList(DailyTrainSeatQueryReq req) {

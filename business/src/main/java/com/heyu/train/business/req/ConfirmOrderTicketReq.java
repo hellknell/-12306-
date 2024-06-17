@@ -20,7 +20,6 @@ public class ConfirmOrderTicketReq {
     private String passengerType;
     @NotBlank(message = "乘客身份证号不能为空")
     private String passengerIdCard;
-    @NotBlank(message = "乘客手机号不能为空")
     private String seatTypeCode;
     private String seat;
 

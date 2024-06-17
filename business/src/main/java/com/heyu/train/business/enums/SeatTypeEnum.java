@@ -11,7 +11,7 @@ public enum SeatTypeEnum {
     FIRST_A("A", "A", "1"),
     FIRST_C("C", "C", "1"),
     FIRST_D("D", "D", "1"),
-    FIRST_E("E", "E", "1"),
+    FIRST_E("F", "F", "1"),
     SECOND_A("A", "A", "2"),
     SECOND_B("B", "B", "2"),
     SECOND_C("C", "C", "2"),
