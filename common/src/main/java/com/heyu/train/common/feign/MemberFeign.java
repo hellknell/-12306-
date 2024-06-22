@@ -7,14 +7,16 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
 @Component
-@FeignClient(name = "business-service", url = "http://localhost:8002/business")
+@FeignClient(name = "member-service", url = "http://localhost:8002/business")
 public interface MemberFeign {
     @GetMapping("/daily-train-ticket/query-list")
     Result<PageInfo<DailyTrainTicketQueryResp>> queryDailyTrainTicket(@Valid @SpringQueryMap DailyTrainTicketQueryReq req);
+
     @GetMapping("/station/query-station")
     Result<List<StationQueryResp>> queryList();
 

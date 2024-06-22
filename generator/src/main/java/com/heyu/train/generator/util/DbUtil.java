@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class DbUtil {
 
-    public static String url = "jdbc:mysql:///train_member?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
+    public static String url = "jdbc:mysql:///train_business?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
     public static String user = "train";
     public static String password = "qweASDzx11";
 

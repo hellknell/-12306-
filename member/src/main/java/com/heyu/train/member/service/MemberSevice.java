@@ -5,9 +5,9 @@ import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
+import com.heyu.train.generator.generator.help.MyBatisWrapper;
 import com.heyu.train.common.util.JwtUtil;
 import com.heyu.train.common.util.SnowFlask;
-import com.heyu.train.generator.generator.help.MyBatisWrapper;
 import com.heyu.train.member.domain.Member;
 import com.heyu.train.member.domain.MemberField;
 import com.heyu.train.member.dto.MemberDTO;
@@ -88,7 +88,6 @@ public class MemberSevice {
         memberDTO.setToken(token);
         return memberDTO;
     }
-
     public Integer count() {
         MyBatisWrapper<Member> wrapper = new MyBatisWrapper<>();
         return memberMapper.count(wrapper);

@@ -62,7 +62,7 @@ import {pinyin} from "pinyin-pro";
 const loading = ref(false)
 const pagination = ref({
   total: 0,
-  pageSize: 10,
+  pageSize: 4,
   current: 1
 })
 const save = (data) => {

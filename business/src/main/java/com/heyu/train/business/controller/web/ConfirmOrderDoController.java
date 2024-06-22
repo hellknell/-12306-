@@ -25,7 +25,7 @@ public class ConfirmOrderDoController {
     final ConfirmOrderService confirmOrderService;
     @Operation(summary = "提交订单")
     @PostMapping("/do")
-    public Result<Void> login(@RequestBody @Valid ConfirmOrderDoReq req) throws NoSuchFieldException, IllegalAccessException {
+    public Result<Void> login(@RequestBody @Valid ConfirmOrderDoReq req ) throws NoSuchFieldException, IllegalAccessException {
         confirmOrderService.doConfirm(req);
         return Result.success();
     }

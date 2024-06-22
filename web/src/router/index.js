@@ -12,11 +12,6 @@ const routes = [
         component: () => import('../views/MainView.vue'),
         children: [
             {
-                path: '/ticket',
-                name: 'Ticket',
-                component: () => import('../views/main/member/TicketView.vue')
-            },
-            {
                 path: '/welcome',
                 name: 'Welcome',
                 component: () => import('../views/main/WelComeView.vue'),
