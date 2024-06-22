@@ -22,6 +22,7 @@ import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
 import com.heyu.train.common.resp.ConfirmOrderQueryResp;
 import com.heyu.train.common.util.SnowFlask;
+import com.heyu.train.generator.generator.help.Criteria;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
 import com.heyu.train.generator.generator.help.PageInfo;
 import context.LoginMemberContext;
@@ -32,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -72,8 +72,14 @@ public class ConfirmOrderService {
     }
 
     public PageInfo<ConfirmOrderQueryResp> queryList(ConfirmOrderQueryReq req) {
-        MyBatisWrapper<ConfirmOrderQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(Id, MemberId, Date, TrainCode, Start, TrainCode, End, DailyTrainTicketId, Status, Tickets);
+        MyBatisWrapper<ConfirmOrder> wrapper = new MyBatisWrapper<>();
+        Criteria criteria = wrapper.select(Id, MemberId, Date, Start, TrainCode, End, DailyTrainTicketId, Status, Tickets).whereBuilder();
+        if (StrUtil.isNotBlank(req.getCode())) {
+            criteria.andEq(setTrainCode(req.getCode()));
+        }
+        if (ObjectUtil.isNotNull(req.getDate())) {
+            criteria.andEq(setDate(req.getDate()));
+        }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = confirmOrderMapper.list(wrapper).size();
         List<ConfirmOrder> list = confirmOrderMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));
@@ -92,8 +98,9 @@ public class ConfirmOrderService {
         if (Objects.isNull(dailyTrain)) {
             throw new BizException(BizExceptionEnum.NO_TRAINS);
         }
+
         MyBatisWrapper<DailyTrainTicket> wrapper01 = new MyBatisWrapper<>();
-        wrapper01.select(DailyTrainTicketField.Id).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
+        wrapper01.select(DailyTrainTicketField.Id, DailyTrainTicketField.TrainCode, DailyTrainTicketField.StartIndex, DailyTrainTicketField.EndIndex, DailyTrainTicketField.Date, DailyTrainTicketField.Start, DailyTrainTicketField.End, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
         DailyTrainTicket dailyTrainTicket = dailyTrainTicketMapper.topOne(wrapper01);
         if (Objects.isNull(dailyTrainTicket)) {
             throw new BizException(BizExceptionEnum.NO_TICKETS);
@@ -118,7 +125,7 @@ public class ConfirmOrderService {
         reduceTickets(req, dbTicket);
         //保存最终选座信息
         List<DailyTrainSeat> finalSeats = new ArrayList<>();
-        //模拟出选座,并计算机出牌偏移量
+        //模拟出选座,并计算出偏移量
         if (StrUtil.isNotBlank(lists.get(0).getSeat())) {
             log.info("本次有选座");
             List<String> colsByType = SeatTypeEnum.getColsByType(lists.get(0).getSeatTypeCode());
@@ -157,10 +164,11 @@ public class ConfirmOrderService {
         }
 
         log.info("最终选座:{}", finalSeats.stream().map(DailyTrainSeat::getCarriageSeatIndex).collect(Collectors.toList()));
-        afterConfirmOrderService.afterConfirm(finalSeats);
+        afterConfirmOrderService.afterConfirm(dailyTrainTicket, finalSeats, req.getTickets(), confirmOrder);
     }
 
-    private void getSeats(List<DailyTrainSeat> finalChooseSeats, Date date, String trainCode, String seatType, String columnFirst, List<Integer> offsetList, Integer startIndex, Integer endIndex) {
+    private void getSeats(List<DailyTrainSeat> finalChooseSeats, java.util.Date date, String trainCode, String
+            seatType, String columnFirst, List<Integer> offsetList, Integer startIndex, Integer endIndex) {
         List<DailyTrainCarriage> carriageList = dailyTrainCarriageService.getBySeatType(trainCode, date, seatType);
 
         for (DailyTrainCarriage dailyTrainCarriage : carriageList) {

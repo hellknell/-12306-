@@ -16,46 +16,52 @@
             欢迎页
           </router-link>
         </a-menu-item>
-          <a-menu-item key="/base/station">
-            <router-link to="/base/station">
-              <user-outlined/>
-              车站管理
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/base/train">
-            <router-link to="/base/train">
-              <user-outlined/>
-              火车管理
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/base/train-station">
-            <router-link to="/base/train-station">
-              <user-outlined/>
-              火车车站管理
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/base/train-carriage">
-            <router-link to="/base/train-carriage">
-              <user-outlined/>
-              火车车厢管理
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/base/train-seat">
-            <router-link to="/base/train-seat">
-              <user-outlined/>
-              火车车座管理
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/batch/job">
-            <router-link to="/batch/job">
-              <UnorderedListOutlined/>
-              跑批管理
-            </router-link>
-          </a-menu-item>
+        <a-menu-item key="/base/station">
+          <router-link to="/base/station">
+            <user-outlined/>
+            车站管理
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="/base/train">
+          <router-link to="/base/train">
+            <user-outlined/>
+            火车管理
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="/base/train-station">
+          <router-link to="/base/train-station">
+            <user-outlined/>
+            火车车站管理
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="/base/train-carriage">
+          <router-link to="/base/train-carriage">
+            <user-outlined/>
+            火车车厢管理
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="/base/train-seat">
+          <router-link to="/base/train-seat">
+            <user-outlined/>
+            火车车座管理
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="/batch/job">
+          <router-link to="/batch/job">
+            <UnorderedListOutlined/>
+            跑批管理
+          </router-link>
+        </a-menu-item>
         <a-menu-item key="/base/order">
           <router-link to="/base/order">
             <UnorderedListOutlined/>
             订单管理
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="/">
+          <router-link to="/ticket">
+            <UnorderedListOutlined/>
+            车票管理
           </router-link>
         </a-menu-item>
       </a-menu>

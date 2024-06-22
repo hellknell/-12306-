@@ -66,12 +66,12 @@ public class ServerGenerator {
         map.put("typeSet", typeSet);
         map.put("readOnly", readOnly);
 
-//        gen(servicePathFinal, domain, map, "service", "service");
-//        gen(servicePathFinal, domain, map, "controller", "controller");
-//        gen(servicePathFinal, domain, map, "req", "saveReq");
-//        gen(servicePathFinal, domain, map, "req", "queryReq");
-//        gen(servicePathFinal, domain, map, "resp", "queryResp");
-        genVue(Domain, map);
+        gen(servicePathFinal, domain, map, "service", "service");
+        gen(servicePathFinal, domain, map, "controller", "controller");
+        gen(servicePathFinal, domain, map, "req", "saveReq");
+        gen(servicePathFinal, domain, map, "req", "queryReq");
+        gen(servicePathFinal, domain, map, "resp", "queryResp");
+//        genVue(Domain, map);
     }
 
     private static void gen(String serverPath, String domain, HashMap<String, Object> map, String packageName, String target) throws IOException, TemplateException {

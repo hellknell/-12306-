@@ -7,13 +7,13 @@
       <a-layout-sider v-model:collapsed="collapsed" collapsible
                       style="background: #fff;height: calc(90vh - 10px);overflow: scroll">
         <TheSider/>
-      </a-layout-sider>
-      <a-layout style="padding: 0 18px 18px;">
-        <div style="width: min-content;height:min-content">
-          <a-button type="primary" @click="() => (collapsed = !collapsed)">
-            <MenuUnfoldOutlined
-                v-if="collapsed"
-                class="trigger"
+            </a-layout-sider>
+            <a-layout style="padding: 0 18px 18px;">
+              <div style="width: min-content;height:min-content">
+                <a-button type="primary" @click="() => (collapsed = !collapsed)">
+                  <MenuUnfoldOutlined
+                      v-if="collapsed"
+                      class="trigger"
             />
             <MenuFoldOutlined v-else class="trigger"/>
           </a-button>

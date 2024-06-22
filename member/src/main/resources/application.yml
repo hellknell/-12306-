@@ -12,8 +12,6 @@ logging:
   level:
     com.heyu.train.member.mapper: trace
 spring:
-  application:
-    name: member
   cloud:
     sentinel:
       transport:
@@ -35,6 +33,9 @@ spring:
       max-lifetime: 1800000 # 控制池中链接的最长生命周期，值0表示无限生命周期，默认1800000，即30分钟
       connection-timeout: 30000 # 数据库链接超时时间，默认30秒，即30000
       connection-test-query: SELECT 1
+test:
+  nacos:
+    member
 #
 #swagger:
 #  enable: true

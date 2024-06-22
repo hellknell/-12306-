@@ -59,7 +59,9 @@ public class PassengerService {
 
     public PageInfo<PassengerQueryResp> queryList(PassengerQueryReq req) {
         MyBatisWrapper<PassengerQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(PassengerField.Id, PassengerField.MemberId, PassengerField.Name, PassengerField.Type, PassengerField.IdCard);
+        Long id = LoginMemberContext.getId();
+        log.info("会员id:{}", id);
+        wrapper.select(PassengerField.Id, PassengerField.MemberId, PassengerField.Name, PassengerField.Type, PassengerField.IdCard).whereBuilder().andEq(PassengerField.setMemberId(id));
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = passengerMapper.list(wrapper).size();
         List<Passenger> list = passengerMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(),

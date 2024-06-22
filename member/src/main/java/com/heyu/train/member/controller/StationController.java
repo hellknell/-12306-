@@ -24,8 +24,7 @@ import java.util.List;
 @RequestMapping("/station")
 @RequiredArgsConstructor
 public class StationController {
-final MemberFeign memberFeign;
-
+    final MemberFeign memberFeign;
     @Operation(summary = "查询车站")
     @GetMapping("/query-station")
     public Result<List<StationQueryResp>> queryStation() {

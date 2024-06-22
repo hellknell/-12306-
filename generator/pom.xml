@@ -44,12 +44,12 @@
             <artifactId>jaxen</artifactId>
             <version>1.2.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.heyu</groupId>-->
-<!--            <artifactId>member</artifactId>-->
-<!--            <scope>compile</scope>-->
-<!--            <version>1.0.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.heyu</groupId>-->
+        <!--            <artifactId>member</artifactId>-->
+        <!--            <scope>compile</scope>-->
+        <!--            <version>1.0.0</version>-->
+        <!--        </dependency>-->
     </dependencies>
     <build>
 
@@ -59,13 +59,13 @@
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.4.1</version>
                 <configuration>
-                    <configurationFile>src/main/resources/generatorConfig-business.xml</configurationFile>
+                    <configurationFile>src/main/resources/generatorConfig-member.xml</configurationFile>
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
                 </configuration>
                 <dependencies>
                     <dependency>
-                          <groupId>mysql</groupId>
+                        <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
                         <version>8.0.17</version>
                     </dependency>

@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: gateway
   cloud:
     gateway:
       routes:
@@ -23,5 +25,11 @@ spring:
             #            跨域请求的有效，会发送option请求
             maxAge: 3600
             allowCredentials: true
+    nacos:
+      server-addr: 127.0.0.1:8848
+      discovery:
+        namespace: train
+
 server:
   port: 10010
+

@@ -5,28 +5,28 @@
     <context id="DAO" targetRuntime="MyBatis3">
         <!--覆盖生成的mapper.xml文件-->
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
-        <plugin type="com.heyu.train.generator.generator.plugin.MapperPlugin"/>
-        <plugin type="com.heyu.train.generator.generator.plugin.ListPlugin"/>
-        <plugin type="com.heyu.train.generator.generator.plugin.InitModelDefaultValuePlugin"/>
-        <plugin type="com.heyu.train.generator.generator.plugin.FieldAttributePlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.MapperPlugin"/>
+        <plugin type="com.heyu.mybatis.generator.plugin.ListPlugin"/>
+        <plugin type="com.heyu.mybatis.generator.plugin.InitModelDefaultValuePlugin"/>
+        <plugin type="com.heyu.mybatis.generator.plugin.FieldAttributePlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.ExampleWhereClausePlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.ExampleWhereClausePlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.TopOnePlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.TopOnePlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.CountPlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.CountPlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.UpdateFieldPlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.UpdateFieldPlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.UpdateByExampleWhereClausePlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.UpdateByExampleWhereClausePlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.UpdateFieldBatchPlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.UpdateFieldBatchPlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.GetPlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.GetPlugin">
         </plugin>
-        <plugin type="com.heyu.train.generator.generator.plugin.UpdateBatchSelectivePlugin">
+        <plugin type="com.heyu.mybatis.generator.plugin.UpdateBatchSelectivePlugin">
         </plugin>
-        <commentGenerator type="com.heyu.train.generator.generator.plugin.GeneratorCommentPlugin">
+        <commentGenerator type="com.heyu.mybatis.generator.plugin.GeneratorCommentPlugin">
             <!-- 是否去除所有自动生成的注释 true：是 ： false:否 -->
             <property name="suppressAllComments" value="true"/>
             <!-- 是否添加数据库内的注释 true：是 ： false:否 -->
@@ -62,8 +62,7 @@
             <property name="enableSbPackages" value="false"/>
         </javaClientGenerator>
 
-
-        <table tableName="passenger" domainObjectName="Passenger" enableCountByExample="false"
+        <table tableName="ticket" domainObjectName="Ticket" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>

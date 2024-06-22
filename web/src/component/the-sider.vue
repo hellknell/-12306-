@@ -14,6 +14,12 @@
       </router-link>
     </a-menu-item>
 
+    <a-menu-item key="/ticket">
+      <router-link to="/ticket">
+        <UnorderedListOutlined/>
+        车票管理
+      </router-link>
+    </a-menu-item>
     <a-sub-menu key="/daily" :popupOffset="10">
       <template #title>
            <span>

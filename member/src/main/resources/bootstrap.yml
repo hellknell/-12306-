@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: member
+  cloud:
+    nacos:
+      discovery:
+        namespace: train
+      config:
+        file-extension: yml
+        namespace: train
+      server-addr: 127.0.0.1:8848
+

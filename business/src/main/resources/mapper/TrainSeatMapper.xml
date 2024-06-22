@@ -410,5 +410,4 @@
             #{item.id,jdbcType=BIGINT}
         </foreach>
     </update>
-
 </mapper>
