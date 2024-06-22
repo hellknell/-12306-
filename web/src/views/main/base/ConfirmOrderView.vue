@@ -28,6 +28,9 @@
            <a-tag color="success" v-if="item.code === record.status">{{ item.desc }}</a-tag>
         </span>
       </template>
+      <template v-else-if="column.dataIndex === 'tickets'">
+        <a-button type="primary" @click="onDetail(record.tickets)">显示详情</a-button>
+      </template>
     </template>
   </a-table>
   <a-modal v-model:visible="visible" title="确认订单" @ok="handleOk"
@@ -63,6 +66,33 @@
       </a-form-item>
     </a-form>
   </a-modal>
+
+  <a-modal v-model:visible="isVisible" title="车票详情" style="width: 60%">
+    <a-row class="order-tickets-header">
+      <a-col :offset="4" :span="3">乘客</a-col>
+      <a-col :span="8">身份证</a-col>
+      <a-col :span="4">票种</a-col>
+      <a-col :span="4">座位类型</a-col>
+    </a-row>
+    <a-row class="order-tickets-row" v-for="ticket in tickets" :key="ticket.passengerId">
+      <a-col :offset="4" :span="3">{{ ticket.passengerName }}</a-col>
+      <a-col :span="8">{{ ticket.passengerIdCard }}</a-col>
+      <a-col :span="4">
+          <span v-for="item in PASSENGER_TYPE_ARRAY" :key="item.code">
+            <span v-if="item.code === ticket.passengerType">
+              {{ item.desc }}
+            </span>
+          </span>
+      </a-col>
+      <a-col :span="4">
+          <span v-for="item in seatTypes" :key="item.code">
+            <span v-if="item.code === ticket.seatTypeCode">
+              {{ item.desc }}
+            </span>
+          </span>
+      </a-col>
+    </a-row>
+  </a-modal>
 </template>
 
 <script setup>
@@ -71,7 +101,10 @@ import request from "@/util/request";
 import {notification} from "ant-design-vue";
 import TrainSelect from "@/component/train-select.vue";
 
+const tickets = ref([]);
 const ORDERSTATUS = window.OrderStatusEnum;
+const PASSENGER_TYPE_ARRAY = window.PASSAGER_TYPE_ARRAY
+const seatTypes = window.SEAT_TYPE_ARRAY1
 const visible = ref(false);
 let confirmOrder = ref({
   id: undefined,
@@ -85,9 +118,11 @@ let confirmOrder = ref({
   status: undefined,
   createTime: undefined,
   updateTime: undefined,
-});
+})
+const isVisible = ref(false)
 const params = ref({
-  code: undefined
+  code: undefined,
+  date: undefined
 });
 const confirmOrders = ref([]);
 // 分页的三个属性名是固定的
@@ -144,15 +179,15 @@ const columns = [
   }
 ];
 
-const onAdd = () => {
-  confirmOrder.value = {};
-  visible.value = true;
-};
 const onEdit = (record) => {
   confirmOrder.value = Tool.copy(record);
   visible.value = true;
 };
-
+const onDetail = (record) => {
+  isVisible.value = !isVisible.value
+  tickets.value = JSON.parse(JSON.parse(JSON.stringify(record)))
+  console.log(tickets.value)
+}
 const onDelete = (record) => {
   request.delete("/admin/confirm-order/delete/" + record.id).then((res) => {
     if (res.success) {
@@ -191,14 +226,16 @@ const handleQuery = (param) => {
   request.get("/business/admin/confirm-order/query-list", {
     params: {
       pageNum: param.pageNum,
-      pageSize: param.pageSize
+      pageSize: param.pageSize,
+      code: params.value.code,
+      date: params.value.date
     }
   }).then((res) => {
     loading.value = false;
     if (res.success) {
       confirmOrders.value = res.data.list;
       pagination.value.current = param.pageNum;
-      pagination.value.total = res.content.total;
+      pagination.value.total = res.data.total;
     } else {
       notification.error({description: res.msg});
     }
@@ -219,3 +256,20 @@ onMounted(() => {
   });
 });
 </script>
+<style scoped>
+.order-tickets-header {
+  background-color: cornflowerblue;
+  border: solid 1px cornflowerblue;
+  color: white;
+  font-size: 20px;
+  padding: 5px 0;
+}
+
+.order-tickets-row {
+  border: solid 1px cornflowerblue;
+  border-top: none;
+  vertical-align: middle;
+  line-height: 30px;
+  font-size: 16px;
+}
+</style>

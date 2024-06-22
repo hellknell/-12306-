@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RefreshScope
 public class TestController {
-    @Value("${test.nacos}")
-    private String name;
-
-    @GetMapping("/test")
-    //返回html,交给前端渲染
-    public String test() {
-        return
-                "<!DOCTYPE html>" +
-                        "<html lang=\"en\">" +
-                        "<head>" +
-                        "<meta charset=\"UTF-8\">" +
-                        "<title>Title</title>" +
-                        "</head>" +
-                        "<body>" +
-                        "<div style=\" color:red;font-size:20px;text-align:center  \">Hello, " + name + "!</div>" +
-                        "</body>" +
-                        "</html>";
-    }
+//    @Value("${test.nacos}")
+//    private String name;
+//
+//    @GetMapping("/test")
+//    //返回html,交给前端渲染
+//    public String test() {
+//        return
+//                "<!DOCTYPE html>" +
+//                        "<html lang=\"en\">" +
+//                        "<head>" +
+//                        "<meta charset=\"UTF-8\">" +
+//                        "<title>Title</title>" +
+//                        "</head>" +
+//                        "<body>" +
+//                        "<div style=\" color:red;font-size:20px;text-align:center  \">Hello, " + name + "!</div>" +
+//                        "</body>" +
+//                        "</html>";
+//    }
 }

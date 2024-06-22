@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.heyu.train.common.req.MemberTicketReq;
+import com.heyu.train.common.resp.MemberDTO;
 import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.generator.generator.help.Criteria;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
@@ -13,11 +14,13 @@ import com.heyu.train.member.domain.Ticket;
 import com.heyu.train.member.mapper.TicketMapper;
 import com.heyu.train.member.req.TicketQueryReq;
 import com.heyu.train.member.resp.TicketQueryResp;
+import context.LoginMemberContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.heyu.train.member.domain.TicketField.*;
 
@@ -42,10 +45,15 @@ public class TicketService {
     }
 
     public PageInfo<TicketQueryResp> queryList(TicketQueryReq req) {
-        MyBatisWrapper<TicketQueryResp> wrapper = new MyBatisWrapper<>();
+        MyBatisWrapper<Ticket> wrapper = new MyBatisWrapper<>();
+        Optional<Long> l = Optional.ofNullable(LoginMemberContext.getMember()).map(MemberDTO::getId);
         Criteria criteria = wrapper.select(Id, MemberId, PassengerId, PassengerName, Date, TrainCode, Row, Col, CarriageIndex, SeatType, Start, StartTime, End, EndTime).whereBuilder();
-        if (ObjectUtil.isNull(req.getDate())) {
+
+        if (ObjectUtil.isNotNull(req.getDate())) {
             criteria.andEq(setDate(req.getDate()));
+        }
+        if (l.isPresent()) {
+            criteria.andEq(setMemberId(l.get()));
         }
         if (StrUtil.isNotBlank(req.getCode())) {
             criteria.andEq(setTrainCode(req.getCode()));

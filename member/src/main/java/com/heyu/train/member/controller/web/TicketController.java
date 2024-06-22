@@ -35,7 +35,7 @@ public class TicketController {
     @Operation(summary = "查询车票")
     @GetMapping("/query-list")
     public Result<PageInfo<TicketQueryResp>> queryList(@Valid TicketQueryReq req) {
-        Long id = LoginMemberContext.getId();
+
         return Result.success(ticketService.queryList(req));
     }
 

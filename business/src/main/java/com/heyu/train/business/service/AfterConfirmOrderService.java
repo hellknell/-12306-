@@ -51,19 +51,22 @@ public class AfterConfirmOrderService {
             Integer maxStartIndex = endIndex - 1;
             Integer minEndIndex = startIndex + 1;
             Integer maxEndIndex = seat.getSell().length() + 1;
-            for (int i = startIndex; i >= 0; j--) {
+            for (int i = startIndex; i >= 0; i--) {
                 if (i == 0) {
                     minStartIndex = 0;
+                    break;
                 }
-                char c1 = sellArray[i];
+                char c1 = sellArray[i - 1];
                 if (c1 == '1') {
                     minStartIndex = i + 1;
+                    break;
                 }
             }
-            for (int m = endIndex; m < sellArray.length; j++) {
+            for (int m = endIndex; m < sellArray.length; m++) {
                 char c2 = sellArray[m];
                 if (c2 == '1') {
                     maxEndIndex = m;
+                    break;
                 }
             }
             log.info("minStartIndex:{},maxStartIndex:{},minEndIndex:{},minEndIndex:{}", minStartIndex, maxStartIndex, minEndIndex, maxEndIndex);
@@ -72,7 +75,7 @@ public class AfterConfirmOrderService {
             MemberTicket memberTicket1 = BeanUtil.copyProperties(tickets.get(j), MemberTicket.class);
             memberTicket1.setRow(seat.getRow());
             memberTicket1.setCol(seat.getCol());
-            memberTicket1.setCarriageIndex(seat.getCarriageSeatIndex());
+            memberTicket1.setCarriageIndex(seat.getCarriageIndex());
             list.add(memberTicket1);
             MemberTicketReq ticket = new MemberTicketReq();
             ticket.setCarriageIndex(seat.getCarriageSeatIndex());
@@ -91,9 +94,10 @@ public class AfterConfirmOrderService {
             businessFeign.saveTicket(ticket);
         }
         ConfirmOrder confirmOrder1 = new ConfirmOrder();
-        confirmOrder1.setStatus(ConfirmOrderEnum.SUCCESS.getCode());
         confirmOrder1.setId(confirmOrder.getId());
+        confirmOrder1.setStatus(ConfirmOrderEnum.SUCCESS.getCode());
         confirmOrder1.setUpdateTime(now);
+        log.info("{}", JSONUtil.toJsonPrettyStr(list));
         confirmOrder1.setTickets(JSONUtil.toJsonStr(list));
         confirmOrderMapper.updateByPrimaryKeySelective(confirmOrder1);
     }

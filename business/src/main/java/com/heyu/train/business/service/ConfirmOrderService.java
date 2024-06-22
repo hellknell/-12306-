@@ -22,6 +22,7 @@ import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
 import com.heyu.train.common.resp.ConfirmOrderQueryResp;
 import com.heyu.train.common.util.SnowFlask;
+import com.heyu.train.generator.generator.help.Criteria;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
 import com.heyu.train.generator.generator.help.PageInfo;
 import context.LoginMemberContext;
@@ -72,15 +73,21 @@ public class ConfirmOrderService {
     }
 
     public PageInfo<ConfirmOrderQueryResp> queryList(ConfirmOrderQueryReq req) {
-        MyBatisWrapper<ConfirmOrderQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(Id, MemberId, Date, TrainCode, Start, TrainCode, End, DailyTrainTicketId, Status, Tickets);
+        MyBatisWrapper<ConfirmOrder> wrapper = new MyBatisWrapper<>();
+
+        Criteria criteria = wrapper.select(Id, MemberId, Date, TrainCode, Start, TrainCode, End, DailyTrainTicketId, Status, Tickets).whereBuilder();
+        if (ObjectUtil.isNotNull(req.getDate())) {
+            criteria.andEq(setDate(req.getDate()));
+        }
+        if (StrUtil.isNotBlank(req.getCode())) {
+            criteria.andEq(setTrainCode(req.getCode()));
+        }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = confirmOrderMapper.list(wrapper).size();
         List<ConfirmOrder> list = confirmOrderMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(), req.getPageSize()));
         List<ConfirmOrderQueryResp> resp = BeanUtil.copyToList(list, ConfirmOrderQueryResp.class);
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
     }
-
     public void del(Long id) {
         confirmOrderMapper.deleteByPrimaryKey(id);
     }
@@ -111,7 +118,7 @@ public class ConfirmOrderService {
         confirmOrderMapper.insert(confirmOrder);
         //查询余票
         MyBatisWrapper<DailyTrainTicket> tikcetWrapper = new MyBatisWrapper<>();
-        tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
+        tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Date,DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
         DailyTrainTicket dbTicket = dailyTrainTicketMapper.topOne(tikcetWrapper);
         log.info("ticket信息:{}", dbTicket);
         //预扣减余票

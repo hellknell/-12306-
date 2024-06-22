@@ -674,8 +674,8 @@
             </choose>
         </trim>
         where `date`=#{date,jdbcType=DATE}
-        and trainCode=#{trainCode,jdbcType=VARCHAR}
-        and startIndex between #{minStartIndex,jdbcType=INTEGER} and #{maxStartIndex,jdbcType=INTEGER}
-        and endIndex between #{minEndIndex,jdbcType=INTEGER} and #{maxEndIndex,jdbcType=INTEGER}
+        and train_code=#{trainCode,jdbcType=VARCHAR}
+        and start_index between #{minStartIndex,jdbcType=INTEGER} and #{maxStartIndex,jdbcType=INTEGER}
+        and end_index between #{minEndIndex,jdbcType=INTEGER} and #{maxEndIndex,jdbcType=INTEGER}
     </update>
 </mapper>

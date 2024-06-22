@@ -3,6 +3,7 @@ package com.heyu.train.business.config;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan("com.heyu")
 @MapperScan("com.heyu.train.business.mapper")
+@EnableFeignClients(basePackages = "com.heyu.train.common.feign")
 public class BusinessApplication {
     public static void main(String[] args) {
         SpringApplication.run(BusinessApplication.class, args);

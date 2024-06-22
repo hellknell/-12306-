@@ -13,7 +13,18 @@
         欢迎页
       </router-link>
     </a-menu-item>
-
+    <a-menu-item key="/ticket">
+      <router-link to="/ticket">
+        <CoffeeOutlined/>
+        车票管理
+      </router-link>
+    </a-menu-item>
+    <a-menu-item key="/base/order">
+      <router-link to="/base/order">
+        <UnorderedListOutlined/>
+        订单管理
+      </router-link>
+    </a-menu-item>
     <a-sub-menu key="/daily" :popupOffset="10">
       <template #title>
            <span>
@@ -21,12 +32,6 @@
           每日数据
         </span>
       </template>
-      <a-menu-item key="/base/order">
-        <router-link to="/base/order">
-          <UnorderedListOutlined/>
-          订单管理
-        </router-link>
-      </a-menu-item>
       <a-menu-item key="/daily/train-ticket">
         <router-link to="/daily/train-ticket">
           <UnorderedListOutlined/>
