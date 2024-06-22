@@ -45,7 +45,6 @@ public class DailyTrainTicketService {
     private final DailyTrainTicketMapper dailyTrainTicketMapper;
     private final TrainStationMapper trainStationMapper;
     private final DailyTrainSeatService dailyTrainSeatService;
-
     public void save(DailyTrainTicketSaveReq req) {
         DailyTrainTicket p1 = BeanUtil.copyProperties(req, DailyTrainTicket.class);
         DateTime now = DateTime.now();
@@ -60,7 +59,6 @@ public class DailyTrainTicketService {
             dailyTrainTicketMapper.updateByPrimaryKey(p1);
         }
     }
-
     public com.heyu.train.common.resp.PageInfo<com.heyu.train.common.resp.DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req) {
         MyBatisWrapper<DailyTrainTicketQueryResp> wrapper = new MyBatisWrapper<>();
         Criteria criteria = wrapper.select(DailyTrainTicketField.Id, DailyTrainTicketField.StartIndex, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime, DailyTrainTicketField.Date, DailyTrainTicketField.End, DailyTrainTicketField.Edz, DailyTrainTicketField.EdzPrice, DailyTrainTicketField.EndIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice, DailyTrainTicketField.Start, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Ydz, DailyTrainTicketField.EndPinyin, DailyTrainTicketField.StartPinyin, DailyTrainTicketField.TrainCode, DailyTrainTicketField.StartIndex, DailyTrainTicketField.YdzPrice, DailyTrainTicketField.Yw, DailyTrainTicketField.YwPrice, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice).orderByDesc(DailyTrainTicketField.Date).whereBuilder();

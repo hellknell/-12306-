@@ -111,7 +111,7 @@ public class ConfirmOrderService {
         confirmOrderMapper.insert(confirmOrder);
         //查询余票
         MyBatisWrapper<DailyTrainTicket> tikcetWrapper = new MyBatisWrapper<>();
-        tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.EndIndex).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
+        tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
         DailyTrainTicket dbTicket = dailyTrainTicketMapper.topOne(tikcetWrapper);
         log.info("ticket信息:{}", dbTicket);
         //预扣减余票
@@ -157,7 +157,7 @@ public class ConfirmOrderService {
         }
 
         log.info("最终选座:{}", finalSeats.stream().map(DailyTrainSeat::getCarriageSeatIndex).collect(Collectors.toList()));
-        afterConfirmOrderService.afterConfirm(finalSeats);
+        afterConfirmOrderService.afterConfirm(finalSeats, dbTicket, req.getTickets(), confirmOrder);
     }
 
     private void getSeats(List<DailyTrainSeat> finalChooseSeats, Date date, String trainCode, String seatType, String columnFirst, List<Integer> offsetList, Integer startIndex, Integer endIndex) {

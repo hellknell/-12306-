@@ -8,25 +8,14 @@
            @change="handleTableChange"
            :loading="loading">
     <template #bodyCell="{ column,record }">
-      <template v-if="column.dataIndex === 'operation'">
-        <a-space>
-          <a-popconfirm
-              title="删除后不可恢复，确认删除?"
-              @confirm="onDelete(record)"
-              ok-text="确认" cancel-text="取消">
-            <a style="color: red">删除</a>
-          </a-popconfirm>
-        </a-space>
-      </template>
       <template v-if="column.dataIndex==='seatType'">
           <span v-for="item in SEAT_TYPE_ARRAY" :key="item.code">
           <span v-if="item.code === record.seatType">
-            <a-tag color="success">{{ item.desc }}</a-tag>
+            <a-tag color="warning">{{ item.desc }}</a-tag>
           </span>
           </span>
       </template>
     </template>
-
   </a-table>
 </template>
 
@@ -37,7 +26,7 @@ import {notification} from "ant-design-vue";
 
 const tickets = ref([])
 const visible = ref(false);
-const SEAT_TYPE_ARRAY = window.SEAT_TYPE_ARRAY1
+const SEAT_TYPE_ARRAY = window.TrainSeat_TYPE_ARRAY;
 // 分页的三个属性名是固定的
 const pagination = ref({
   total: 0,
@@ -102,35 +91,10 @@ const columns = [
   {
     title: '到达时间',
     dataIndex: 'endTime'
-  }
+  },
+
 ];
-const onDelete = (record) => {
-  request.delete("/member/admin/ticket/del/" + record.id).then((res) => {
-    if (res.success) {
-      notification.success({description: "删除成功！"});
-      handleQuery({
-        page: pagination.value.current,
-        size: pagination.value.pageSize,
-      });
-    } else {
-      notification.error({description: res.msg});
-    }
-  })
-}
-const handleOk = () => {
-  request.post("/member/admin/ticket/save", confirmOrder.value).then((res) => {
-    if (res.success) {
-      notification.success({description: "保存成功！"});
-      visible.value = false;
-      handleQuery({
-        pageNum: pagination.value.current,
-        pageSize: pagination.value.pageSize
-      })
-    } else {
-      notification.error({description: res.msg});
-    }
-  });
-};
+
 const handleQuery = (param) => {
   if (!param) {
     param = {

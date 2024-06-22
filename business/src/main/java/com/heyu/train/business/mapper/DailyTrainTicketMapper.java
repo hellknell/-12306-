@@ -11,5 +11,7 @@ import java.util.Date;
 @Mapper
 public interface DailyTrainTicketMapper extends CommonMapper<DailyTrainTicket> {
     @Delete("delete from daily_train_ticket where date = #{date} and train_code = #{trainCode}")
-    int  deleteBatchs(@Param("date") Date date, @Param("trainCode") String trainCode);
+    int deleteBatchs(@Param("date") Date date, @Param("trainCode") String trainCode);
+
+    void updateBySell(Date date, String trainCode, String seatType, Integer minStartIndex, Integer maxStartIndex, Integer minEndIndex, Integer maxEndIndex);
 }
