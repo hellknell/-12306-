@@ -36,24 +36,26 @@ public class TicketService {
     final TicketMapper ticketMapper;
 
     public void save(MemberTicketReq req) {
+//        log.info("全局事务ID:{}", RootContext.getXID());
         DateTime now = DateTime.now();
         req.setCreateTime(now);
         req.setUpdateTime(now);
         req.setId(SnowFlask.getSnowFlaskId());
         Ticket pass = BeanUtil.copyProperties(req, Ticket.class);
         ticketMapper.insert(pass);
+
     }
 
     public PageInfo<TicketQueryResp> queryList(TicketQueryReq req) {
         MyBatisWrapper<Ticket> wrapper = new MyBatisWrapper<>();
-        Optional<Long> l = Optional.ofNullable(LoginMemberContext.getMember()).map(MemberDTO::getId);
-        Criteria criteria = wrapper.select(Id, MemberId, PassengerId, PassengerName, Date, TrainCode, Row, Col, CarriageIndex, SeatType, Start, StartTime, End, EndTime).whereBuilder();
+        Long id = Optional.ofNullable(LoginMemberContext.getMember()).map(MemberDTO::getId).orElse(null);
+        Criteria criteria = wrapper.select(Id, TrainDate, MemberId, PassengerId, PassengerName, TrainDate, TrainCode, SeatCol, SeatRow, CarriageIndex, SeatType, Start, StartTime, End, EndTime).whereBuilder();
 
         if (ObjectUtil.isNotNull(req.getDate())) {
-            criteria.andEq(setDate(req.getDate()));
+            criteria.andEq(setTrainDate(req.getDate()));
         }
-        if (l.isPresent()) {
-            criteria.andEq(setMemberId(l.get()));
+        if (id != null) {
+            criteria.andEq(setMemberId(id));
         }
         if (StrUtil.isNotBlank(req.getCode())) {
             criteria.andEq(setTrainCode(req.getCode()));

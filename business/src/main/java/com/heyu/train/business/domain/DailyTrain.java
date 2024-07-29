@@ -1,5 +1,6 @@
 package com.heyu.train.business.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * @author heyu
  * @date 2024-05-10 00:57:12
  */
-public class DailyTrain {
+public class DailyTrain implements Serializable {
     /**
      * id
      */
@@ -74,7 +75,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.id
      *
      * @return the value of daily_train.id
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public Long getId() {
@@ -86,7 +86,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.id
      *
      * @param id the value for daily_train.id
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setId(Long id) {
@@ -98,7 +97,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.date
      *
      * @return the value of daily_train.date
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public Date getDate() {
@@ -110,7 +108,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.date
      *
      * @param date the value for daily_train.date
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setDate(Date date) {
@@ -122,7 +119,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.code
      *
      * @return the value of daily_train.code
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public String getCode() {
@@ -134,7 +130,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.code
      *
      * @param code the value for daily_train.code
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setCode(String code) {
@@ -146,7 +141,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.type
      *
      * @return the value of daily_train.type
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public String getType() {
@@ -158,7 +152,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.type
      *
      * @param type the value for daily_train.type
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setType(String type) {
@@ -170,7 +163,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.start
      *
      * @return the value of daily_train.start
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public String getStart() {
@@ -182,7 +174,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.start
      *
      * @param start the value for daily_train.start
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setStart(String start) {
@@ -194,7 +185,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.start_pinyin
      *
      * @return the value of daily_train.start_pinyin
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public String getStartPinyin() {
@@ -206,7 +196,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.start_pinyin
      *
      * @param startPinyin the value for daily_train.start_pinyin
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setStartPinyin(String startPinyin) {
@@ -218,7 +207,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.start_time
      *
      * @return the value of daily_train.start_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public Date getStartTime() {
@@ -230,7 +218,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.start_time
      *
      * @param startTime the value for daily_train.start_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setStartTime(Date startTime) {
@@ -242,7 +229,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.end
      *
      * @return the value of daily_train.end
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public String getEnd() {
@@ -254,7 +240,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.end
      *
      * @param end the value for daily_train.end
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setEnd(String end) {
@@ -266,7 +251,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.end_pinyin
      *
      * @return the value of daily_train.end_pinyin
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public String getEndPinyin() {
@@ -278,7 +262,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.end_pinyin
      *
      * @param endPinyin the value for daily_train.end_pinyin
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setEndPinyin(String endPinyin) {
@@ -290,7 +273,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.end_time
      *
      * @return the value of daily_train.end_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public Date getEndTime() {
@@ -302,7 +284,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.end_time
      *
      * @param endTime the value for daily_train.end_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setEndTime(Date endTime) {
@@ -314,7 +295,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.create_time
      *
      * @return the value of daily_train.create_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public Date getCreateTime() {
@@ -326,7 +306,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.create_time
      *
      * @param createTime the value for daily_train.create_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setCreateTime(Date createTime) {
@@ -338,7 +317,6 @@ public class DailyTrain {
      * This method returns the value of the database column daily_train.update_time
      *
      * @return the value of daily_train.update_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public Date getUpdateTime() {
@@ -350,7 +328,6 @@ public class DailyTrain {
      * This method sets the value of the database column daily_train.update_time
      *
      * @param updateTime the value for daily_train.update_time
-     *
      * @mbg.generated Fri May 10 00:57:12 CST 2024
      */
     public void setUpdateTime(Date updateTime) {

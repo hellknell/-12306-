@@ -3,7 +3,6 @@ package com.heyu.train.business.domain;
 import com.heyu.train.generator.generator.help.DbField;
 import com.heyu.train.generator.generator.help.FieldResult;
 import java.util.Collections;
-
 public class DailyTrainTicketField {
     public static DbField Id = new DbField("id","id","BIGINT","java.lang.Long");
 

@@ -46,11 +46,9 @@
     <root level="ERROR">
         <appender-ref ref="ERROR_FILE"/>
     </root>
-
     <root level="TRACE">
         <appender-ref ref="TRACE_FILE"/>
     </root>
-
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>

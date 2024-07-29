@@ -8,16 +8,17 @@
         <artifactId>train12306</artifactId>
         <version>1.0.0</version>
     </parent>
-
-    <groupId>org.heyu</groupId>
     <artifactId>business</artifactId>
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.heyu</groupId>
             <artifactId>common</artifactId>

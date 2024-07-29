@@ -35,7 +35,5 @@ public class DailyTicketController {
     public Result<PageInfo<DailyTrainTicketQueryResp>> queryList(@Valid DailyTrainTicketQueryReq req) {
         DailyTrainTicketQueryReq dailyTrainTicketQueryReq = mapper.convertValue(req, DailyTrainTicketQueryReq.class);
         return Result.success(dailyTrainTicketService.queryList(dailyTrainTicketQueryReq));
-
     }
-
 }

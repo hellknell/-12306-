@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: train
+      config:
+        file-extension: yml
+#seata:
+#  registry:
+#    nacos:
+#      application: seata-server
+#      server-addr: 127.0.0.1:8848
+#      namespace: train
+#      username: nacos
+#      password: nacos
+#      group: SEATA_GROUP
+#    type: nacos
+#  config:
+#    type: nacos
+#    nacos:
+#      group: SEATA_GROUP
+#      server-addr: 127.0.0.1:8848
+#      namespace: train
+#      username: nacos
+#      password: nacos
+#      data-id: seataServer.yaml
+#  tx-service-group: train-group

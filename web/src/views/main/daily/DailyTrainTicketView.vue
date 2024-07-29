@@ -285,10 +285,7 @@ const batch = () => {
   request.delete("")
 }
 
-const onAdd = () => {
-  dailyTrainTicket.value = {};
-  visible.value = true;
-};
+
 const params = ref({
   date: undefined,
   code: undefined,
@@ -325,8 +322,8 @@ const handleOk = () => {
     } else {
       notification.error({description: res.msg});
     }
-  });
-};
+  })
+}
 const handleQuery = (param) => {
   if (!param) {
     param = {
@@ -355,8 +352,7 @@ const handleQuery = (param) => {
       notification.error({description: res.msg});
     }
   });
-};
-
+}
 const handleTableChange = (page) => {
   pagination.value.pageSize = page.pageSize;
   handleQuery({

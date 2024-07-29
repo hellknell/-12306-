@@ -24,21 +24,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TicketController {
     final TicketService ticketService;
-
     @Operation(summary = "新增/保存车票")
     @PostMapping("/save")
-    public Result<Void> login(@Valid @RequestBody MemberTicketReq req) {
+    public Result<Void> login(@Valid @RequestBody MemberTicketReq req) throws Exception {
         ticketService.save(req);
         return Result.success();
     }
-
     @Operation(summary = "查询车票")
     @GetMapping("/query-list")
     public Result<PageInfo<TicketQueryResp>> queryList(@Valid TicketQueryReq req) {
 
         return Result.success(ticketService.queryList(req));
     }
-
     @Operation(summary = "删除车票")
     @DeleteMapping("/del/{id}")
     public Result<Void> queryList(@PathVariable Long id) {

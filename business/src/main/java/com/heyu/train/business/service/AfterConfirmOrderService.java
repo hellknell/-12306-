@@ -14,11 +14,11 @@ import com.heyu.train.business.req.ConfirmOrderTicketReq;
 import com.heyu.train.common.feign.BusinessFeign;
 import com.heyu.train.common.req.MemberTicket;
 import com.heyu.train.common.req.MemberTicketReq;
+import com.heyu.train.common.resp.Result;
 import context.LoginMemberContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,9 @@ public class AfterConfirmOrderService {
     final ConfirmOrderMapper confirmOrderMapper;
     final BusinessFeign businessFeign;
 
-    @Transactional
-    public void afterConfirm(List<DailyTrainSeat> seats, DailyTrainTicket dailyTrainTicket, List<ConfirmOrderTicketReq> tickets, ConfirmOrder confirmOrder) {
+//    @GlobalTransactional
+    public void afterConfirm(List<DailyTrainSeat> seats, DailyTrainTicket dailyTrainTicket, List<ConfirmOrderTicketReq> tickets, ConfirmOrder confirmOrder) throws Exception {
+//        log.info("全局事务ID:{}", RootContext.getXID());
         DateTime now = DateTime.now();
         List<MemberTicket> list = new ArrayList<>();
         for (int j = 0; j < seats.size(); j++) {
@@ -83,15 +84,16 @@ public class AfterConfirmOrderService {
             ticket.setEnd(dailyTrainTicket.getEnd());
             ticket.setStartTime(dailyTrainTicket.getStartTime());
             ticket.setEndTime(dailyTrainTicket.getEndTime());
-            ticket.setRow(seat.getRow());
-            ticket.setCol(seat.getCol());
+            ticket.setSeatRow(seat.getRow());
+            ticket.setSeatCol(seat.getCol());
             ticket.setSeatType(seat.getSeatType());
             ticket.setTrainCode(dailyTrainTicket.getTrainCode());
-            ticket.setDate(dailyTrainTicket.getDate());
+            ticket.setTrainDate(dailyTrainTicket.getDate());
             ticket.setPassengerId(tickets.get(j).getPassengerId());
             ticket.setPassengerName(tickets.get(j).getPassengerName());
             ticket.setMemberId(LoginMemberContext.getId());
-            businessFeign.saveTicket(ticket);
+            Result<Void> voidResult = businessFeign.saveTicket(ticket);
+            log.info("{}", JSONUtil.toJsonPrettyStr(voidResult));
         }
         ConfirmOrder confirmOrder1 = new ConfirmOrder();
         confirmOrder1.setId(confirmOrder.getId());

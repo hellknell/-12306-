@@ -26,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PassengerController {
     final PassengerService passengerService;
-
     @Operation(summary = "新增/保存乘客")
     @PostMapping("/save")
     public Result<Void> login(@Valid @RequestBody PassengerSaveReq req) {

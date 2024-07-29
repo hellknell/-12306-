@@ -26,7 +26,7 @@ public class TicketController {
 
     @Operation(summary = "新增/保存订单")
     @PostMapping("/save")
-    public Result<Void> login(@Valid @RequestBody MemberTicketReq req) {
+    public Result<Void> login(@Valid @RequestBody MemberTicketReq req) throws Exception {
         ticketService.save(req);
         return Result.success();
     }

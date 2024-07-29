@@ -22,7 +22,6 @@ const width = ref(props.width || '100%')
 if (width.value) {
   width.value = width.value + 'px'
 }
-
 const filter = (input, option) => {
   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
 }
@@ -36,10 +35,15 @@ const onChange = (value) => {
   emit('change', train);
 };
 onMounted(() => {
-  request.get("/business/admin/train/query-train-code").then(res => {
-    if (res.success) {
-      trains.value = res.data
-    }
-  })
+  const train = SESSION.get(SESSION_ALL_TRAIN) || [];
+  if (Tool.isNotEmpty(train)) {
+    trains.value = train;
+  } else
+    request.get("/business/admin/train/query-train-code").then(res => {
+      if (res.success) {
+        trains.value = res.data
+        SESSION.set(SESSION_ALL_TRAIN, res.data)
+      }
+    })
 })
 </script>

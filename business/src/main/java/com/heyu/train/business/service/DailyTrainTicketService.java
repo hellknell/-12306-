@@ -9,21 +9,23 @@ import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.heyu.train.business.domain.*;
-import com.heyu.train.business.mapper.DailyTrainTicketMapper;
-import com.heyu.train.business.mapper.TrainStationMapper;
 import com.heyu.train.business.enums.TrainSeatEnum;
 import com.heyu.train.business.enums.TrainTypeEnum;
+import com.heyu.train.business.mapper.DailyTrainTicketMapper;
+import com.heyu.train.business.mapper.TrainStationMapper;
 import com.heyu.train.business.req.DailyTrainTicketQueryReq;
 import com.heyu.train.business.req.DailyTrainTicketSaveReq;
-import com.heyu.train.business.resp.DailyTrainTicketQueryResp;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
+import com.heyu.train.common.resp.DailyTrainTicketQueryResp;
 import com.heyu.train.common.resp.PageInfo;
 import com.heyu.train.common.util.SnowFlask;
 import com.heyu.train.generator.generator.help.Criteria;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,7 @@ public class DailyTrainTicketService {
     private final DailyTrainTicketMapper dailyTrainTicketMapper;
     private final TrainStationMapper trainStationMapper;
     private final DailyTrainSeatService dailyTrainSeatService;
+
     public void save(DailyTrainTicketSaveReq req) {
         DailyTrainTicket p1 = BeanUtil.copyProperties(req, DailyTrainTicket.class);
         DateTime now = DateTime.now();
@@ -59,16 +62,25 @@ public class DailyTrainTicketService {
             dailyTrainTicketMapper.updateByPrimaryKey(p1);
         }
     }
-    public com.heyu.train.common.resp.PageInfo<com.heyu.train.common.resp.DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req) {
-        MyBatisWrapper<DailyTrainTicketQueryResp> wrapper = new MyBatisWrapper<>();
+
+    @CachePut(value = "DailyTrainTicketService.queryList")
+    public PageInfo<DailyTrainTicketQueryResp> queryList2(DailyTrainTicketQueryReq req) {
+        return queryList(req);
+    }
+    @Cacheable(value = "DailyTrainTicketService.queryList", key = "#req.start+#req.end+#req.date+#req.pageNum+#req.pageSize")
+    public PageInfo<com.heyu.train.common.resp.DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req) {
+        MyBatisWrapper<DailyTrainTicket> wrapper = new MyBatisWrapper<>();
         Criteria criteria = wrapper.select(DailyTrainTicketField.Id, DailyTrainTicketField.StartIndex, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime, DailyTrainTicketField.Date, DailyTrainTicketField.End, DailyTrainTicketField.Edz, DailyTrainTicketField.EdzPrice, DailyTrainTicketField.EndIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice, DailyTrainTicketField.Start, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Ydz, DailyTrainTicketField.EndPinyin, DailyTrainTicketField.StartPinyin, DailyTrainTicketField.TrainCode, DailyTrainTicketField.StartIndex, DailyTrainTicketField.YdzPrice, DailyTrainTicketField.Yw, DailyTrainTicketField.YwPrice, DailyTrainTicketField.Rw, DailyTrainTicketField.RwPrice).orderByDesc(DailyTrainTicketField.Date).whereBuilder();
         if (ObjectUtil.isNotEmpty(req.getDate())) {
             criteria.andEq(DailyTrainStationField.setDate(req.getDate()));
-        } if (StrUtil.isNotEmpty(req.getTrainCode())) {
+        }
+        if (StrUtil.isNotEmpty(req.getTrainCode())) {
             criteria.andEq(DailyTrainStationField.setTrainCode((req.getTrainCode())));
-        } if (StrUtil.isNotEmpty(req.getStart())) {
+        }
+        if (StrUtil.isNotEmpty(req.getStart())) {
             criteria.andEq(DailyTrainTicketField.setStart((req.getStart())));
-        } if (StrUtil.isNotEmpty(req.getEnd())) {
+        }
+        if (StrUtil.isNotEmpty(req.getEnd())) {
             criteria.andEq(DailyTrainTicketField.setEnd((req.getEnd())));
         }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());

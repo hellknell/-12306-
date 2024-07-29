@@ -16,15 +16,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
-    public Result<Object> handleException(Exception e) {
+    public Result<Object> handleException(Exception e) throws Exception {
+//        log.info("全局事务Id:{}", RootContext.getXID());
         log.error("系统异常，请联系管理员", e);
+//        if (StrUtil.isNotBlank(RootContext.getXID())) {
+//            throw new Exception(e);
+//        }
         Result<Object> result = new Result<>();
         result.setMsg("系统出现异常,请联系管理员");
+        result.setSuccess(false);
         return result;
     }
-
     @ExceptionHandler(BizException.class)
-
     public Result<Object> handleException(BizException e) {
         log.error("系统异常，请联系管理员", e);
         Result<Object> result = new Result<>();

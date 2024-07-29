@@ -32,6 +32,4 @@ public enum PassagerTypeEnum {
         this.code = code;
         this.desc = desc;
     }
-
-
 }

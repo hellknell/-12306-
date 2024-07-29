@@ -26,9 +26,12 @@ import com.heyu.train.generator.generator.help.Criteria;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
 import com.heyu.train.generator.generator.help.PageInfo;
 import context.LoginMemberContext;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.Strings;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -36,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.heyu.train.business.domain.ConfirmOrderField.*;
@@ -55,6 +59,10 @@ public class ConfirmOrderService {
     final DailyTrainCarriageService dailyTrainCarriageService;
     final DailyTrainSeatService dailyTrainSeatService;
     final AfterConfirmOrderService afterConfirmOrderService;
+//    @Autowired
+//    private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private RedissonClient redissonClient;
 
     public void save(ConfirmOrderDoReq req) {
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
@@ -88,83 +96,110 @@ public class ConfirmOrderService {
         List<ConfirmOrderQueryResp> resp = BeanUtil.copyToList(list, ConfirmOrderQueryResp.class);
         return new PageInfo<>(req.getPageNum(), req.getPageSize(), total, resp);
     }
+
     public void del(Long id) {
         confirmOrderMapper.deleteByPrimaryKey(id);
     }
 
-    public void doConfirm(ConfirmOrderDoReq req) {
-        MyBatisWrapper<DailyTrain> wrapper = new MyBatisWrapper<>();
-        wrapper.select(DailyTrainField.Id).whereBuilder().andEq(DailyTrainField.setDate(req.getDate())).andEq(DailyTrainField.setCode(req.getTrainCode()));
-        DailyTrain dailyTrain = dailyTrainMapper.topOne(wrapper);
-        if (Objects.isNull(dailyTrain)) {
-            throw new BizException(BizExceptionEnum.NO_TRAINS);
-        }
-        MyBatisWrapper<DailyTrainTicket> wrapper01 = new MyBatisWrapper<>();
-        wrapper01.select(DailyTrainTicketField.Id).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
-        DailyTrainTicket dailyTrainTicket = dailyTrainTicketMapper.topOne(wrapper01);
-        if (Objects.isNull(dailyTrainTicket)) {
-            throw new BizException(BizExceptionEnum.NO_TICKETS);
-        }
-        List<ConfirmOrderTicketReq> lists = req.getTickets();
-        //插入订单表
-        ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
-        DateTime now = DateTime.now();
-        confirmOrder.setId(SnowFlask.getSnowFlaskId());
-        confirmOrder.setUpdateTime(now);
-        confirmOrder.setMemberId(LoginMemberContext.getId());
-        confirmOrder.setCreateTime(now);
-        confirmOrder.setStatus(ConfirmOrderEnum.INIT.getCode());
-        confirmOrder.setTickets(JSONUtil.toJsonStr(req.getTickets()));
-        confirmOrderMapper.insert(confirmOrder);
-        //查询余票
-        MyBatisWrapper<DailyTrainTicket> tikcetWrapper = new MyBatisWrapper<>();
-        tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Date,DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
-        DailyTrainTicket dbTicket = dailyTrainTicketMapper.topOne(tikcetWrapper);
-        log.info("ticket信息:{}", dbTicket);
-        //预扣减余票
-        reduceTickets(req, dbTicket);
-        //保存最终选座信息
-        List<DailyTrainSeat> finalSeats = new ArrayList<>();
-        //模拟出选座,并计算机出牌偏移量
-        if (StrUtil.isNotBlank(lists.get(0).getSeat())) {
-            log.info("本次有选座");
-            List<String> colsByType = SeatTypeEnum.getColsByType(lists.get(0).getSeatTypeCode());
-            ArrayList<String> seats = new ArrayList<>();
-            for (int i = 1; i <= 2; i++) {
-                for (String col : colsByType)
-                    seats.add(col + i);
+    public void doConfirm(ConfirmOrderDoReq req) throws InterruptedException {
+        String key = req.getDate() + "_" + req.getTrainCode();
+        RLock rLock = null;
+        try {
+            rLock = redissonClient.getLock(key);
+            boolean tryLock = rLock.tryLock(2,  TimeUnit.SECONDS);
+            if (tryLock) {
+                log.info("获取锁成功");
+            } else {
+                log.info("获取锁失败");
+                throw new BizException(BizExceptionEnum.BIZ_BUSYING);
             }
-            log.info("选座信息:{}", seats);
-            ArrayList<Integer> absoluteCol = new ArrayList<>();
-            for (ConfirmOrderTicketReq ticketReq : lists) {
-                int i = seats.indexOf(ticketReq.getSeat());
-                absoluteCol.add(i);
+            MyBatisWrapper<DailyTrain> wrapper = new MyBatisWrapper<>();
+            wrapper.select(DailyTrainField.Id).whereBuilder().andEq(DailyTrainField.setDate(req.getDate())).andEq(DailyTrainField.setCode(req.getTrainCode()));
+            DailyTrain dailyTrain = dailyTrainMapper.topOne(wrapper);
+            if (Objects.isNull(dailyTrain)) {
+                throw new BizException(BizExceptionEnum.NO_TRAINS);
             }
-            log.info("绝对选座:{}", absoluteCol);
-            ArrayList<Integer> offset = new ArrayList<>();
-            for (int i = 0; i < absoluteCol.size(); i++) {
-                int j = absoluteCol.get(i) - absoluteCol.get(0);
-                offset.add(j);
+            MyBatisWrapper<DailyTrainTicket> wrapper01 = new MyBatisWrapper<>();
+            wrapper01.select(DailyTrainTicketField.Id).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
+            DailyTrainTicket dailyTrainTicket = dailyTrainTicketMapper.topOne(wrapper01);
+            if (Objects.isNull(dailyTrainTicket)) {
+                throw new BizException(BizExceptionEnum.NO_TICKETS);
             }
-            log.info("偏移量:{}", offset);
-            getSeats(finalSeats, req.getDate(), req.getTrainCode(), req.getTickets().get(0).getSeatTypeCode(), req.getTickets().get(0).getSeat().split("")[0], offset, dbTicket.getStartIndex(), dbTicket.getEndIndex());
-        } else {
-            log.info("本次没有选座");
-            for (ConfirmOrderTicketReq ticket : req.getTickets()) {
-                getSeats(finalSeats,
-                        req.getDate(),
-                        req.getTrainCode(),
-                        ticket.getSeatTypeCode(),
-                        null, null,
-                        dbTicket.getStartIndex(),
-                        dbTicket.getEndIndex()
-                );
+            List<ConfirmOrderTicketReq> lists = req.getTickets();
+            //插入订单表
+            ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
+            DateTime now = DateTime.now();
+            confirmOrder.setId(SnowFlask.getSnowFlaskId());
+            confirmOrder.setUpdateTime(now);
+            confirmOrder.setMemberId(LoginMemberContext.getId());
+            confirmOrder.setCreateTime(now);
+            confirmOrder.setStatus(ConfirmOrderEnum.INIT.getCode());
+            confirmOrder.setTickets(JSONUtil.toJsonStr(req.getTickets()));
+            confirmOrderMapper.insert(confirmOrder);
+            //查询余票
+            MyBatisWrapper<DailyTrainTicket> tikcetWrapper = new MyBatisWrapper<>();
+            tikcetWrapper.select(DailyTrainTicketField.TrainCode, DailyTrainTicketField.Start, DailyTrainTicketField.End, DailyTrainTicketField.Date, DailyTrainTicketField.Yw, DailyTrainTicketField.Ydz, DailyTrainTicketField.Edz, DailyTrainTicketField.StartIndex, DailyTrainTicketField.Rw, DailyTrainTicketField.EndIndex, DailyTrainTicketField.StartTime, DailyTrainTicketField.EndTime).whereBuilder().andEq(DailyTrainTicketField.setDate(req.getDate())).andEq(DailyTrainTicketField.setTrainCode(req.getTrainCode())).andEq(DailyTrainTicketField.setStart(req.getStart())).andEq(DailyTrainTicketField.setEnd(req.getEnd()));
+            DailyTrainTicket dbTicket = dailyTrainTicketMapper.topOne(tikcetWrapper);
+            log.info("ticket信息:{}", dbTicket);
+            //预扣减余票
+            reduceTickets(req, dbTicket);
+            //保存最终选座信息
+            List<DailyTrainSeat> finalSeats = new ArrayList<>();
+            //模拟出选座,并计算机出牌偏移量
+            if (StrUtil.isNotBlank(lists.get(0).getSeat())) {
+                log.info("本次有选座");
+                List<String> colsByType = SeatTypeEnum.getColsByType(lists.get(0).getSeatTypeCode());
+                ArrayList<String> seats = new ArrayList<>();
+                for (int i = 1; i <= 2; i++) {
+                    for (String col : colsByType)
+                        seats.add(col + i);
+                }
 
+                log.info("选座信息:{}", seats);
+                ArrayList<Integer> absoluteCol = new ArrayList<>();
+                for (ConfirmOrderTicketReq ticketReq : lists) {
+                    int i = seats.indexOf(ticketReq.getSeat());
+                    absoluteCol.add(i);
+                }
+                log.info("绝对选座:{}", absoluteCol);
+                ArrayList<Integer> offset = new ArrayList<>();
+                for (int i = 0; i < absoluteCol.size(); i++) {
+                    int j = absoluteCol.get(i) - absoluteCol.get(0);
+                    offset.add(j);
+                }
+                log.info("偏移量:{}", offset);
+                getSeats(finalSeats, req.getDate(), req.getTrainCode(), req.getTickets().get(0).getSeatTypeCode(), req.getTickets().get(0).getSeat().split("")[0], offset, dbTicket.getStartIndex(), dbTicket.getEndIndex());
+            } else {
+                log.info("本次没有选座");
+                for (ConfirmOrderTicketReq ticket : req.getTickets()) {
+                    getSeats(finalSeats,
+                            req.getDate(),
+                            req.getTrainCode(),
+                            ticket.getSeatTypeCode(),
+                            null, null,
+                            dbTicket.getStartIndex(),
+                            dbTicket.getEndIndex()
+                    );
+
+                }
+            }
+            log.info("最终选座:{}", finalSeats.stream().map(DailyTrainSeat::getCarriageSeatIndex).collect(Collectors.toList()));
+//        Boolean b = stringRedisTemplate.opsForValue().setIfAbsent(key, key, 5, TimeUnit.SECONDS);
+//        if (b) {
+//            log.info("恭喜你,抢到了锁");
+//        } else {
+//            log.info("很遗憾,未抢到锁");
+//            throw new BizException(BizExceptionEnum.BIZ_BUSYING);
+//        }
+            afterConfirmOrderService.afterConfirm(finalSeats, dbTicket, req.getTickets(), confirmOrder);
+        } catch (Exception e) {
+            throw new BizException(BizExceptionEnum.BIZ_BUSYING);
+        } finally {
+            if (rLock.isHeldByCurrentThread() && rLock != null) {
+                rLock.unlock();
             }
         }
-
-        log.info("最终选座:{}", finalSeats.stream().map(DailyTrainSeat::getCarriageSeatIndex).collect(Collectors.toList()));
-        afterConfirmOrderService.afterConfirm(finalSeats, dbTicket, req.getTickets(), confirmOrder);
+//        stringRedisTemplate.delete(key);
     }
 
     private void getSeats(List<DailyTrainSeat> finalChooseSeats, Date date, String trainCode, String seatType, String columnFirst, List<Integer> offsetList, Integer startIndex, Integer endIndex) {
@@ -176,7 +211,7 @@ public class ConfirmOrderService {
             log.info("从车厢{}开始选", dailyTrainCarriage.getIndex());
             List<DailyTrainSeat> seatLists = dailyTrainSeatService.getSeatByCarriageIndex(date, trainCode, dailyTrainCarriage.getIndex());
             log.info("车厢{}有{}个座位", dailyTrainCarriage.getIndex(), seatLists.size());
-            log.info("车座:{}", seatLists);
+//            log.info("车座:{}", seatLists);
             log.info("----------------------------------------------------");
             for (DailyTrainSeat seat : seatLists) {
                 boolean isAlreadySelect = false;
@@ -209,7 +244,6 @@ public class ConfirmOrderService {
                 }
                 //如果没有选座,以上操作就已经完成了,如果已经选过座位,则需要继续以下判断
                 boolean isGetAllSeats = true;
-
                 if (CollUtil.isNotEmpty(offsetList)) {
                     log.info("偏移量:{}", offsetList);
                     for (int i = 1; i <= offsetList.size() - 1; i++) {

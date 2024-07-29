@@ -26,7 +26,9 @@ public enum BizExceptionEnum {
     PASSENGER_COUNT_LIMIT("50011", "最多只能添加50个乘客"),
     NO_TRAINS("50012", "对应车次不存在"),
     NO_TICKETS("500113", "对应车票不存在"),
-    TICKETS_LIMITS("500114", "余票不足");
+    TICKETS_LIMITS("500114", "余票不足"),
+    BIZ_BUSYING("500115", "业务繁忙,请稍后再试");
+
     private String code;
     private String message;
 

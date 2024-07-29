@@ -271,7 +271,7 @@
     select
     <if test="selectBuilder != null">
       <trim prefixOverrides="," suffixOverrides=",">
-         ${selectBuilder} 
+         ${selectBuilder}
       </trim>
     </if>
     from passenger

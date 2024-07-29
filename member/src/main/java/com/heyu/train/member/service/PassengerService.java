@@ -5,7 +5,9 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.heyu.train.common.constant.BizExceptionEnum;
 import com.heyu.train.common.exception.BizException;
+import com.heyu.train.common.resp.MemberDTO;
 import com.heyu.train.common.util.SnowFlask;
+import com.heyu.train.generator.generator.help.Criteria;
 import com.heyu.train.generator.generator.help.MyBatisWrapper;
 import com.heyu.train.generator.generator.help.PageInfo;
 import com.heyu.train.member.domain.Passenger;
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 功能:
@@ -59,7 +62,11 @@ public class PassengerService {
 
     public PageInfo<PassengerQueryResp> queryList(PassengerQueryReq req) {
         MyBatisWrapper<PassengerQueryResp> wrapper = new MyBatisWrapper<>();
-        wrapper.select(PassengerField.Id, PassengerField.MemberId, PassengerField.Name, PassengerField.Type, PassengerField.IdCard);
+        Long id = Optional.ofNullable(LoginMemberContext.getMember()).map(MemberDTO::getId).orElse(null);
+        Criteria criteria = wrapper.select(PassengerField.Id, PassengerField.MemberId, PassengerField.Name, PassengerField.Type, PassengerField.IdCard).whereBuilder();
+        if (id != null) {
+            criteria.andEq(PassengerField.setMemberId(id));
+        }
         log.info("pageSize:{}----pageNum:{},", req.getPageSize(), req.getPageNum());
         int total = passengerMapper.list(wrapper).size();
         List<Passenger> list = passengerMapper.list(wrapper.limit((req.getPageNum() - 1) * req.getPageSize(),

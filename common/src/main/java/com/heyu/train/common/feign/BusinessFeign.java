@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Component
-@FeignClient(name = "business-service", url = "http://localhost:8001/member")
+@FeignClient(name = "member")
 public interface BusinessFeign {
 
-    @PostMapping("/ticket/save")
+    @PostMapping("/member/ticket/save")
     Result<Void> saveTicket(@RequestBody MemberTicketReq req);
 }

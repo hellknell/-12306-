@@ -39,10 +39,18 @@ const onChange = (value) => {
   emit('change', train);
 };
 onMounted(() => {
-  request.get("/business/admin/station/query-station").then(res => {
-    if (res.success) {
-      stations.value = res.data
-    }
-  })
+  let station = SESSION.get(SESSION_ALL_STATION) || [];
+  console.log('读取到了缓存:', stations)
+  if (Tool.isNotEmpty(station)) {
+    stations.value = station;
+    console.log(stations.value)
+  } else {
+    request.get("/business/admin/station/query-station").then(res => {
+      if (res.success) {
+        stations.value = res.data
+        SESSION.set(SESSION_ALL_STATION, res.data)
+      }
+    })
+  }
 })
 </script>

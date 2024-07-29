@@ -6,10 +6,10 @@
     <result column="member_id" jdbcType="BIGINT" property="memberId" />
     <result column="passenger_id" jdbcType="BIGINT" property="passengerId" />
     <result column="passenger_name" jdbcType="VARCHAR" property="passengerName" />
-    <result column="date" jdbcType="DATE" property="date" />
+    <result column="train_date" jdbcType="DATE" property="trainDate" />
     <result column="train_code" jdbcType="VARCHAR" property="trainCode" />
-    <result column="row" jdbcType="CHAR" property="row" />
-    <result column="col" jdbcType="CHAR" property="col" />
+    <result column="seat_row" jdbcType="CHAR" property="seatRow" />
+    <result column="seat_col" jdbcType="CHAR" property="seatCol" />
     <result column="seat_type" jdbcType="CHAR" property="seatType" />
     <result column="start" jdbcType="VARCHAR" property="start" />
     <result column="end" jdbcType="VARCHAR" property="end" />
@@ -20,8 +20,8 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, member_id, passenger_id, passenger_name, date, train_code, row, col, seat_type, 
-    start, end, start_time, end_time, carriage_index, create_time, update_time
+    id, member_id, passenger_id, passenger_name, train_date, train_code, seat_row, seat_col, 
+    seat_type, start, end, start_time, end_time, carriage_index, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -35,17 +35,17 @@
   </delete>
   <insert id="insert" parameterType="com.heyu.train.member.domain.Ticket">
     insert into ticket (id, member_id, passenger_id, 
-      passenger_name, date, train_code, 
-      row, col, seat_type, start, 
-      end, start_time, end_time, 
-      carriage_index, create_time, update_time
-      )
+      passenger_name, train_date, train_code, 
+      seat_row, seat_col, seat_type, 
+      start, end, start_time, 
+      end_time, carriage_index, create_time, 
+      update_time)
     values (#{id,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{passengerId,jdbcType=BIGINT}, 
-      #{passengerName,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{trainCode,jdbcType=VARCHAR}, 
-      #{row,jdbcType=CHAR}, #{col,jdbcType=CHAR}, #{seatType,jdbcType=CHAR}, #{start,jdbcType=VARCHAR}, 
-      #{end,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
-      #{carriageIndex,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{passengerName,jdbcType=VARCHAR}, #{trainDate,jdbcType=DATE}, #{trainCode,jdbcType=VARCHAR}, 
+      #{seatRow,jdbcType=CHAR}, #{seatCol,jdbcType=CHAR}, #{seatType,jdbcType=CHAR}, 
+      #{start,jdbcType=VARCHAR}, #{end,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{carriageIndex,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.heyu.train.member.domain.Ticket">
     insert into ticket
@@ -62,17 +62,17 @@
       <if test="passengerName != null">
         passenger_name,
       </if>
-      <if test="date != null">
-        date,
+      <if test="trainDate != null">
+        train_date,
       </if>
       <if test="trainCode != null">
         train_code,
       </if>
-      <if test="row != null">
-        row,
+      <if test="seatRow != null">
+        seat_row,
       </if>
-      <if test="col != null">
-        col,
+      <if test="seatCol != null">
+        seat_col,
       </if>
       <if test="seatType != null">
         seat_type,
@@ -112,17 +112,17 @@
       <if test="passengerName != null">
         #{passengerName,jdbcType=VARCHAR},
       </if>
-      <if test="date != null">
-        #{date,jdbcType=DATE},
+      <if test="trainDate != null">
+        #{trainDate,jdbcType=DATE},
       </if>
       <if test="trainCode != null">
         #{trainCode,jdbcType=VARCHAR},
       </if>
-      <if test="row != null">
-        #{row,jdbcType=CHAR},
+      <if test="seatRow != null">
+        #{seatRow,jdbcType=CHAR},
       </if>
-      <if test="col != null">
-        #{col,jdbcType=CHAR},
+      <if test="seatCol != null">
+        #{seatCol,jdbcType=CHAR},
       </if>
       <if test="seatType != null">
         #{seatType,jdbcType=CHAR},
@@ -162,17 +162,17 @@
       <if test="passengerName != null">
         passenger_name = #{passengerName,jdbcType=VARCHAR},
       </if>
-      <if test="date != null">
-        date = #{date,jdbcType=DATE},
+      <if test="trainDate != null">
+        train_date = #{trainDate,jdbcType=DATE},
       </if>
       <if test="trainCode != null">
         train_code = #{trainCode,jdbcType=VARCHAR},
       </if>
-      <if test="row != null">
-        row = #{row,jdbcType=CHAR},
+      <if test="seatRow != null">
+        seat_row = #{seatRow,jdbcType=CHAR},
       </if>
-      <if test="col != null">
-        col = #{col,jdbcType=CHAR},
+      <if test="seatCol != null">
+        seat_col = #{seatCol,jdbcType=CHAR},
       </if>
       <if test="seatType != null">
         seat_type = #{seatType,jdbcType=CHAR},
@@ -206,10 +206,10 @@
     set member_id = #{memberId,jdbcType=BIGINT},
       passenger_id = #{passengerId,jdbcType=BIGINT},
       passenger_name = #{passengerName,jdbcType=VARCHAR},
-      date = #{date,jdbcType=DATE},
+      train_date = #{trainDate,jdbcType=DATE},
       train_code = #{trainCode,jdbcType=VARCHAR},
-      row = #{row,jdbcType=CHAR},
-      col = #{col,jdbcType=CHAR},
+      seat_row = #{seatRow,jdbcType=CHAR},
+      seat_col = #{seatCol,jdbcType=CHAR},
       seat_type = #{seatType,jdbcType=CHAR},
       start = #{start,jdbcType=VARCHAR},
       end = #{end,jdbcType=VARCHAR},
@@ -428,10 +428,10 @@
       </trim>
   </trim>
    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="date = case" suffix="end,">
+      <trim prefix="train_date = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          <if test="item.date != null">
-            when id = #{item.id,jdbcType=BIGINT} then #{item.date,jdbcType=DATE}
+          <if test="item.trainDate != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.trainDate,jdbcType=DATE}
           </if>
         </foreach>
       </trim>
@@ -446,19 +446,19 @@
       </trim>
   </trim>
    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="row = case" suffix="end,">
+      <trim prefix="seat_row = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          <if test="item.row != null">
-            when id = #{item.id,jdbcType=BIGINT} then #{item.row,jdbcType=CHAR}
+          <if test="item.seatRow != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.seatRow,jdbcType=CHAR}
           </if>
         </foreach>
       </trim>
   </trim>
    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="col = case" suffix="end,">
+      <trim prefix="seat_col = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          <if test="item.col != null">
-            when id = #{item.id,jdbcType=BIGINT} then #{item.col,jdbcType=CHAR}
+          <if test="item.seatCol != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.seatCol,jdbcType=CHAR}
           </if>
         </foreach>
       </trim>

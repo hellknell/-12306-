@@ -22,5 +22,4 @@ public class ConfirmOrderTicketReq {
     private String passengerIdCard;
     private String seatTypeCode;
     private String seat;
-
 }

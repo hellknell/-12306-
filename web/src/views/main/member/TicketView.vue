@@ -50,7 +50,7 @@ const columns = [
   },
   {
     title: '日期',
-    dataIndex: 'date'
+    dataIndex: 'trainDate'
   },
   {
     title: '车次编号',
@@ -67,11 +67,11 @@ const columns = [
   },
   {
     title: '排号',
-    dataIndex: 'row'
+    dataIndex: 'seatRow'
   },
   {
     title: '列号',
-    dataIndex: 'col'
+    dataIndex: 'seatCol'
   },
 
   {

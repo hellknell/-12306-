@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class JwtUtil {
 
     @Value("${jwt.key}")
-    public static  String key="2vdvv453";
+    public static String key = "2vdvv453";
 
     public static String creatToken(String mobile, Long id) {
         HashMap<String, Object> map = new HashMap<>();
@@ -37,6 +37,7 @@ public class JwtUtil {
         log.info("token:{}", token);
         return token;
     }
+
     public static boolean validateToken(String token) {
         try {
             JWT jwt = JWTUtil.parseToken(token).setKey(JwtUtil.key.getBytes());
@@ -48,13 +49,14 @@ public class JwtUtil {
             return false;
         }
     }
+
     public static JSONObject getMember(String token) {
         JWT jwt = JWTUtil.parseToken(token).setKey(key.getBytes());
         JSONObject payload = jwt.getPayloads();
         payload.remove(JWTPayload.ISSUED_AT);
         payload.remove(JWTPayload.NOT_BEFORE);
         payload.remove(JWTPayload.EXPIRES_AT);
-        return  payload;
+        return payload;
     }
 
 }

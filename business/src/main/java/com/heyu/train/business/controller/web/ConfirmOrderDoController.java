@@ -4,6 +4,7 @@ import com.heyu.train.business.req.ConfirmOrderDoReq;
 import com.heyu.train.business.service.ConfirmOrderService;
 import com.heyu.train.common.resp.Result;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/confirm-order")
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "确认订单")
 public class ConfirmOrderDoController {
     final ConfirmOrderService confirmOrderService;
+
     @Operation(summary = "提交订单")
     @PostMapping("/do")
-    public Result<Void> login(@RequestBody @Valid ConfirmOrderDoReq req ) throws NoSuchFieldException, IllegalAccessException {
+    public Result<Void> login(@RequestBody @Valid ConfirmOrderDoReq req) throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         confirmOrderService.doConfirm(req);
         return Result.success();
     }

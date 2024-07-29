@@ -34,7 +34,7 @@ public class MemberTicketReq extends PageReq {
      * 日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date date;
+    private Date trainDate;
 
     /**
      * 车次编号
@@ -44,12 +44,12 @@ public class MemberTicketReq extends PageReq {
     /**
      * 排号
      */
-    private String row;
+    private String seatRow;
 
     /**
      * 列号
      */
-    private String col;
+    private String seatCol;
 
     /**
      * 座位类型
@@ -106,10 +106,10 @@ public class MemberTicketReq extends PageReq {
         sb.append(", memberId=").append(memberId);
         sb.append(", passengerId=").append(passengerId);
         sb.append(", passengerName=").append(passengerName);
-        sb.append(", date=").append(date);
+        sb.append(", date=").append(trainDate);
         sb.append(", trainCode=").append(trainCode);
-        sb.append(", row=").append(row);
-        sb.append(", col=").append(col);
+        sb.append(", row=").append(seatRow);
+        sb.append(", col=").append(seatCol);
         sb.append(", seatType=").append(seatType);
         sb.append(", start=").append(start);
         sb.append(", end=").append(end);

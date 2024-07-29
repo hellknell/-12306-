@@ -22,7 +22,7 @@ public class MemberFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (path.contains("/admin") || path.contains("/member/login") || path.contains("/member/sendCode")) {
+        if (path.contains("/admin") || path.contains("/member/login") || path.contains("/member/sendCode") || path.contains("/doc.html")) {
             log.info("放行的请求路径:{}", path);
             return chain.filter(exchange);
         } else {

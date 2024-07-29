@@ -15,13 +15,13 @@ public class TicketField {
 
     public static DbField PassengerName = new DbField("passenger_name","passengerName","VARCHAR","java.lang.String");
 
-    public static DbField Date = new DbField("date","date","DATE","java.util.Date");
+    public static DbField TrainDate = new DbField("train_date","trainDate","DATE","java.util.Date");
 
     public static DbField TrainCode = new DbField("train_code","trainCode","VARCHAR","java.lang.String");
 
-    public static DbField Row = new DbField("row","row","CHAR","java.lang.String");
+    public static DbField SeatRow = new DbField("seat_row","seatRow","CHAR","java.lang.String");
 
-    public static DbField Col = new DbField("col","col","CHAR","java.lang.String");
+    public static DbField SeatCol = new DbField("seat_col","seatCol","CHAR","java.lang.String");
 
     public static DbField SeatType = new DbField("seat_type","seatType","CHAR","java.lang.String");
 
@@ -55,20 +55,20 @@ public class TicketField {
         return new FieldResult(PassengerName, Collections.singletonList(passengerName));
     }
 
-    public static FieldResult setDate(java.util.Date date) {
-        return new FieldResult(Date, Collections.singletonList(date));
+    public static FieldResult setTrainDate(java.util.Date trainDate) {
+        return new FieldResult(TrainDate, Collections.singletonList(trainDate));
     }
 
     public static FieldResult setTrainCode(String trainCode) {
         return new FieldResult(TrainCode, Collections.singletonList(trainCode));
     }
 
-    public static FieldResult setRow(String row) {
-        return new FieldResult(Row, Collections.singletonList(row));
+    public static FieldResult setSeatRow(String seatRow) {
+        return new FieldResult(SeatRow, Collections.singletonList(seatRow));
     }
 
-    public static FieldResult setCol(String col) {
-        return new FieldResult(Col, Collections.singletonList(col));
+    public static FieldResult setSeatCol(String seatCol) {
+        return new FieldResult(SeatCol, Collections.singletonList(seatCol));
     }
 
     public static FieldResult setSeatType(String seatType) {
