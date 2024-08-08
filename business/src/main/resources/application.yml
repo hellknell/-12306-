@@ -25,11 +25,7 @@ spring:
       time-to-live: 10s
   application:
     name: business
-    sentinel:
-      transport:
-        dashboard: localhost:8090
-        client-ip: 192.168.31.224
-      eager: true
+
   datasource:
     url: jdbc:mysql:///train_business?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: train_business

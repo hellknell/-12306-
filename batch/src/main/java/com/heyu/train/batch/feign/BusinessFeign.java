@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Date;
 
 @Component
-@FeignClient(name = "business", url = "http://localhost:8002/business")
+@FeignClient(value = "business",fallback = BusinessFeignFallBack.class)
 public interface BusinessFeign {
-    @GetMapping("/hello")
+    @GetMapping("/business/hello")
     String hello();
 
     @GetMapping("/admin/daily-train/generate/{date}")

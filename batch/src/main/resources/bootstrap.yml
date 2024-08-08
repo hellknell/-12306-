@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    openfeign:
+      lazy-attributes-resolution: true
+    nacos:
+      discovery:
+        server-addr:  127.0.0.1:8848
+        namespace: train
+    sentinel:
+      transport:
+        dashboard: localhost:9090
+        client-ip: 192.168.31.224
+      eager: true
+      datasource:
+        degrade:
+          nacos:
+            serverAddr: 192.168.31.224:8848
+            dataId: sentinel-batch-degrade
+            groupId: DEFAULT_GROUP
+            dataType: json
+            namespace: train
+            ruleType: degrade
+feign:
+  sentinel:
+    enabled: true

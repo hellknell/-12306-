@@ -8,6 +8,8 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.heyu.train.business.domain.*;
 import com.heyu.train.business.enums.ConfirmOrderEnum;
 import com.heyu.train.business.enums.SeatTypeEnum;
@@ -59,7 +61,7 @@ public class ConfirmOrderService {
     final DailyTrainCarriageService dailyTrainCarriageService;
     final DailyTrainSeatService dailyTrainSeatService;
     final AfterConfirmOrderService afterConfirmOrderService;
-//    @Autowired
+    //    @Autowired
 //    private StringRedisTemplate stringRedisTemplate;
     @Resource
     private RedissonClient redissonClient;
@@ -101,12 +103,13 @@ public class ConfirmOrderService {
         confirmOrderMapper.deleteByPrimaryKey(id);
     }
 
+    @SentinelResource(value = "doConfirm", blockHandler = "doConfirmBlockHandler")
     public void doConfirm(ConfirmOrderDoReq req) throws InterruptedException {
         String key = req.getDate() + "_" + req.getTrainCode();
         RLock rLock = null;
         try {
             rLock = redissonClient.getLock(key);
-            boolean tryLock = rLock.tryLock(2,  TimeUnit.SECONDS);
+            boolean tryLock = rLock.tryLock(2, TimeUnit.SECONDS);
             if (tryLock) {
                 log.info("获取锁成功");
             } else {
@@ -325,5 +328,11 @@ public class ConfirmOrderService {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void doConfirmBlockHandler(ConfirmOrderDoReq req, BlockException exception) {
+        log.info("购票请求被限流了:{}", JSONUtil.toJsonPrettyStr(req));
+        throw new BizException(BizExceptionEnum.FLOW_EXCEPTION);
+
     }
 }

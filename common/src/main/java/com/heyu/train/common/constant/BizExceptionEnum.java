@@ -27,7 +27,8 @@ public enum BizExceptionEnum {
     NO_TRAINS("50012", "对应车次不存在"),
     NO_TICKETS("500113", "对应车票不存在"),
     TICKETS_LIMITS("500114", "余票不足"),
-    BIZ_BUSYING("500115", "业务繁忙,请稍后再试");
+    BIZ_BUSYING("500115", "业务繁忙,请稍后再试"),
+    FLOW_EXCEPTION("500116", "当前抢票人数过多,请稍后再试");
 
     private String code;
     private String message;

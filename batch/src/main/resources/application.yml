@@ -13,7 +13,7 @@ spring:
   datasource:
     url: jdbc:mysql:///train_batch?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: train_batch
-    password: qweASDzx11
+    password: qweASDzx11_
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 5   # 最小空闲连接数量

@@ -36,6 +36,10 @@ public class ControllerExceptionHandler {
         result.setCode(e.getE().getCode());
         return result;
     }
+    @ExceptionHandler(RuntimeException.class)
+    public Result<Object> handleException(RuntimeException e){
+        throw e;
+    }
 
     @ExceptionHandler(BindException.class)
     public Result<Object> handleException(BindException e) {

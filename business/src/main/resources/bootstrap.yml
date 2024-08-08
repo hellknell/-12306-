@@ -6,6 +6,29 @@ spring:
         namespace: train
       config:
         file-extension: yml
+    sentinel:
+      transport:
+        dashboard: localhost:9090
+        client-ip: 192.168.31.224
+      eager: true
+      datasource:
+        flow:
+          nacos:
+            serverAddr: 192.168.31.224:8848
+            dataId: sentinel-business-flow
+            groupId: DEFAULT_GROUP
+            dataType: json
+            namespace: train
+            ruleType: flow
+        degrade:
+          nacos:
+            serverAddr: 192.168.31.224:8848
+            dataId: sentinel-business-degrade
+            groupId: DEFAULT_GROUP
+            dataType: json
+            namespace: train
+            ruleType: degrade
+      web-context-unify: false
 #seata:
 #  registry:
 #    nacos:
